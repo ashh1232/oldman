@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/controller/talabat/cart_controllerw.dart';
+import 'package:maneger/model/image_model.dart';
 import 'package:maneger/model/product_model.dart';
 // import 'package:talabat/controller/cart_controllerw.dart';
 
@@ -18,6 +19,11 @@ class ProductController extends GetxController {
   final CartController cartController = Get.find<CartController>();
 
   final Rx<Product?> product = Rx<Product?>(null);
+  final RxList<Images> image = <Images>[
+    Images(image: '5777_1000072421.jpg', id: '1'),
+    Images(image: '7771_1000072408.jpg', id: '2'),
+    Images(image: '5937_1000072409.jpg', id: '3'),
+  ].obs;
 
   @override
   void onInit() {
@@ -33,8 +39,8 @@ class ProductController extends GetxController {
     isLoading.value = true;
   }
 
-  void checkInitialData() {
-    final arg = Get.arguments;
+  void checkInitialData() async {
+    final arg = await Get.arguments;
     if (arg != null && arg is Product) {
       product.value = arg;
       isLoading.value = false;
@@ -58,6 +64,40 @@ class ProductController extends GetxController {
       product.value = arg;
       isLoading.value = false;
     }
+  }
+
+  void previousImage() {
+    if (currentImageIndex.value > 0) {
+      currentImageIndex.value--;
+    }
+  }
+
+  void selectImage(int index) {
+    currentImageIndex.value = index;
+  }
+
+  void changeSize(String size) {
+    selectedSize.value = size;
+  }
+
+  void changeColor(String color) {
+    selectedColor.value = color;
+  }
+
+  void increaseQuantity() {
+    // Increment the reactive quantity variable
+    quantity.value++;
+  }
+
+  void decreaseQuantity() {
+    // Prevent quantity from going below 1
+    if (quantity.value > 1) {
+      quantity.value--;
+    }
+  }
+
+  void toggleFavorite() {
+    isFavorite.value = !isFavorite.value;
   }
 
   void addToCart({
@@ -119,40 +159,6 @@ class ProductController extends GetxController {
         colorText: Colors.white,
       );
     }
-  }
-
-  void previousImage() {
-    if (currentImageIndex.value > 0) {
-      currentImageIndex.value--;
-    }
-  }
-
-  void selectImage(int index) {
-    currentImageIndex.value = index;
-  }
-
-  void changeSize(String size) {
-    selectedSize.value = size;
-  }
-
-  void changeColor(String color) {
-    selectedColor.value = color;
-  }
-
-  void increaseQuantity() {
-    // Increment the reactive quantity variable
-    quantity.value++;
-  }
-
-  void decreaseQuantity() {
-    // Prevent quantity from going below 1
-    if (quantity.value > 1) {
-      quantity.value--;
-    }
-  }
-
-  void toggleFavorite() {
-    isFavorite.value = !isFavorite.value;
   }
 
   @override

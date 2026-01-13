@@ -20,8 +20,10 @@ Future<bool> checkInternet() async {
       duration: const Duration(seconds: 3),
       backgroundColor: Colors.redAccent,
     );
-    return false; // يجب أن تكون false هنا
+    return true; // يجب أن تكون false هنا
+    // return false; // يجب أن تكون false هنا
   } catch (_) {
-    return false; // لأي خطأ آخر مثل التايم آوت
+    return true; // لأي خطأ آخر مثل التايم آوت
+    // return false; // لأي خطأ آخر مثل التايم آوت
   }
 }

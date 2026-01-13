@@ -36,24 +36,21 @@ class Product {
                   "https://iraq.talabat.com/assets/images/header_image-EN.png")
               .toString(),
       categoryId: (json['categoryId'] ?? json['product_cat'] ?? "1").toString(),
-      originalPrice:
-          (json['originalPrice'] ?? json['original_price'] ?? "0.0").toString(),
-      description:
-          (json['description'] ?? json['product_desc'] ?? "بدون وصف")
-              .toString(),
+      originalPrice: (json['originalPrice'] ?? json['original_price'] ?? "0.0")
+          .toString(),
+      description: (json['description'] ?? json['product_desc'] ?? "بدون وصف")
+          .toString(),
 
       // استقبال الـ BlurHash من السيرفر (تأكد من مطابقة الاسم مع عمود قاعدة البيانات)
       blurHash:
           (json['product_blurhash'] ?? "UBEVsa9E0M~q~T%ND%x^01-:wbITt8t6%hxa")
               .toString(),
 
-      quantity:
-          json['quantity'] is int
-              ? json['quantity']
-              : int.tryParse(json['quantity']?.toString() ?? "1") ?? 1,
-      catName:
-          (json['cat_name'] ?? json['categories_name'] ?? "بدون عنوان")
-              .toString(),
+      quantity: json['quantity'] is int
+          ? json['quantity']
+          : int.tryParse(json['quantity']?.toString() ?? "1") ?? 1,
+      catName: (json['cat_name'] ?? json['categories_name'] ?? "بدون عنوان")
+          .toString(),
     );
   }
 

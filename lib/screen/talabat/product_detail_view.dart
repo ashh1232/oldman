@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:maneger/controller/product_controller.dart';
 import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/product_model.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ProductDetailView extends GetView<ProductController> {
   final Product? manualProduct; // أضف هذا المتغير
@@ -126,90 +127,95 @@ class ProductDetailView extends GetView<ProductController> {
                   children: [
                     PageView.builder(
                       onPageChanged: (index) => controller.selectImage(index),
-                      itemCount: 1,
+                      itemCount: controller.image.length,
                       // itemCount: pro.images.length,
                       itemBuilder: (context, index) {
-                        return CachedNetworkImage(
-                          imageUrl: AppLink.productsimages + pro.image,
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) =>
-                              Center(child: CircularProgressIndicator()),
-                          errorWidget: (context, url, error) =>
-                              Icon(Icons.broken_image),
+                        return Obx(
+                          () => CachedNetworkImage(
+                            imageUrl:
+                                AppLink.productsimages +
+                                controller
+                                    .image[controller.currentImageIndex.value]
+                                    .image,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) =>
+                                Center(child: CircularProgressIndicator()),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.broken_image),
+                          ),
                         );
                       },
                     ),
-                    // Positioned(
-                    //   bottom: 16,
-                    //   left: 0,
-                    //   right: 0,
-                    //   child: Obx(
-                    //     () => Center(
-                    //       child: SmoothPageIndicator(
-                    //         controller: PageController(
-                    //           initialPage: controller.currentImageIndex.value,
-                    //         ),
-                    //         count: controller.product.value.images.length,
-                    //         effect: ScrollingDotsEffect(
-                    //           activeDotColor: Colors.white,
-                    //           dotColor: Colors.grey.shade400,
-                    //           dotHeight: 8,
-                    //           dotWidth: 8,
-                    //         ),
-                    //         onDotClicked:
-                    //             (index) => controller.selectImage(index),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
+
+                    Positioned(
+                      bottom: 16,
+                      left: 0,
+                      right: 0,
+                      child: Obx(
+                        () => Center(
+                          child: SmoothPageIndicator(
+                            controller: PageController(
+                              initialPage: controller.currentImageIndex.value,
+                            ),
+                            count: controller.image.length,
+                            effect: ScrollingDotsEffect(
+                              activeDotColor: Colors.white,
+                              dotColor: Colors.grey.shade400,
+                              dotHeight: 8,
+                              dotWidth: 8,
+                            ),
+                            onDotClicked: (index) =>
+                                controller.selectImage(index),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
               SizedBox(height: 12),
-              // SizedBox(
-              //   height: 80,
-              //   child: ListView.builder(
-              //     scrollDirection: Axis.horizontal,
-              //     padding: EdgeInsets.symmetric(horizontal: 16),
-              //     itemCount: pro.images.length,
-              //     itemBuilder: (context, index) {
-              //       return Obx(
-              //         () => GestureDetector(
-              //           onTap: () => controller.selectImage(index),
-              //           child: Container(
-              //             margin: EdgeInsets.only(right: 8),
-              //             decoration: BoxDecoration(
-              //               border: Border.all(
-              //                 color:
-              //                     controller.currentImageIndex.value == index
-              //                         ? Colors.blue
-              //                         : Colors.grey.shade300,
-              //                 width: 2,
-              //               ),
-              //               borderRadius: BorderRadius.circular(8),
-              //             ),
-              //             child: ClipRRect(
-              //               borderRadius: BorderRadius.circular(6),
-              //               child: CachedNetworkImage(
-              //                 imageUrl: pro.images[index],
-              //                 fit: BoxFit.cover,
-              //                 width: 70,
+              SizedBox(
+                height: 80,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  itemCount: controller.image.length,
+                  itemBuilder: (context, index) {
+                    return Obx(
+                      () => GestureDetector(
+                        onTap: () => controller.selectImage(index),
+                        child: Container(
+                          margin: EdgeInsets.only(right: 8),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: controller.currentImageIndex.value == index
+                                  ? Colors.blue
+                                  : Colors.grey.shade300,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(6),
+                            child: CachedNetworkImage(
+                              imageUrl:
+                                  AppLink.productsimages +
+                                  controller.image[index].image,
+                              fit: BoxFit.cover,
+                              width: 70,
 
-              //                 placeholder:
-              //                     (context, url) => Center(
-              //                       child: CircularProgressIndicator(),
-              //                     ),
-              //                 errorWidget:
-              //                     (context, url, error) =>
-              //                         Icon(Icons.broken_image),
-              //               ),
-              //             ),
-              //           ),
-              //         ),
-              //       );
-              //     },
-              //   ),
-              // ),
+                              placeholder: (context, url) =>
+                                  Center(child: CircularProgressIndicator()),
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.broken_image),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
               SizedBox(height: 12),
             ],
           ),
