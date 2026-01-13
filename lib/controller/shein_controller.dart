@@ -43,7 +43,9 @@ class CategoryController extends GetxController
     // await getData();
     await getBanners();
     await getData();
-    name.value = productList.first.catName;
+    if (productList.isNotEmpty) {
+      name.value = productList.first.catName;
+    }
 
     super.onReady();
   }
