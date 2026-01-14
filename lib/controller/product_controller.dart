@@ -44,16 +44,9 @@ class ProductController extends GetxController {
     final arg = await Get.arguments;
     if (arg != null && arg is Product) {
       return product.value = arg;
-      isLoading.value = false;
-
-      // print(arg.id);
-      print('arg.id');
     }
     if (product.value != null) {
-      print('arg.id');
       await getImages(product.value!.id);
-
-      print(product.value);
     }
   }
 

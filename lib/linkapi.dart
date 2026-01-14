@@ -16,7 +16,7 @@ class AppLink {
 
   /////////////
   static const String product = '$server/product.php';
-  static const String proImages = '$server/proimages.php';
+  static const String proImages = '$server/products/pro_images.php';
   static const String productt = '$server/product2.php';
   static const String banner = '$server/banner.php';
   static const String cat = '$server/catt.php';

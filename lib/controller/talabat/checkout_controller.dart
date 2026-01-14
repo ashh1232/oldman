@@ -1,22 +1,29 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:maneger/class/crud.dart';
 import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/controller/auth/auth_controller.dart';
 import 'package:maneger/controller/talabat/cart_controllerw.dart';
 import 'package:maneger/controller/talabat/tal_map_controller.dart';
 import 'package:maneger/linkapi.dart';
+import 'package:maneger/model/location_model.dart';
 import 'package:maneger/routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CheckoutController extends GetxController {
   //////////////
   // أضف هذا السطر مع الـ controllers الأخرى
   final TalMapController mapController = Get.find<TalMapController>();
+  final isLoading = false.obs;
+  final ismap = false.obs;
 
+  late RxDouble selectedLat = 0.0.obs;
+  late RxDouble selectedLong = 0.0.obs;
   // لتخزين الإحداثيات المختارة
-  double get selectedLat => mapController.destinationLatLng.value.latitude;
-  double get selectedLong => mapController.destinationLatLng.value.longitude;
+  // double get selectedLat => mapController.destinationLatLng.value.latitude;
+  // double get selectedLong => mapController.destinationLatLng.value.longitude;
   /////////
   final Crud _crud = Crud();
   final AuthController authController = Get.find<AuthController>();
@@ -37,9 +44,10 @@ class CheckoutController extends GetxController {
   final RxDouble shippingCost = 5.0.obs;
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
     loadUserData();
+    await _loadFromStorage();
   }
 
   @override
@@ -53,13 +61,53 @@ class CheckoutController extends GetxController {
   }
 
   // Load user data to pre-fill form
-  void loadUserData() {
+  void loadUserData() async {
+    isLoading.value = false;
+
     final user = authController.currentUser.value;
     if (user != null) {
       nameController.text = user.userName;
-      phoneController.text = user.userPhone ?? '545';
+      phoneController.text = user.userPhone ?? '';
       addressController.text = user.userAddress ?? '';
     }
+    // Get the latest coordinates directly from the Map Controller
+    selectedLat.value = mapController.destinationLatLng.value.latitude;
+    selectedLong.value = mapController.destinationLatLng.value.longitude;
+    isLoading.value = false;
+  }
+
+  // void _syncInitialSelectedCount() {
+  //   selectedCount.value = products.where((p) => p.isSelected).length;
+  //   selectAll.value =
+  //       products.isNotEmpty && products.every((p) => p.isSelected);
+  // }
+  Future<void> _loadFromStorage() async {
+    ismap.value = true;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final String? raw = prefs.getString('location');
+
+      if (raw == null || raw.isEmpty) return;
+
+      // 1. Decode the JSON string back into a Map
+      final Map<String, dynamic> locationData = jsonDecode(raw);
+
+      // 2. Assign values to your Rx variables
+      if (locationData.containsKey('lat') && locationData.containsKey('lng')) {
+        selectedLat.value = locationData['lat'];
+        selectedLong.value = locationData['lng'];
+
+        print(
+          "📍 Location loaded: ${selectedLat.value}, ${selectedLong.value}",
+        );
+      }
+    } catch (e) {
+      print("⚠️ Error decoding location from storage: $e");
+      // Default values in case of corruption
+      selectedLat.value = 0.0;
+      selectedLong.value = 0.0;
+    }
+    ismap.value = false;
   }
 
   // Calculate totals

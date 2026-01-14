@@ -65,7 +65,7 @@ class ProductDetailView extends GetView<ProductController> {
                         const SizedBox(height: 16),
                         _buildTitleSection(pro),
                         const SizedBox(height: 16),
-                        _buildActionButtons(),
+                        _buildActionButtons(pro),
                         const SizedBox(height: 16),
 
                         _buildDescriptionSection(),
@@ -118,6 +118,7 @@ class ProductDetailView extends GetView<ProductController> {
   }
 
   Widget _buildImageSection(Product pro) {
+    controller.currentImageIndex.value = 0;
     return Column(
       children: [
         Container(
@@ -191,31 +192,34 @@ class ProductDetailView extends GetView<ProductController> {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () => controller.selectImage(index),
-                        child: Container(
-                          margin: EdgeInsets.only(right: 8),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: controller.currentImageIndex.value == index
-                                  ? Colors.blue
-                                  : Colors.grey.shade300,
-                              width: 2,
+                        child: Obx(
+                          () => Container(
+                            margin: EdgeInsets.only(right: 8),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color:
+                                    controller.currentImageIndex.value == index
+                                    ? Colors.red
+                                    : Colors.grey.shade300,
+                                width: 2,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
                             ),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(6),
-                            child: CachedNetworkImage(
-                              imageUrl: index == 0
-                                  ? AppLink.productsimages + pro.image
-                                  : AppLink.productsimages +
-                                        controller.image[index - 1].image,
-                              fit: BoxFit.cover,
-                              width: 70,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(6),
+                              child: CachedNetworkImage(
+                                imageUrl: index == 0
+                                    ? AppLink.productsimages + pro.image
+                                    : AppLink.productsimages +
+                                          controller.image[index - 1].image,
+                                fit: BoxFit.cover,
+                                width: 70,
 
-                              placeholder: (context, url) =>
-                                  Center(child: CircularProgressIndicator()),
-                              errorWidget: (context, url, error) =>
-                                  Icon(Icons.broken_image),
+                                placeholder: (context, url) =>
+                                    Center(child: CircularProgressIndicator()),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.broken_image),
+                              ),
                             ),
                           ),
                         ),
@@ -453,7 +457,7 @@ class ProductDetailView extends GetView<ProductController> {
   //     ),
   //   );
   // }
-  Widget _buildActionButtons() {
+  Widget _buildActionButtons(Product pro) {
     return Column(
       children: [
         // اختيار الكمية
@@ -471,10 +475,10 @@ class ProductDetailView extends GetView<ProductController> {
             ),
             onPressed: () {
               controller.addToCart(
-                id: controller.product.value!.id,
-                img: controller.product.value!.image,
-                title: controller.product.value!.title,
-                price: controller.product.value!.price,
+                id: pro.id,
+                img: pro.image,
+                title: pro.title,
+                price: pro.price,
               );
             },
             child: const Text(

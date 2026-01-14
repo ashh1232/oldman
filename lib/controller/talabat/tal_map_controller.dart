@@ -1,17 +1,23 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:maneger/controller/talabat/checkout_controller.dart';
 import 'package:maneger/routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TalMapController extends GetxController {
   final MapController mapController = MapController();
 
-  var currentLatLng = const LatLng(31.417272, 34.970499).obs; // مثال: الرياض
+  Rx<LatLng> currentLatLng = const LatLng(
+    31.417272,
+    34.970499,
+  ).obs; // مثال: الرياض
   // var destinationLatLng = const LatLng(31.410972, 34.970001).obs;
-  var destinationLatLng = const LatLng(31.410972, 34.970001).obs;
+  Rx<LatLng> destinationLatLng = const LatLng(31.410972, 34.970001).obs;
   var routePoints = <LatLng>[].obs;
   var currentHeading = 0.0.obs; // إضافة متغير الاتجاه
   bool isMapReady = false;
@@ -24,6 +30,15 @@ class TalMapController extends GetxController {
   void onInit() {
     super.onInit();
     _startTracking();
+    if (Get.arguments != null) {
+      destinationLatLng.value = LatLng(
+        Get.arguments['lat'],
+        Get.arguments['lng'],
+      );
+    } else {
+      // Fallback: load from storage if arguments are missing
+      _loadFromStorage();
+    }
   }
 
   @override
@@ -42,8 +57,68 @@ class TalMapController extends GetxController {
   }
 
   ///////////
-  void newDestinations() {
+  // void newDestinations() {
+  //   _saveToStorage();
+  //   Get.toNamed(
+  //     AppRoutes.checkout,
+  //     arguments: {
+  //       'lat': destinationLatLng.value.latitude,
+  //       'lng': destinationLatLng.value.longitude,
+  //     },
+  //   );
+  // }
+
+  void newDestinations() async {
+    await _saveToStorage();
+
+    // Force delete the existing controller if it exists
+    if (Get.isRegistered<CheckoutController>()) {
+      Get.delete<CheckoutController>();
+    }
+
     Get.toNamed(AppRoutes.checkout);
+  }
+
+  Future<void> _loadFromStorage() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final String? raw = prefs.getString('location');
+
+      if (raw == null || raw.isEmpty) return;
+
+      // 1. Decode the JSON string back into a Map
+      final Map<String, dynamic> locationData = jsonDecode(raw);
+
+      // 2. Assign values to your Rx variables
+      if (locationData.containsKey('lat') && locationData.containsKey('lng')) {
+        destinationLatLng.value = LatLng(
+          locationData['lat'],
+          locationData['lng'],
+        );
+
+        print(
+          "📍 Location loaded: ${destinationLatLng.value.latitude}, ${destinationLatLng.value.longitude}",
+        );
+      }
+    } catch (e) {
+      print("⚠️ Error decoding location from storage: $e");
+      // Default values in case of corruption
+      destinationLatLng.value = const LatLng(0.0, 0.0);
+    }
+  }
+
+  Future<void> _saveToStorage() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      // Save as a JSON string for easy decoding in CheckoutController
+      Map<String, double> locationMap = {
+        'lat': destinationLatLng.value.latitude,
+        'lng': destinationLatLng.value.longitude,
+      };
+      await prefs.setString('location', jsonEncode(locationMap));
+    } catch (e) {
+      print("Storage Error: $e");
+    }
   }
 
   ///

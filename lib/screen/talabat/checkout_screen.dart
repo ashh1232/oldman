@@ -175,40 +175,53 @@ class CheckoutScreen extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Obx(() {
+                if (controller.ismap.value) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (controller.selectedLat.value == 0.0 &&
+                    controller.selectedLong.value == 0.0) {
+                  return const Center(child: Text('لا يوجد موقع محدد'));
+                }
+
                 // نفترض وجود lat و lng في الـ controller
                 final lat = controller.selectedLat;
                 final lng = controller.selectedLong;
 
-                return FlutterMap(
-                  options: MapOptions(
-                    initialCenter: LatLng(lat, lng), // إحداثيات الموقع المختار
-                    initialZoom: 15.0,
-                    interactionOptions: const InteractionOptions(
-                      flags: InteractiveFlag
-                          .none, // جعلها للمعاينة فقط (غير قابلة للتحريك)
+                return IgnorePointer(
+                  child: FlutterMap(
+                    options: MapOptions(
+                      initialCenter: LatLng(
+                        lat.value,
+                        lng.value,
+                      ), // إحداثيات الموقع المختار
+                      initialZoom: 15.0,
+                      interactionOptions: const InteractionOptions(
+                        flags: InteractiveFlag
+                            .none, // جعلها للمعاينة فقط (غير قابلة للتحريك)
+                      ),
                     ),
-                  ),
-                  children: [
-                    TileLayer(
-                      urlTemplate:
-                          'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
-                      userAgentPackageName: 'com.your.app',
-                    ),
-                    MarkerLayer(
-                      markers: [
-                        Marker(
-                          point: LatLng(lat, lng),
-                          width: 40,
-                          height: 40,
-                          child: const Icon(
-                            Icons.location_on,
-                            color: Colors.red,
-                            size: 40,
+                    children: [
+                      TileLayer(
+                        urlTemplate:
+                            'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
+                        userAgentPackageName: 'com.your.app',
+                      ),
+                      MarkerLayer(
+                        markers: [
+                          Marker(
+                            point: LatLng(lat.value, lng.value),
+                            width: 40,
+                            height: 40,
+                            child: const Icon(
+                              Icons.location_on,
+                              color: Colors.red,
+                              size: 40,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 );
               }),
             ),
