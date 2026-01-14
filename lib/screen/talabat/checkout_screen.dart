@@ -156,7 +156,7 @@ class CheckoutScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               TextButton.icon(
-                onPressed: () => Get.toNamed(AppRoutes.mapScreen),
+                onPressed: () => controller.openMap(),
                 icon: const Icon(Icons.edit_location_alt, size: 20),
                 label: const Text('تغيير'),
               ),
@@ -165,65 +165,68 @@ class CheckoutScreen extends StatelessWidget {
           const SizedBox(height: 12),
 
           // عرض الخريطة المصغرة
-          Container(
-            height: 180, // ارتفاع الخريطة المعروضة
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.grey[300]!),
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Obx(() {
-                if (controller.ismap.value) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (controller.selectedLat.value == 0.0 &&
-                    controller.selectedLong.value == 0.0) {
-                  return const Center(child: Text('لا يوجد موقع محدد'));
-                }
+          InkWell(
+            onTap: () => controller.openMap(),
+            child: Container(
+              height: 180, // ارتفاع الخريطة المعروضة
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.grey[300]!),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Obx(() {
+                  if (controller.ismap.value) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (controller.selectedLat.value == 0.0 &&
+                      controller.selectedLong.value == 0.0) {
+                    return const Center(child: Text('لا يوجد موقع محدد'));
+                  }
 
-                // نفترض وجود lat و lng في الـ controller
-                final lat = controller.selectedLat;
-                final lng = controller.selectedLong;
+                  // نفترض وجود lat و lng في الـ controller
+                  final lat = controller.selectedLat;
+                  final lng = controller.selectedLong;
 
-                return IgnorePointer(
-                  child: FlutterMap(
-                    options: MapOptions(
-                      initialCenter: LatLng(
-                        lat.value,
-                        lng.value,
-                      ), // إحداثيات الموقع المختار
-                      initialZoom: 15.0,
-                      interactionOptions: const InteractionOptions(
-                        flags: InteractiveFlag
-                            .none, // جعلها للمعاينة فقط (غير قابلة للتحريك)
+                  return IgnorePointer(
+                    child: FlutterMap(
+                      options: MapOptions(
+                        initialCenter: LatLng(
+                          lat.value,
+                          lng.value,
+                        ), // إحداثيات الموقع المختار
+                        initialZoom: 17.0,
+                        interactionOptions: const InteractionOptions(
+                          flags: InteractiveFlag
+                              .none, // جعلها للمعاينة فقط (غير قابلة للتحريك)
+                        ),
                       ),
-                    ),
-                    children: [
-                      TileLayer(
-                        urlTemplate:
-                            'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',
-                        userAgentPackageName: 'com.your.app',
-                      ),
-                      MarkerLayer(
-                        markers: [
-                          Marker(
-                            point: LatLng(lat.value, lng.value),
-                            width: 40,
-                            height: 40,
-                            child: const Icon(
-                              Icons.location_on,
-                              color: Colors.red,
-                              size: 40,
+                      children: [
+                        TileLayer(
+                          urlTemplate:
+                              'https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+                          userAgentPackageName: 'com.your.app',
+                        ),
+                        MarkerLayer(
+                          markers: [
+                            Marker(
+                              point: LatLng(lat.value, lng.value),
+                              width: 40,
+                              height: 40,
+                              child: const Icon(
+                                Icons.location_on,
+                                color: Colors.red,
+                                size: 40,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              }),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                }),
+              ),
             ),
           ),
         ],

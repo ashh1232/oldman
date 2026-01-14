@@ -41,15 +41,31 @@ class TalMapController extends GetxController {
     }
   }
 
+  var currentTileUrl = 'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}'.obs;
+
+  void changeMapStyle(String style) {
+    switch (style) {
+      case 'satellite':
+        // رابط القمر الصناعي مع المسار الكامل
+        currentTileUrl.value =
+            'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}';
+        break;
+
+      default:
+        currentTileUrl.value =
+            'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}';
+    }
+  }
+
   @override
   void onReady() {
     super.onReady();
-    fetchRoute();
+    // fetchRoute();
   }
 
   void onLongPress(LatLng point) {
     destinationLatLng.value = point;
-    fetchRoute();
+    // fetchRoute();
   }
 
   void onMapReady() {
@@ -148,62 +164,70 @@ class TalMapController extends GetxController {
             s = true;
             destinationLatLng.value = currentLatLng.value;
           }
-          // تحديث المسار
-          fetchRoute();
-          if (isMapReady) {
-            try {
-              mapController.moveAndRotate(
-                newPos,
-                17.0, // أو mapController.camera.zoom
-                position.heading,
-              );
-            } catch (e) {
-              // إذا فشل التحريك لأن الخريطة أغلقت، نقوم بإلغاء الاشتراك فوراً
-              positionStream?.cancel();
-            }
+          // أضف هذا المتغير
+          var isAutoCenter = true.obs;
+
+          // داخل الـ listener الخاص بالـ positionStream
+          if (isMapReady && isAutoCenter.value) {
+            mapController.moveAndRotate(newPos, 17.0, position.heading);
           }
+
+          // تحديث المسار
+          // fetchRoute();
+          // if (isMapReady) {
+          //   try {
+          //     mapController.moveAndRotate(
+          //       newPos,
+          //       17.0, // أو mapController.camera.zoom
+          //       position.heading,
+          //     );
+          //   } catch (e) {
+          //     // إذا فشل التحريك لأن الخريطة أغلقت، نقوم بإلغاء الاشتراك فوراً
+          //     positionStream?.cancel();
+          //   }
+          // }
         });
   }
 
-  Future<void> fetchRoute() async {
-    try {
-      // 1. تحديد المعايير
-      // final String profile = transportProfile.value;
-      final double startLng = currentLatLng.value.longitude;
-      final double startLat = currentLatLng.value.latitude;
-      // final double endLng = destinationLatLng.value.longitude;
-      // final double endLat = destinationLatLng.value.latitude;
+  // Future<void> fetchRoute() async {
+  //   try {
+  //     // 1. تحديد المعايير
+  //     // final String profile = transportProfile.value;
+  //     final double startLng = currentLatLng.value.longitude;
+  //     final double startLat = currentLatLng.value.latitude;
+  //     // final double endLng = destinationLatLng.value.longitude;
+  //     // final double endLat = destinationLatLng.value.latitude;
 
-      // 2. بناء الرابط باستخدام Uri لضمان عدم وجود أخطاء في الـ Host
-      final Uri url = Uri.https(
-        'router.project-osrm.org',
-        '/route/v1/driving/$startLng,$startLat',
-        {'overview': 'full', 'geometries': 'geojson'},
-      );
+  //     // 2. بناء الرابط باستخدام Uri لضمان عدم وجود أخطاء في الـ Host
+  //     final Uri url = Uri.https(
+  //       'router.project-osrm.org',
+  //       '/route/v1/driving/$startLng,$startLat',
+  //       {'overview': 'full', 'geometries': 'geojson'},
+  //     );
 
-      print("🔗 جاري الاتصال بالرابط: $url");
+  //     print("🔗 جاري الاتصال بالرابط: $url");
 
-      final response = await GetConnect().get(url.toString());
+  //     final response = await GetConnect().get(url.toString());
 
-      if (response.isOk &&
-          response.body['routes'] != null &&
-          response.body['routes'].isNotEmpty) {
-        // الوصول للمسار الأول (تأكد من وجود [0])
-        var routeData = response.body['routes'][0];
-        var geometry = routeData['geometry']['coordinates'];
+  //     if (response.isOk &&
+  //         response.body['routes'] != null &&
+  //         response.body['routes'].isNotEmpty) {
+  //       // الوصول للمسار الأول (تأكد من وجود [0])
+  //       var routeData = response.body['routes'][0];
+  //       var geometry = routeData['geometry']['coordinates'];
 
-        List<LatLng> points = geometry.map<LatLng>((c) {
-          // تحويل من [Longitude, Latitude] إلى LatLng(Latitude, Longitude)
-          return LatLng(c[1].toDouble(), c[0].toDouble());
-        }).toList();
+  //       List<LatLng> points = geometry.map<LatLng>((c) {
+  //         // تحويل من [Longitude, Latitude] إلى LatLng(Latitude, Longitude)
+  //         return LatLng(c[1].toDouble(), c[0].toDouble());
+  //       }).toList();
 
-        routePoints.assignAll(points);
-        // distanceRemaining.value = (routeData['distance'] as num).toDouble();
-      }
-    } catch (e) {
-      print("⚠️ خطأ تقني: $e");
-    }
-  }
+  //       routePoints.assignAll(points);
+  //       // distanceRemaining.value = (routeData['distance'] as num).toDouble();
+  //     }
+  //   } catch (e) {
+  //     print("⚠️ خطأ تقني: $e");
+  //   }
+  // }
 
   @override
   void onClose() {

@@ -15,11 +15,12 @@ Future<bool> checkInternet() async {
     return false;
   } on SocketException catch (_) {
     // في حال عدم وجود اتصال
-    Get.rawSnackbar(
-      message: "لا يوجد اتصال بالإنترنت",
-      duration: const Duration(seconds: 3),
-      backgroundColor: Colors.redAccent,
-    );
+
+    // Get.rawSnackbar(
+    // message: "لا يوجد اتصال بالإنترنت",
+    // duration: const Duration(seconds: 3),
+    // backgroundColor: Colors.redAccent,
+    // );
     return true; // يجب أن تكون false هنا
     // return false; // يجب أن تكون false هنا
   } catch (_) {

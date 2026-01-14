@@ -6,6 +6,7 @@ import 'package:maneger/screen/admin/edit_product_detail_view.dart';
 import 'package:maneger/screen/delivery/deli_map.dart';
 import 'package:maneger/screen/delivery/order_details.dart';
 import 'package:maneger/screen/home_screen.dart';
+import 'package:maneger/screen/talabat/favorites_screen.dart';
 import 'package:maneger/screen/talabat/map_tal.dart';
 import 'package:maneger/screen/talabat/talabat_home_screen.dart';
 import 'package:maneger/screen/talabat/checkout_screen.dart';
@@ -55,6 +56,8 @@ class AppRoutes {
   static const cartPage = '/cartPage';
   static const checkout = '/checkout';
   static const mapScreen = '/mapScreen';
+  static const favorite = '/favorite';
+  ///////////////
   static const addscreen = '/addscreen';
   static const editCatDetailScreen = '/editCatDetailScreen';
   static const editProductScreen = '/editProductScreen';
@@ -89,6 +92,7 @@ class AppRoutes {
     GetPage(name: checkout, page: () => CheckoutScreen()),
     GetPage(name: orderConfirmation, page: () => OrderConfirmationScreen()),
     GetPage(name: mapScreen, page: () => MapTal()),
+    GetPage(name: favorite, page: () => FavoritesScreen()),
     ////////////// admin
     GetPage(name: addscreen, page: () => AdminProductScreen()),
     GetPage(name: editProductScreen, page: () => EditProductDetailView()),

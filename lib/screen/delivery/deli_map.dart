@@ -11,7 +11,7 @@ class DeliMap extends StatelessWidget {
     final DeliMapController controller = Get.find();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Flutter Map')),
+      // appBar: AppBar(title: const Text('Flutter Map')),
       body: Stack(
         children: [
           // 1. الخريطة الأساسية
@@ -112,43 +112,69 @@ class DeliMap extends StatelessWidget {
               ),
             ],
           ),
-
-          // 2. لوحة معلومات المسافة
           Positioned(
-            top: 50,
-            left: 20,
             right: 20,
-            child: Obx(
-              () => Card(
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 15,
-                    horizontal: 20,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.directions_car, color: Colors.blue),
-                      const SizedBox(width: 10),
-                      Text(
-                        controller.distanceRemaining.value > 0
-                            ? "المسافة: ${(controller.distanceRemaining.value / 1000).toStringAsFixed(2)} كم"
-                            : "جاري حساب المسار...",
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+            bottom: 160, // فوق زر الموقع الحالي
+            child: FloatingActionButton(
+              mini: true,
+              backgroundColor: Colors.white,
+              onPressed: () {
+                Get.bottomSheet(
+                  Container(
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text(
+                          "اختر شكل الخريطة",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 20),
+                        ListTile(
+                          leading: const Icon(Icons.map),
+                          title: const Text("الوضع العادي"),
+                          onTap: () {
+                            controller.changeMapStyle('default');
+                            Get.back();
+                          },
+                        ),
+                        ListTile(
+                          leading: const Icon(Icons.nightlight_round),
+                          title: const Text("الوضع الليلي"),
+                          onTap: () {
+                            controller.changeMapStyle('dark');
+                            Get.back();
+                          },
+                        ),
+                        ListTile(
+                          leading: const Icon(Icons.satellite_alt),
+                          title: const Text("قمر صناعي"),
+                          onTap: () {
+                            controller.changeMapStyle('satellite');
+                            Get.back();
+                          },
+                        ),
+                        ListTile(
+                          leading: const Icon(Icons.traffic),
+                          title: const Text("traffic"),
+                          onTap: () {
+                            controller.changeMapStyle('traffic');
+                            Get.back();
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
+              child: const Icon(Icons.layers, color: Colors.blue),
             ),
           ),
+          // 2. لوحة معلومات المسافة
 
           // 3. أزرار التحكم الجانبية (يمين)
           Positioned(
@@ -194,43 +220,6 @@ class DeliMap extends StatelessWidget {
           ),
 
           // 4. أزرار وسيلة النقل (سفلية)
-          Positioned(
-            bottom: 20,
-            left: 20,
-            right: 20,
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(30),
-                boxShadow: const [
-                  BoxShadow(color: Colors.black26, blurRadius: 10),
-                ],
-              ),
-              child: Obx(
-                () => Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildProfileButton(
-                      Icons.directions_car,
-                      'driving',
-                      controller,
-                    ),
-                    _buildProfileButton(
-                      Icons.directions_bike,
-                      'cycling',
-                      controller,
-                    ),
-                    _buildProfileButton(
-                      Icons.directions_walk,
-                      'walking',
-                      controller,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
 
           // 5. زر الموقع
           Positioned(

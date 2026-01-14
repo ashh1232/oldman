@@ -1,14 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:maneger/class/crud.dart';
 import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/controller/auth/auth_controller.dart';
 import 'package:maneger/controller/talabat/cart_controllerw.dart';
 import 'package:maneger/controller/talabat/tal_map_controller.dart';
 import 'package:maneger/linkapi.dart';
-import 'package:maneger/model/location_model.dart';
 import 'package:maneger/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -251,5 +249,9 @@ class CheckoutController extends GetxController {
       statusRequest.value = StatusRequest.serverfailure;
       Get.snackbar('Error', 'An error occurred: $e');
     }
+  }
+
+  void openMap() {
+    Get.toNamed(AppRoutes.mapScreen);
   }
 }

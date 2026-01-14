@@ -11,7 +11,7 @@ class MapTal extends StatelessWidget {
     final TalMapController mapController = Get.find<TalMapController>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('الخريطة')),
+      // appBar: AppBar(title: const Text('الخريطة')),
       body: Stack(
         children: [
           FlutterMap(
@@ -23,9 +23,12 @@ class MapTal extends StatelessWidget {
               onLongPress: (s, point) => mapController.onLongPress(point),
             ),
             children: [
-              TileLayer(
-                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                userAgentPackageName: 'com.maneger.app',
+              Obx(
+                () => TileLayer(
+                  // urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  urlTemplate: mapController.currentTileUrl.value,
+                  userAgentPackageName: 'com.maneger.app',
+                ),
               ),
 
               // طبقة العلامات (Markers)
@@ -61,6 +64,53 @@ class MapTal extends StatelessWidget {
             ],
           ),
           Positioned(
+            right: 20,
+            bottom: 160, // فوق زر الموقع الحالي
+            child: FloatingActionButton(
+              mini: true,
+              backgroundColor: Colors.white,
+              onPressed: () {
+                Get.bottomSheet(
+                  Container(
+                    color: Colors.white,
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text(
+                          "اختر شكل الخريطة",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        ListTile(
+                          leading: const Icon(Icons.map),
+                          title: const Text("الوضع العادي"),
+                          onTap: () {
+                            mapController.changeMapStyle('default');
+                            Get.back();
+                          },
+                        ),
+
+                        ListTile(
+                          leading: const Icon(Icons.satellite_alt),
+                          title: const Text("قمر صناعي"),
+                          onTap: () {
+                            mapController.changeMapStyle('satellite');
+                            Get.back();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+              child: const Icon(Icons.layers, color: Colors.blue),
+            ),
+          ),
+          Positioned(
             bottom: 20,
             left: 20,
             right: 20,
@@ -78,7 +128,7 @@ class MapTal extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 margin: const EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
-                  color: Colors.black,
+                  color: Colors.blue,
                   borderRadius: BorderRadius.circular(30),
                   boxShadow: const [
                     BoxShadow(color: Colors.black26, blurRadius: 10),
@@ -115,6 +165,16 @@ class MapTal extends StatelessWidget {
                 15.0,
               ),
               child: const Icon(Icons.my_location, color: Colors.blue),
+            ),
+          ),
+          Positioned(
+            right: 20,
+            top: 100,
+            child: FloatingActionButton(
+              mini: true,
+              backgroundColor: Colors.white,
+              onPressed: () => Get.back(),
+              child: const Icon(Icons.arrow_back, color: Colors.blue),
             ),
           ),
         ],

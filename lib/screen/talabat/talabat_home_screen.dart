@@ -435,12 +435,17 @@ Widget _buildSearchBar(TalabatController controller) {
           ),
         ),
       ),
-      Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        child: Icon(
-          Icons.favorite_border,
-          size: 22,
-          color: controller.isScrolled.value ? Colors.black : Colors.white,
+      Obx(
+        () => InkWell(
+          onTap: () => Get.toNamed(AppRoutes.favorite),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Icon(
+              Icons.favorite_border,
+              size: 22,
+              color: controller.isScrolled.value ? Colors.black : Colors.white,
+            ),
+          ),
         ),
       ),
       Obx(
