@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:maneger/controller/talabat/cart_controllerw.dart';
 import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/product_model.dart';
+import 'package:path/path.dart';
 // import 'package:maneger/trash/product_model.dart';
 
 class CartPage extends StatelessWidget {
@@ -12,9 +13,8 @@ class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF6F6F6),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        surfaceTintColor: Theme.of(context).colorScheme.surface,
         elevation: 1,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
@@ -32,7 +32,7 @@ class CartPage extends StatelessWidget {
           return _buildEmptyCart();
         }
 
-        return _buildCartContent();
+        return _buildCartContent(context);
       }),
     );
   }
@@ -69,7 +69,7 @@ class CartPage extends StatelessWidget {
     );
   }
 
-  Widget _buildCartContent() {
+  Widget _buildCartContent(BuildContext context) {
     return Column(
       children: [
         // Header
@@ -105,23 +105,23 @@ class CartPage extends StatelessWidget {
               itemCount: cartController.products.length,
               itemBuilder: (context, index) {
                 final product = cartController.products[index];
-                return _buildCartItem(product, index);
+                return _buildCartItem(context, product, index);
               },
             ),
           ),
         ),
         // Price summary and checkout
-        _buildPriceSummary(),
+        _buildPriceSummary(context),
       ],
     );
   }
 
-  Widget _buildCartItem(Product product, int index) {
+  Widget _buildCartItem(BuildContext context, Product product, int index) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
@@ -146,7 +146,7 @@ class CartPage extends StatelessWidget {
               ),
               // Product image
               ClipRRect(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(5),
                 child: CachedNetworkImage(
                   key: ValueKey(product.image), // أضف هذا السطر
 
@@ -278,11 +278,11 @@ class CartPage extends StatelessWidget {
     );
   }
 
-  Widget _buildPriceSummary() {
+  Widget _buildPriceSummary(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.05),
@@ -342,8 +342,8 @@ class CartPage extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () => cartController.checkout(),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  backgroundColor: Theme.of(context).colorScheme.onSurface,
+                  padding: const EdgeInsets.symmetric(vertical: 5),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -352,7 +352,7 @@ class CartPage extends StatelessWidget {
                   () => Text(
                     'إتمام الشراء (${cartController.selectedCount.value})',
                     style: const TextStyle(
-                      color: Colors.white,
+                      // color: Theme.,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),

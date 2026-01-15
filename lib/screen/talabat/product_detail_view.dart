@@ -29,211 +29,185 @@ class ProductDetailView extends GetView<ProductController> {
 
     controller.getImages(pro.id);
     return Scaffold(
-      body:
-          // Obx(() {
-          //   if (controller.isLoading.value) {
-          //     return Center(
-          //       child: Column(
-          //         mainAxisAlignment: MainAxisAlignment.center,
-          //         children: [
-          //           CircularProgressIndicator(),
-          //           SizedBox(height: 16),
-          //           Text('تحميل المنتج ...'),
-          //         ],
-          //       ),
-          //     );
-          //   }
-          //   return
-          CustomScrollView(
-            slivers: [
-              _buildAppBar(context),
-              // استخدام Obx فقط للمحتوى الذي يتأثر بالتحميل
-              SliverList(
-                delegate: SliverChildListDelegate([
-                  _buildImageSection(pro), // تمرير pro للدالة
-                  Padding(
-                    padding: const EdgeInsets.all(16),
+      body: CustomScrollView(
+        slivers: [
+          _buildAppBar(context),
+          // استخدام Obx فقط للمحتوى الذي يتأثر بالتحميل
+          SliverList(
+            delegate: SliverChildListDelegate([
+              _buildImageSection(context, pro), // تمرير pro للدالة
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+
+                children: [
+                  Container(
+                    color: Theme.of(context).colorScheme.surface,
+                    padding: EdgeInsets.all(7),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(pro.title),
-                        Text(pro.description),
-                        _buildPriceSection(pro), // تمرير pro
-                        Text(pro.price.toString()),
-                        const SizedBox(height: 16),
-                        _buildRatingSection(),
-                        const SizedBox(height: 16),
-                        _buildTitleSection(pro),
-                        const SizedBox(height: 16),
-                        _buildActionButtons(pro),
-                        const SizedBox(height: 16),
 
-                        _buildDescriptionSection(),
-                        // ... بقية العناصر
+                      children: [
+                        _buildPriceSection(pro), // تمرير pro
+                        // const SizedBox(height: 5),
+                        _buildTitleSection(pro),
                       ],
                     ),
                   ),
-                ]),
+                  const SizedBox(height: 7),
+                  Container(
+                    color: Theme.of(context).colorScheme.surface,
+                    padding: EdgeInsets.all(8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+
+                      children: [
+                        _buildRatingSection(),
+                        // const SizedBox(height: 5),
+                        _buildActionButtons(pro),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 8),
+                  Container(
+                    color: Theme.of(context).colorScheme.surface,
+                    padding: EdgeInsets.all(8),
+                    child: _buildDescriptionSection(),
+                  ),
+
+                  const SizedBox(height: 100),
+
+                  // ... بقية العناصر
+                ],
               ),
-            ],
+            ]),
           ),
+        ],
+      ),
+      bottomNavigationBar: _buildBottomAction(context, pro),
     );
   }
 
   Widget _buildAppBar(BuildContext context) {
     return SliverAppBar(
-      pinned: true, // يبقى شريط العنوان في الأعلى عند التمرير
-      floating: false,
-      backgroundColor: Colors.white,
-      surfaceTintColor: Colors.white,
-      elevation: 0.5,
+      toolbarHeight: 40, // قم بتقليل هذا الرقم (الافتراضي 56)
+      pinned: true,
+      surfaceTintColor: Theme.of(context).colorScheme.surface,
+
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: Colors.black),
-        onPressed: () {
-          Get.back();
-        },
+        icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
+        onPressed: () => Get.back(),
       ),
       title: Text(
         controller.product.value?.title ?? "تفاصيل المنتج",
-        style: const TextStyle(color: Colors.black, fontSize: 16),
+        style: const TextStyle(
+          color: Colors.black,
+          fontSize: 14,
+        ), // تصغير الخط قليلاً
       ),
-      actions: [
-        Obx(
-          () => IconButton(
-            icon: Icon(
-              controller.isFavorite.value
-                  ? Icons.favorite
-                  : Icons.favorite_border,
-              color: controller.isFavorite.value ? Colors.red : Colors.black,
-            ),
-            onPressed: controller.toggleFavorite,
-          ),
-        ),
-        IconButton(
-          icon: const Icon(Icons.share, color: Colors.black),
-          onPressed: () => Get.snackbar('مشاركة', 'جاري مشاركة المنتج...'),
-        ),
-      ],
     );
   }
 
-  Widget _buildImageSection(Product pro) {
-    controller.currentImageIndex.value = 0;
-    return Column(
-      children: [
-        Container(
-          color: Color(0xFFF5F5F5),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 400,
-                child: Stack(
-                  children: [
-                    PageView.builder(
-                      onPageChanged: (index) => controller.selectImage(index),
-                      itemCount: controller.image.length + 1,
-                      // itemCount: pro.images.length,
-                      itemBuilder: (context, index) {
-                        return Obx(
-                          () => (CachedNetworkImage(
-                            imageUrl: (controller.currentImageIndex.value == 0)
+  Widget _buildImageSection(BuildContext context, Product pro) {
+    return Obx(() {
+      int totalImages = controller.image.length + 1;
+
+      return Column(
+        children: [
+          SizedBox(
+            height: 400,
+            child: Stack(
+              children: [
+                PageView.builder(
+                  controller: controller.pageController,
+                  onPageChanged: (index) =>
+                      controller.currentImageIndex.value = index,
+                  itemCount: totalImages,
+                  itemBuilder: (context, index) {
+                    String imageUrl = index == 0
+                        ? (AppLink.productsimages + pro.image)
+                        : (AppLink.productsimages +
+                              controller.image[index - 1].image);
+
+                    return CachedNetworkImage(
+                      imageUrl: imageUrl,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) =>
+                          Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) =>
+                          Icon(Icons.broken_image),
+                    );
+                  },
+                ),
+                if (controller.image.isNotEmpty)
+                  Positioned(
+                    bottom: 16,
+                    left: 0,
+                    right: 0,
+                    child: Center(
+                      child: SmoothPageIndicator(
+                        controller: controller.pageController, // الربط المباشر
+                        count: totalImages, // سيتحدث تلقائياً بفضل Obx
+                        effect: ScrollingDotsEffect(
+                          activeDotColor: Colors.white,
+                          dotColor: Colors.grey.shade500,
+                          dotHeight: 11,
+                          dotWidth: 5,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+            ),
+            height: 80,
+            child: Obx(
+              () => ListView.builder(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: controller.image.length + 1,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () => controller.selectImage(index),
+                    child: Obx(
+                      () => Container(
+                        margin: const EdgeInsets.only(right: 8),
+                        width: 80, // تحديد عرض للصور المصغرة
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: controller.currentImageIndex.value == index
+                                ? Colors.grey.shade600
+                                : Colors.grey.shade300,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(6),
+                          child: CachedNetworkImage(
+                            imageUrl: index == 0
                                 ? (AppLink.productsimages + pro.image)
                                 : (AppLink.productsimages +
-                                      controller
-                                          .image[controller
-                                                  .currentImageIndex
-                                                  .value -
-                                              1]
-                                          .image),
+                                      controller.image[index - 1].image),
                             fit: BoxFit.cover,
-                            placeholder: (context, url) =>
-                                Center(child: CircularProgressIndicator()),
-                            errorWidget: (context, url, error) =>
-                                Icon(Icons.broken_image),
-                          )),
-                        );
-                      },
-                    ),
-
-                    Positioned(
-                      bottom: 16,
-                      left: 0,
-                      right: 0,
-                      child: Obx(
-                        () => Center(
-                          child: SmoothPageIndicator(
-                            controller: PageController(
-                              initialPage: controller.currentImageIndex.value,
-                            ),
-                            count: controller.image.length + 1,
-                            effect: ScrollingDotsEffect(
-                              activeDotColor: Colors.white,
-                              dotColor: Colors.grey.shade400,
-                              dotHeight: 8,
-                              dotWidth: 8,
-                            ),
-                            onDotClicked: (index) =>
-                                controller.selectImage(index),
                           ),
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  );
+                },
               ),
-              SizedBox(height: 12),
-              SizedBox(
-                height: 80,
-                child: Obx(
-                  () => ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: controller.image.length + 1,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () => controller.selectImage(index),
-                        child: Obx(
-                          () => Container(
-                            margin: EdgeInsets.only(right: 8),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color:
-                                    controller.currentImageIndex.value == index
-                                    ? Colors.red
-                                    : Colors.grey.shade300,
-                                width: 2,
-                              ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(6),
-                              child: CachedNetworkImage(
-                                imageUrl: index == 0
-                                    ? AppLink.productsimages + pro.image
-                                    : AppLink.productsimages +
-                                          controller.image[index - 1].image,
-                                fit: BoxFit.cover,
-                                width: 70,
-
-                                placeholder: (context, url) =>
-                                    Center(child: CircularProgressIndicator()),
-                                errorWidget: (context, url, error) =>
-                                    Icon(Icons.broken_image),
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
-              SizedBox(height: 12),
-            ],
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    });
   }
 
   Widget _buildPriceSection(Product pro) {
@@ -244,54 +218,87 @@ class ProductDetailView extends GetView<ProductController> {
         ? ((oldPrice - currentPrice) / oldPrice) * 100
         : 0;
 
-    return Row(
-      children: [
-        Text(
-          "$currentPrice شيكل",
-          style: const TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.deepOrange,
-          ),
-        ),
-        const SizedBox(width: 12),
-        if (discount > 0) ...[
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 3),
+      padding: const EdgeInsets.all(3),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade50,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // السعر الحالي بخط عريض وواضح
           Text(
-            "$oldPrice د.أ",
+            "$currentPrice شيكل",
             style: const TextStyle(
-              fontSize: 16,
-              color: Colors.grey,
-              decoration: TextDecoration.lineThrough,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.redAccent,
             ),
           ),
-          const SizedBox(width: 10),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: Colors.red.shade50,
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Text(
-              "${discount.toInt()}% خصم",
-              style: const TextStyle(
-                color: Colors.red,
-                fontWeight: FontWeight.bold,
+          const SizedBox(width: 12),
+          // عرض السعر القديم والخصم إذا وجد
+          if (discount > 0) ...[
+            Text(
+              "$oldPrice",
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey.shade500,
+                decoration: TextDecoration.lineThrough,
               ),
             ),
+            const SizedBox(width: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: Colors.green.shade100,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                "-${discount.toStringAsFixed(0)}%",
+                style: const TextStyle(
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              ),
+            ),
+          ],
+          const Spacer(),
+          // حالة المخزون (Inventory Status) لزيادة الثقة
+          const Text(
+            "متوفر",
+            style: TextStyle(color: Colors.green, fontSize: 13),
           ),
         ],
-      ],
+      ),
     );
   }
 
   Widget _buildRatingSection() {
     return Row(
       children: [
-        const Icon(Icons.star, color: Colors.amber, size: 20),
-        const SizedBox(width: 4),
-        const Text("4.8", style: TextStyle(fontWeight: FontWeight.bold)),
+        // النجوم (يمكن استبدالها بـ RatingBar إذا كنت تستخدم مكتبة خارجية)
+        Row(
+          children: List.generate(5, (index) {
+            return Icon(
+              index < 4 ? Icons.star : Icons.star_half, // مثال لتقييم 4.5
+              color: Colors.amber,
+              size: 20,
+            );
+          }),
+        ),
         const SizedBox(width: 8),
-        Text("(120 مراجعة)", style: TextStyle(color: Colors.grey[600])),
+        const Text(
+          "4.5",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+        const SizedBox(width: 4),
+        Text(
+          "(120 مراجعة)",
+          style: TextStyle(color: Colors.grey.shade600, fontSize: 14),
+        ),
       ],
     );
   }
@@ -460,38 +467,6 @@ class ProductDetailView extends GetView<ProductController> {
   Widget _buildActionButtons(Product pro) {
     return Column(
       children: [
-        // اختيار الكمية
-
-        // زر الإضافة للسلة
-        SizedBox(
-          width: double.infinity,
-          height: 50,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.black,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            onPressed: () {
-              controller.addToCart(
-                id: pro.id,
-                img: pro.image,
-                title: pro.title,
-                price: pro.price,
-              );
-            },
-            child: const Text(
-              "إضافة إلى السلة",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 24),
         Row(
           children: [
             const Text(
@@ -500,28 +475,34 @@ class ProductDetailView extends GetView<ProductController> {
             ),
             const Spacer(),
             Container(
+              height: 35,
+              margin: EdgeInsets.all(5),
               decoration: BoxDecoration(
                 color: Colors.grey.shade100,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(3),
               ),
               child: Row(
                 children: [
                   IconButton(
                     onPressed: () => controller.decreaseQuantity(),
-                    icon: const Icon(Icons.remove),
+                    icon: const Icon(
+                      Icons.remove,
+                      color: Color(0xFFC2C2C2),
+                      size: 20,
+                    ),
                   ),
                   Obx(
                     () => Text(
                       "${controller.quantity.value}",
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                   IconButton(
                     onPressed: () => controller.increaseQuantity(),
-                    icon: const Icon(Icons.add),
+                    icon: const Icon(Icons.add, size: 20),
                   ),
                 ],
               ),
@@ -568,6 +549,57 @@ class ProductDetailView extends GetView<ProductController> {
           style: TextStyle(color: Colors.grey.shade700, height: 1.6),
         ),
       ],
+    );
+  }
+
+  Widget? _buildBottomAction(BuildContext context, Product pro) {
+    return Container(
+      color: Theme.of(context).colorScheme.surface,
+      padding: EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+      width: double.infinity,
+      height: 55,
+      child: Row(
+        children: [
+          Expanded(
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(3),
+                ),
+              ),
+              onPressed: () {
+                controller.addToCart(
+                  id: pro.id,
+                  img: pro.image,
+                  title: pro.title,
+                  price: pro.price,
+                );
+              },
+              child: const Text(
+                "إضافة إلى السلة",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(width: 5),
+          Obx(
+            () => IconButton(
+              icon: Icon(
+                controller.isFavorite.value
+                    ? Icons.favorite
+                    : Icons.favorite_border,
+                size: 30,
+              ),
+              onPressed: () => controller.toggleFavorite(),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -67,6 +67,8 @@ class HomeScreen extends GetView<HomeScreenController> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: null, // تعطيل الأنميشن التلقائي لحل المشكلة
+
         onPressed: () {
           controller.show.value = !controller.show.value;
         },

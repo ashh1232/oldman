@@ -25,12 +25,19 @@ class ProductController extends GetxController {
 
   final Rx<Product?> product = Rx<Product?>(null);
   final RxList<Images> image = <Images>[].obs;
+  late final PageController pageController;
 
   @override
   void onInit() {
     super.onInit();
-    resetState(); // التأكد من تصفير الحالة عند البدء
-    checkInitialData();
+    pageController = PageController();
+
+    // الحصول على البيانات فوراً من الـ arguments
+    if (Get.arguments is Product) {
+      product.value = Get.arguments;
+      getImages(product.value!.id); // جلب الصور الإضافية فوراً
+      print(product.value);
+    }
   }
 
   // دالة لتصفير الحالة (تُستخدم في البداية والنهاية)
@@ -40,13 +47,15 @@ class ProductController extends GetxController {
     isLoading.value = true;
   }
 
-  checkInitialData() async {
-    final arg = await Get.arguments;
-    if (arg != null && arg is Product) {
-      return product.value = arg;
-    }
-    if (product.value != null) {
-      await getImages(product.value!.id);
+  void selectImage(int index) {
+    currentImageIndex.value = index;
+    // أضف هذا السطر لتحريك الـ Slider عند الضغط على الصورة المصغرة
+    if (pageController.hasClients) {
+      pageController.animateToPage(
+        index,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
     }
   }
 
@@ -61,8 +70,7 @@ class ProductController extends GetxController {
   }
 
   Future<void> getImages(String id) async {
-    print('id');
-    print(id);
+    if (id.isEmpty) return;
     if (isImageLoading.value) return;
     try {
       isImageLoading.value = true;
@@ -108,9 +116,9 @@ class ProductController extends GetxController {
     }
   }
 
-  void selectImage(int index) {
-    currentImageIndex.value = index;
-  }
+  // void selectImage(int index) {
+  //   currentImageIndex.value = index;
+  // }
 
   void changeSize(String size) {
     selectedSize.value = size;
@@ -197,10 +205,16 @@ class ProductController extends GetxController {
     }
   }
 
+  // @override
+  // void onClose() {
+  //   resetState(); // تنظيف البيانات عند إغلاق الصفحة
+  //   product.value = null; // إفراغ الكائن من الذاكرة
+  //   super.onClose();
+  // }
   @override
   void onClose() {
-    resetState(); // تنظيف البيانات عند إغلاق الصفحة
-    product.value = null; // إفراغ الكائن من الذاكرة
+    pageController.dispose(); // إغلاق المتحكم أهم خطوة هنا
+    product.value = null;
     super.onClose();
   }
 }

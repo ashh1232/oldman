@@ -6,15 +6,19 @@ class ThemeService {
   final _box = GetStorage();
   final _key = 'isDarkMode';
 
-  // Read saved theme or default to system preference
-  ThemeMode get theme => _loadThemeFromBox() ? ThemeMode.dark : ThemeMode.light;
+  // التحقق مما إذا كان الوضع الداكن مفعلاً في الإعدادات
+  bool isDark() => _box.read(_key) ?? false;
 
-  bool _loadThemeFromBox() => _box.read(_key) ?? false;
-
-  Future<void> _saveThemeToBox(bool isDarkMode) => _box.write(_key, isDarkMode);
+  // الحصول على الثيم المناسب عند تشغيل التطبيق
+  ThemeMode get theme => isDark() ? ThemeMode.dark : ThemeMode.light;
 
   void switchTheme() {
-    Get.changeThemeMode(_loadThemeFromBox() ? ThemeMode.light : ThemeMode.dark);
-    _saveThemeToBox(!_loadThemeFromBox());
+    // 1. تغيير الثيم في الواجهة فوراً
+    Get.changeThemeMode(isDark() ? ThemeMode.light : ThemeMode.dark);
+
+    // 2. حفظ الحالة الجديدة في الذاكرة المستديمة
+    _saveThemeToBox(!isDark());
   }
+
+  void _saveThemeToBox(bool isDarkMode) => _box.write(_key, isDarkMode);
 }
