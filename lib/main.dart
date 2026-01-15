@@ -31,20 +31,11 @@ class MyApp extends StatelessWidget {
       getPages: AppRoutes.routes,
 
       // Localization
-      locale: const Locale('ar', 'AE'),
+      locale: const Locale('ar', 'SA'),
       fallbackLocale: const Locale('en', 'US'),
 
       debugShowCheckedModeBanner: false,
 
-      builder: (context, child) {
-        return Directionality(
-          textDirection: TextDirection.rtl, // Ensuring RTL for Arabic
-          child: child!,
-        );
-        // return Overlay(
-        //   initialEntries: [OverlayEntry(builder: (context) => child!)],
-        // );
-      },
       // home: const ProductListScreen(),
     );
   }

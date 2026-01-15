@@ -11,6 +11,10 @@ class MapTal extends StatelessWidget {
     final TalMapController mapController = Get.find<TalMapController>();
 
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        heroTag: "map_fab_unique_tag", // أي نص فريد
+        onPressed: () {},
+      ),
       // appBar: AppBar(title: const Text('الخريطة')),
       body: Stack(
         children: [
@@ -67,6 +71,8 @@ class MapTal extends StatelessWidget {
             right: 20,
             bottom: 160, // فوق زر الموقع الحالي
             child: FloatingActionButton(
+              heroTag: null, // تعطيل الأنميشن التلقائي لحل المشكلة
+
               mini: true,
               backgroundColor: Colors.white,
               onPressed: () {

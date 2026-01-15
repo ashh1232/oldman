@@ -2,23 +2,64 @@ import 'package:flutter/material.dart';
 
 class MyThemes {
   static final light = ThemeData(
-    useMaterial3: true, // Material 3 is the 2025 standard
+    useMaterial3: true,
     brightness: Brightness.light,
-    colorSchemeSeed: Colors.white, // Dynamically generates harmonious colors
-    scaffoldBackgroundColor: Colors.white,
-    appBarTheme: const AppBarTheme(backgroundColor: Colors.white, elevation: 0),
-    cardTheme: CardThemeData(color: Colors.white, elevation: 0),
+    // في 2026، استخدام ColorScheme.fromSeed هو الأفضل لتوليد ألوان متناسقة
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: Colors.black, // اللون الأساسي للتطبيق
+      brightness: Brightness.light,
+      // surface: Colors.white, // لون الأسطح (الكروت، القوائم)
+      surface: Colors.white,
+    ),
+    // تغيير الخلفية لرمادي فاتح جداً لإبراز الكروت البيضاء
+    scaffoldBackgroundColor: const Color(0xFFF0F0F0),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
+      elevation: 0,
+      centerTitle: true,
+      iconTheme: IconThemeData(color: Colors.black),
+      titleTextStyle: TextStyle(
+        color: Colors.black,
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+
+    cardTheme: CardThemeData(
+      color: Colors.white,
+      elevation: 0.0,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+    ),
+    // تحسين شكل الأزرار لعام 2026
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+    ),
   );
 
   static final dark = ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
-    colorSchemeSeed: Colors.white,
-    scaffoldBackgroundColor: const Color.fromARGB(255, 43, 43, 43),
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Color.fromARGB(255, 20, 20, 20),
-      elevation: 0,
+    colorScheme: ColorScheme.fromSeed(
+      seedColor: Colors.white,
+      brightness: Brightness.dark,
+      surface: const Color(0xFF1E1E1E), // لون سطح داكن مريح للعين
     ),
-    cardTheme: CardThemeData(color: Colors.white12, elevation: 0),
+    scaffoldBackgroundColor: const Color(0xFF121212), // خلفية داكنة OLED
+
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Color(0xFF121212),
+      elevation: 0,
+      centerTitle: true,
+    ),
+
+    cardTheme: CardThemeData(
+      color: Colors.white12,
+      elevation: 0.5,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+    ),
   );
 }

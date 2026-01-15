@@ -186,21 +186,25 @@ class TalabatController extends GetxController
   }
 
   void _startBannerAutoPlay() {
-    _bannerTimer?.cancel(); // إلغاء أي تايمر قديم لتجنب التكرار
-    if (banners.length <= 1) return; // لا حاجة للتمرير إذا كان هناك بنر واحد
+    _bannerTimer?.cancel();
+    if (banners.length <= 1) return;
 
-    _bannerTimer = Timer.periodic(const Duration(seconds: 4), (_) {
-      if (pageController.hasClients) {
-        final next = (currentBannerIndex.value + 1) % banners.length;
-        pageController
-            .animateToPage(
-              next,
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.easeInOut,
-            )
-            .then((_) {
-              currentBannerIndex.value = next;
-            });
+    _bannerTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      // التأكد أن الصفحة لا تزال معروضة والتحكم متاح
+      if (pageController.hasClients &&
+          !pageController.position.isScrollingNotifier.value) {
+        int nextPage = (currentBannerIndex.value + 1) % banners.length;
+
+        // تحديث المؤشر فوراً لجعل الأنميشن متزامن مع الـ Dots
+        currentBannerIndex.value = nextPage;
+
+        pageController.animateToPage(
+          nextPage,
+          duration: const Duration(
+            milliseconds: 800,
+          ), // أنميشن أطول قليلاً يعطي إحساساً بالفخامة
+          curve: Curves.fastOutSlowIn,
+        );
       }
     });
   }
