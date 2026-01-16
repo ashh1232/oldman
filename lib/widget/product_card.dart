@@ -28,6 +28,7 @@ class ProductCard extends StatelessWidget {
         ConstrainedBox(
           constraints: BoxConstraints(minHeight: 180, maxHeight: 250),
           child: ClipRRect(
+            borderRadius: BorderRadiusGeometry.all(Radius.circular(0)),
             child: CachedNetworkImage(
               key: ValueKey(img), // أضف هذا السطر
 

@@ -12,9 +12,10 @@ class MyThemes {
       surface: Colors.white,
     ),
     // تغيير الخلفية لرمادي فاتح جداً لإبراز الكروت البيضاء
-    scaffoldBackgroundColor: const Color(0xFFF0F0F0),
+    scaffoldBackgroundColor: const Color(0xFFF3F3F3),
     appBarTheme: const AppBarTheme(
       backgroundColor: Color.fromARGB(255, 255, 255, 255),
+      // foregroundColor: Color.fromARGB(255, 255, 255, 255),
       elevation: 0,
       centerTitle: true,
       iconTheme: IconThemeData(color: Colors.black),

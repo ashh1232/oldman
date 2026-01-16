@@ -43,7 +43,7 @@ class ProductDetailView extends GetView<ProductController> {
                 children: [
                   Container(
                     color: Theme.of(context).colorScheme.surface,
-                    padding: EdgeInsets.all(8),
+                    padding: EdgeInsets.all(7),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
 
@@ -54,7 +54,7 @@ class ProductDetailView extends GetView<ProductController> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 7),
                   Container(
                     color: Theme.of(context).colorScheme.surface,
                     padding: EdgeInsets.all(8),

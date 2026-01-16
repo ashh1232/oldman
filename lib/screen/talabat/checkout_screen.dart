@@ -3,7 +3,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:maneger/controller/talabat/checkout_controller.dart';
-import 'package:maneger/routes.dart';
 
 class CheckoutScreen extends StatelessWidget {
   const CheckoutScreen({super.key});
@@ -13,11 +12,11 @@ class CheckoutScreen extends StatelessWidget {
     final CheckoutController controller = Get.find<CheckoutController>();
 
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      // backgroundColor: Colors.grey[50],
       appBar: AppBar(
         title: const Text('الدفع'),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        foregroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0,
       ),
       body: Obx(() {
@@ -29,24 +28,24 @@ class CheckoutScreen extends StatelessWidget {
           child: Column(
             children: [
               // Order Summary Card
-              _buildOrderSummary(controller),
+              _buildOrderSummary(controller, context),
 
               const SizedBox(height: 16),
 
               // Delivery Information Form
-              _buildDeliveryForm(controller),
+              _buildDeliveryForm(controller, context),
 
               const SizedBox(height: 16),
-              _buildMap(controller),
+              _buildMap(controller, context),
               const SizedBox(height: 16),
 
               // Payment Method Selection
-              _buildPaymentMethod(controller),
+              _buildPaymentMethod(controller, context),
 
               const SizedBox(height: 16),
 
               // Order Notes
-              _buildOrderNotes(controller),
+              _buildOrderNotes(controller, context),
 
               const SizedBox(height: 24),
 
@@ -61,81 +60,12 @@ class CheckoutScreen extends StatelessWidget {
     );
   }
 
-  // Widget _buildMap(CheckoutController controller) {
-  //   return Container(
-  //     margin: const EdgeInsets.symmetric(horizontal: 16),
-  //     padding: const EdgeInsets.all(20),
-  //     decoration: BoxDecoration(
-  //       color: Colors.white,
-  //       borderRadius: BorderRadius.circular(12),
-  //       boxShadow: [
-  //         BoxShadow(
-  //           // ignore: deprecated_member_use
-  //           color: Colors.black.withOpacity(0.05),
-  //           blurRadius: 10,
-  //           offset: const Offset(0, 2),
-  //         ),
-  //       ],
-  //     ),
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         const Text(
-  //           'العنوان',
-  //           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-  //         ),
-  //         const SizedBox(height: 16),
-  //         Row(
-  //           children: [
-  //             Container(
-  //               margin: const EdgeInsets.symmetric(horizontal: 16),
-  //               child: InkWell(
-  //                 onTap: () {
-  //                   Get.toNamed(AppRoutes.mapScreen);
-  //                 },
-  //                 child: Row(
-  //                   children: [
-  //                     Icon(Icons.add_location),
-
-  //                     Text(
-  //                       'عنوان جديد',
-  //                       style: const TextStyle(
-  //                         fontSize: 16,
-  //                         fontWeight: FontWeight.bold,
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //             ),
-
-  //             const SizedBox(width: 12),
-  //             Container(
-  //               width: 100,
-  //               height: 100,
-  //               decoration: BoxDecoration(
-  //                 border: Border.all(color: Colors.grey[300]!, width: 1),
-  //               ),
-  //               child: CachedNetworkImage(
-  //                 imageUrl: 'https://tile.openstreetmap.org/1/1/1.png',
-  //                 fit: BoxFit.cover,
-  //                 height: 100,
-  //                 width: 100,
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  Widget _buildMap(CheckoutController controller) {
+  Widget _buildMap(CheckoutController controller, BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -234,12 +164,15 @@ class CheckoutScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildOrderSummary(CheckoutController controller) {
+  Widget _buildOrderSummary(
+    CheckoutController controller,
+    BuildContext context,
+  ) {
     return Container(
       margin: const EdgeInsets.all(16),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -263,10 +196,7 @@ class CheckoutScreen extends StatelessWidget {
             '\$${controller.subtotal.toStringAsFixed(2)}',
           ),
           const SizedBox(height: 8),
-          // _buildSummaryRow(
-          //   'Tax (8%)',
-          //   '\$${controller.tax.toStringAsFixed(2)}',
-          // ),
+
           const SizedBox(height: 8),
           _buildSummaryRow(
             'التوصيل',
@@ -307,12 +237,15 @@ class CheckoutScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDeliveryForm(CheckoutController controller) {
+  Widget _buildDeliveryForm(
+    CheckoutController controller,
+    BuildContext context,
+  ) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -336,40 +269,20 @@ class CheckoutScreen extends StatelessWidget {
             label: 'الاسم الكامل',
             icon: Icons.person_outline,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           _buildTextField(
             controller: controller.phoneController,
             label: 'رقم الهاتف',
             icon: Icons.phone_outlined,
             keyboardType: TextInputType.phone,
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           _buildTextField(
             controller: controller.addressController,
             label: 'العنوان',
             icon: Icons.location_on_outlined,
             maxLines: 2,
           ),
-          const SizedBox(height: 12),
-          // Row(
-          //   children: [
-          //     Expanded(
-          //       child: _buildTextField(
-          //         controller: controller.cityController,
-          //         label: 'City',
-          //         icon: Icons.location_city_outlined,
-          //       ),
-          //     ),
-          //     const SizedBox(width: 12),
-          //     Expanded(
-          //       child: _buildTextField(
-          //         controller: controller.countryController,
-          //         label: 'Country',
-          //         icon: Icons.flag_outlined,
-          //       ),
-          //     ),
-          //   ],
-          // ),
         ],
       ),
     );
@@ -407,12 +320,15 @@ class CheckoutScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPaymentMethod(CheckoutController controller) {
+  Widget _buildPaymentMethod(
+    CheckoutController controller,
+    BuildContext context,
+  ) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -491,12 +407,12 @@ class CheckoutScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildOrderNotes(CheckoutController controller) {
+  Widget _buildOrderNotes(CheckoutController controller, BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -543,17 +459,14 @@ class CheckoutScreen extends StatelessWidget {
 
   Widget _buildPlaceOrderButton(CheckoutController controller) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 3),
       width: double.infinity,
-      height: 56,
       child: ElevatedButton(
         onPressed: () => controller.placeOrder(),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.black,
           foregroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
           elevation: 2,
         ),
         child: const Text(
