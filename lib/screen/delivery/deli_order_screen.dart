@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/controller/delivery_controller/delivery_home_controller.dart';
+import 'package:maneger/model/order_model.dart';
 import 'package:maneger/routes.dart';
 
 class DeliOrder extends StatelessWidget {
@@ -13,12 +14,18 @@ class DeliOrder extends StatelessWidget {
     return Scaffold(
       body: Obx(() {
         // حالة القائمة الفارغة
+        if (controller.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
         if (controller.orders.isEmpty) {
-          return const Center(
-            child: Text(
-              "لا توجد منتجات حالياً",
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
+          print(controller.orders);
+          return Center(
+            child: Obx(() {
+              return Text(
+                "لا توجد منتجات حالياً ${controller.orders.length}",
+                style: TextStyle(fontSize: 16, color: Colors.grey),
+              );
+            }),
           );
         }
 
@@ -48,10 +55,10 @@ class DeliOrder extends StatelessWidget {
             SliverList.builder(
               itemCount: controller.orders.length,
               itemBuilder: (context, index) {
-                final item = controller.orders[index];
+                final Order item = controller.orders[index];
                 return InkWell(
                   onTap: () {
-                    Get.toNamed(AppRoutes.orderDetails);
+                    Get.toNamed(AppRoutes.adminOrderDetails, arguments: item);
                   },
                   child: Container(
                     margin: const EdgeInsets.symmetric(
@@ -81,7 +88,7 @@ class DeliOrder extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "الكمية: ${item.itemCount}",
+                                "الكمية: ${item.orderTotal}",
                                 style: const TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,

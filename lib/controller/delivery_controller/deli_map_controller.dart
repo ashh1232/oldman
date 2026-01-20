@@ -27,6 +27,8 @@ class DeliMapController extends GetxController {
   var mapStyle = 'streets'.obs; // streets, satellite, dark
   var showTraffic = false.obs;
 
+  final http.Client _httpClient = http.Client();
+
   @override
   void onInit() {
     super.onInit();
@@ -83,30 +85,31 @@ class DeliMapController extends GetxController {
       if (permission == LocationPermission.deniedForever) return;
     }
 
-    positionStream = Geolocator.getPositionStream(
-      locationSettings: const LocationSettings(
-        accuracy: LocationAccuracy.high,
-        distanceFilter: 10, // تحديث كل مترين لزيادة السلاسة
-      ),
-    ).listen((Position position) {
-      LatLng newPos = LatLng(position.latitude, position.longitude);
-      currentLatLng.value = newPos;
-      currentHeading.value = position.heading; // تحديث زاوية الدوران
-      // تحديث المسار
+    positionStream =
+        Geolocator.getPositionStream(
+          locationSettings: const LocationSettings(
+            accuracy: LocationAccuracy.high,
+            distanceFilter: 10, // تحديث كل مترين لزيادة السلاسة
+          ),
+        ).listen((Position position) {
+          LatLng newPos = LatLng(position.latitude, position.longitude);
+          currentLatLng.value = newPos;
+          currentHeading.value = position.heading; // تحديث زاوية الدوران
+          // تحديث المسار
 
-      // الحل هنا: اطلب المسار فقط إذا مر أكثر من 5 ثوانٍ على آخر طلب
-      if (_lastFetchTime == null ||
-          DateTime.now().difference(_lastFetchTime!).inSeconds > 5) {
-        _lastFetchTime = DateTime.now();
-        fetchRoute();
-      }
+          // الحل هنا: اطلب المسار فقط إذا مر أكثر من 5 ثوانٍ على آخر طلب
+          if (_lastFetchTime == null ||
+              DateTime.now().difference(_lastFetchTime!).inSeconds > 5) {
+            _lastFetchTime = DateTime.now();
+            fetchRoute();
+          }
 
-      if (isMapReady) {
-        try {
-          mapController.moveAndRotate(newPos, 17.5, position.heading);
-        } catch (e) {}
-      }
-    });
+          if (isMapReady) {
+            try {
+              mapController.moveAndRotate(newPos, 17.5, position.heading);
+            } catch (e) {}
+          }
+        });
   }
 
   Future<void> fetchRoute() async {
@@ -118,25 +121,22 @@ class DeliMapController extends GetxController {
         {'overview': 'full', 'geometries': 'geojson'},
       );
 
-      final response = await http.get(url);
+      final response = await _httpClient.get(url);
 
       if (response.statusCode == 200) {
         // السحر هنا: معالجة الـ JSON في Isolate منفصل لعدم تجميد الخريطة
-        final List<LatLng> points = await compute(
-          parseRoutePoints,
-          response.body,
-        );
+        final List<LatLng> points = parseRoutePoints(response.body);
 
         // التحديث في الخيط الرئيسي
         routePoints.assignAll(points);
 
         // تحديث المسافة
         final data = jsonDecode(response.body);
-        distanceRemaining.value =
-            (data['routes'][0]['distance'] as num).toDouble();
-
+        distanceRemaining.value = (data['routes'][0]['distance'] as num)
+            .toDouble();
       }
     } catch (e) {
+      print("Fetch route cancelled or failed: $e");
     }
   }
 
@@ -153,6 +153,7 @@ class DeliMapController extends GetxController {
     // 1. إلغاء الاشتراك يمنع Geolocator من إرسال بيانات جديدة للمحرك
     positionStream?.cancel();
     positionStream = null;
+    _httpClient.close();
 
     // 2. التخلص من متحكم الخريطة
     mapController.dispose();

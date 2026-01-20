@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:manager/binding/home_binding.dart';
-import 'package:manager/service/my_theme.dart';
-import 'package:manager/service/theme_service.dart';
+import 'package:maneger/binding/home_binding.dart';
+import 'package:maneger/service/my_theme.dart';
+import 'package:maneger/service/theme_service.dart';
 import 'routes.dart';
 
 void main() async {

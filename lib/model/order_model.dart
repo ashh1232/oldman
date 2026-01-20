@@ -45,8 +45,10 @@ class Order {
       deliveryName: (json['delivery_name'] ?? "0").toString(),
       deliveryPhone: (json['delivery_phone'] ?? "0").toString(),
       deliveryAddress: (json['delivery_address'] ?? "0").toString(),
-      deliveryLat: (json['delivery_lat'] ?? "0").toString(),
-      deliveryLong: (json['delivery_long'] ?? "0").toString(),
+      deliveryLat: (json['delivery_lat'] ?? json['location_lat'] ?? "0")
+          .toString(),
+      deliveryLong: (json['delivery_long'] ?? json['location_long'] ?? "0")
+          .toString(),
       paymentStatus: (json['payment_status'] ?? "0").toString(),
       orderNotes: (json['order_notes'] ?? "0").toString(),
       createdAt: (json['created_at'] ?? "0").toString(),

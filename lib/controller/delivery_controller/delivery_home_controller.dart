@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/class/crud.dart';
-import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/linkapi.dart';
-import 'package:maneger/model/order_del_model.dart';
+import 'package:maneger/model/order_model.dart';
 
 class DeliveryHomeController extends GetxController {
-  Rx<StatusRequest> statusRequest = StatusRequest.offline.obs;
+  // Rx<StatusRequest> statusRequest = StatusRequest.offline.obs;
   final Crud _crud = Crud();
   var isLoading = false.obs;
-  final RxList<OrderModel> orders = <OrderModel>[].obs;
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  // }
+  final RxList<Order> orders = <Order>[].obs;
+  @override
+  void onInit() {
+    getOrders();
+    super.onInit();
+  }
 
   var currentIndex = 0.obs;
   @override
@@ -24,14 +24,16 @@ class DeliveryHomeController extends GetxController {
 
   Future<void> getOrders() async {
     if (isLoading.value) return;
-    statusRequest.value = StatusRequest.loading;
+    // statusRequest.value = StatusRequest.loading;
 
     try {
       isLoading.value = true;
-      var respo = await _crud.postData(AppLink.delivery, {
-        'action': 'get_orders',
-        'user_id': '2',
+      var respo = await _crud.postData(AppLink.adminOrder, {
+        // 'action': 'get_orders',
+        // 'user_id': '2',
       });
+      // print(respo);
+      print('respo');
       respo.fold(
         (status) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -45,21 +47,25 @@ class DeliveryHomeController extends GetxController {
         },
         (res) {
           if (res['status'] == 'success') {
-            statusRequest.value = StatusRequest.success;
-            final List<dynamic> decod = res['data'];
-            orders.value = decod
-                .map((ban) => OrderModel.fromJson(ban))
-                .toList();
+            // print(res['data']);
+            // statusRequest.value = StatusRequest.success;
+            final List decod = res['data'];
+            print(' decod $decod');
+
+            orders.value = decod.map((ban) => Order.fromJson(ban)).toList();
+            print('orders $orders');
+            print('respo');
           } else {
-            statusRequest.value = StatusRequest.failure;
+            // statusRequest.value = StatusRequest.failure;
           }
         },
       );
     } catch (e) {
       Get.snackbar(('error'), 'error $e');
-      statusRequest.value = StatusRequest.failure;
+      // fistatusRequest.value = StatusRequest.failure;
+    } finally {
+      isLoading.value = false;
     }
-    isLoading.value = false;
   }
 
   void updateQuantity(int index, int quantity) {

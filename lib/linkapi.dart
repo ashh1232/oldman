@@ -33,6 +33,8 @@ class AppLink {
   static const String uploadImage = '$server/admin/upload_image.php';
   static const String favorites = '$server/favorites.php';
   static const String adminOrder = '$server/order/admin_order.php';
+  static const String adminOrderProduct =
+      '$server/order/admin_order_product.php';
   ////editcat
   static const String addnewcat = '$server/editcat/add_cat.php';
 
