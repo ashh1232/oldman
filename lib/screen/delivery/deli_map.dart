@@ -116,6 +116,7 @@ class DeliMap extends StatelessWidget {
             right: 20,
             bottom: 160, // فوق زر الموقع الحالي
             child: FloatingActionButton(
+              heroTag: "map",
               mini: true,
               backgroundColor: Colors.white,
               onPressed: () {
@@ -179,36 +180,47 @@ class DeliMap extends StatelessWidget {
           // 3. أزرار التحكم الجانبية (يمين)
           Positioned(
             right: 20,
-            top: 150,
+            top: 100,
             child: Column(
               children: [
                 _buildSideButton(
-                  icon: Icons.satellite_alt,
-                  onTap: () => controller.changeMapStyle(
-                    controller.mapStyle.value == 'satellite'
-                        ? 'streets'
-                        : 'satellite',
-                  ),
-                  isActive: controller.mapStyle.value == 'satellite',
+                  tag: "back",
+                  icon: Icons.arrow_back_ios,
+                  onTap: () => Get.back(),
+                  isActive: false,
                 ),
-                const SizedBox(height: 10),
-                _buildSideButton(
-                  icon: Icons.dark_mode,
-                  onTap: () => controller.changeMapStyle(
-                    controller.mapStyle.value == 'dark' ? 'streets' : 'dark',
-                  ),
-                  isActive: controller.mapStyle.value == 'dark',
-                ),
-                const SizedBox(height: 10),
-                _buildSideButton(
-                  icon: Icons.gps_fixed,
-                  onTap: () => controller.changeMapStyle('google'),
-                  isActive: controller.mapStyle.value == 'google',
-                  activeColor: Colors.green,
-                ),
+                const SizedBox(height: 30),
+                // _buildSideButton(
+                //   tag: "satellite",
+                //   icon: Icons.satellite_alt,
+                //   onTap: () => controller.changeMapStyle(
+                //     controller.mapStyle.value == 'satellite'
+                //         ? 'streets'
+                //         : 'satellite',
+                //   ),
+                //   isActive: controller.mapStyle.value == 'satellite',
+                // ),
+                // const SizedBox(height: 10),
+                // _buildSideButton(
+                //   tag: "dark",
+                //   icon: Icons.dark_mode,
+                //   onTap: () => controller.changeMapStyle(
+                //     controller.mapStyle.value == 'dark' ? 'streets' : 'dark',
+                //   ),
+                //   isActive: controller.mapStyle.value == 'dark',
+                // ),
+                // const SizedBox(height: 10),
+                // _buildSideButton(
+                //   tag: "google",
+                //   icon: Icons.gps_fixed,
+                //   onTap: () => controller.changeMapStyle('google'),
+                //   isActive: controller.mapStyle.value == 'google',
+                //   activeColor: Colors.green,
+                // ),
                 const SizedBox(height: 10),
 
                 _buildSideButton(
+                  tag: "traffic",
                   icon: Icons.traffic,
                   onTap: () => controller.toggleTraffic(),
                   isActive: controller.showTraffic.value,
@@ -226,6 +238,7 @@ class DeliMap extends StatelessWidget {
             right: 20,
             bottom: 100,
             child: FloatingActionButton(
+              heroTag: "my_location",
               mini: true,
               backgroundColor: Colors.white,
               onPressed: () => controller.mapController.move(
@@ -242,14 +255,15 @@ class DeliMap extends StatelessWidget {
 
   // --- Helpers ---
   Widget _buildSideButton({
+    required String tag,
     required IconData icon,
     required VoidCallback onTap,
     required bool isActive,
     Color activeColor = Colors.blue,
   }) {
     return FloatingActionButton(
+      heroTag: tag,
       mini: true,
-      heroTag: null,
       backgroundColor: isActive ? activeColor : Colors.white,
       onPressed: onTap,
       child: Icon(icon, color: isActive ? Colors.white : Colors.grey),

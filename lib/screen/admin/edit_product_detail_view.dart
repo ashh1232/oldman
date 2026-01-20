@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/controller/admin/image_upload_controller.dart';
 import 'package:maneger/linkapi.dart';
+import 'package:maneger/widget/bot_nav_widget.dart';
 
 class EditProductDetailView extends GetView<ImageUploadController> {
   //  final ProductController controller = Get.put(ProductController());
@@ -33,120 +34,165 @@ class EditProductDetailView extends GetView<ImageUploadController> {
               expandedHeight: 50,
               backgroundColor: Colors.white,
               elevation: 0.5,
+              title: Text(controller.product.value?.title ?? ''),
+
               leading: IconButton(
                 icon: Icon(Icons.arrow_back, color: Colors.black),
                 onPressed: () => Get.back(),
               ),
             ),
             // Product Images Section
-            SliverToBoxAdapter(child: _buildImageSection()),
+            SliverToBoxAdapter(child: _buildImageSection(context)),
+            SliverToBoxAdapter(child: SizedBox(height: 8)),
+            SliverToBoxAdapter(child: _buildDeliveryForm(controller, context)),
+            SliverToBoxAdapter(child: SizedBox(height: 8)),
+
             // Product Details Section
             SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Obx(() {
-                      return Row(
+              child: Container(
+                color: Theme.of(context).colorScheme.surface,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'تعديل الصورة :',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(
-                            child: SizedBox(
-                              // width: 200,
-                              child: _buildDeliveryForm(controller),
-                            ),
-                          ),
-
-                          Column(
-                            children: [
-                              _buildTitleSection(),
-
-                              controller.selectedImage.value != null
-                                  ? Image.file(
-                                      controller.selectedImage.value!,
-                                      height: 100,
-                                      width: 100,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : const Icon(
-                                      Icons.image,
-                                      size: 100,
-                                    ), // Placeholder
-
-                              ElevatedButton(
-                                onPressed: () => controller.pickNewImage(),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.red,
-                                  foregroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(7),
-                                  ),
-                                ),
-                                child: const Text("اختر الصورة"),
+                          ElevatedButton(
+                            onPressed: () => controller.pickNewImage(),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(7),
                               ),
-                            ],
+                            ),
+                            child: const Text("اختر الصورة"),
                           ),
+                          SizedBox(width: 8),
+                          controller.selectedImage.value != null
+                              ? Image.file(
+                                  controller.selectedImage.value!,
+                                  height: 100,
+                                  width: 100,
+                                  fit: BoxFit.cover,
+                                )
+                              : const Icon(
+                                  Icons.image,
+                                  size: 100,
+                                ), // Placeholder
                         ],
-                      );
-                    }),
-                    _buildPriceSection(),
-                    SizedBox(height: 16),
-                    // _buildTitleSection(),
-                    // SizedBox(height: 16),
-                    _buildActionButtons(controller),
-                    SizedBox(height: 24),
-                    _buildDescriptionSection(controller),
-                    // SizedBox(height: 16),
-                    // _buildQuantitySection(),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
+              ),
+            ),
+            SliverToBoxAdapter(child: SizedBox(height: 8)),
+
+            SliverToBoxAdapter(
+              child: Container(
+                color: Theme.of(context).colorScheme.surface,
+                child: Column(children: [_buildOrderNotes(controller)]),
               ),
             ),
           ],
         );
       }),
+      bottomNavigationBar: BotNavWidget(
+        pro: controller.product.value!,
+        controller: controller,
+        isIcon: false,
+        onPressed: () =>
+            controller.updateProductImage(controller.product.value!.id),
+        updateProductImage: "تحديث المنتج",
+      ),
     );
   }
 
-  Widget _buildImageSection() {
-    return Column(
-      children: [
-        Container(
-          color: Color(0xFFF5F5F5),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 200,
-                child: Stack(
-                  children: [
-                    PageView.builder(
-                      onPageChanged: (index) => controller.selectImage(index),
-                      itemCount: 1,
-                      itemBuilder: (context, index) {
-                        return CachedNetworkImage(
-                          key: ValueKey(
-                            '${controller.product.value?.image}_${DateTime.now().millisecondsSinceEpoch}',
-                          ),
+  Widget _buildImageSection(BuildContext context) {
+    return Container(
+      color: Theme.of(context).colorScheme.surface,
+      child: Column(
+        children: [
+          SizedBox(
+            height: 200,
+            child: Stack(
+              children: [
+                PageView.builder(
+                  onPageChanged: (index) => controller.selectImage(index),
+                  itemCount: 1,
+                  itemBuilder: (context, index) {
+                    return CachedNetworkImage(
+                      key: ValueKey(
+                        '${controller.product.value?.image}_${DateTime.now().millisecondsSinceEpoch}',
+                      ),
 
-                          imageUrl:
-                              '${AppLink.productsimages}${controller.product.value?.image}',
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) =>
-                              Center(child: CircularProgressIndicator()),
-                          errorWidget: (context, url, error) =>
-                              Icon(Icons.broken_image),
-                        );
-                      },
-                    ),
-                  ],
+                      imageUrl:
+                          '${AppLink.productsimages}${controller.product.value?.image}',
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) =>
+                          Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) =>
+                          Icon(Icons.broken_image),
+                    );
+                  },
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
+
+  // Widget _buildImageSection() {
+  //   return Column(
+  //     children: [
+  //       Container(
+  //         color: Color(0xFFF5F5F5),
+  //         child: Column(
+  //           children: [
+  //             SizedBox(
+  //               height: 200,
+  //               child: Stack(
+  //                 children: [
+  //                   PageView.builder(
+  //                     onPageChanged: (index) => controller.selectImage(index),
+  //                     itemCount: 1,
+  //                     itemBuilder: (context, index) {
+  //                       return CachedNetworkImage(
+  //                         key: ValueKey(
+  //                           '${controller.product.value?.image}_${DateTime.now().millisecondsSinceEpoch}',
+  //                         ),
+
+  //                         imageUrl:
+  //                             '${AppLink.productsimages}${controller.product.value?.image}',
+  //                         fit: BoxFit.cover,
+  //                         placeholder: (context, url) =>
+  //                             Center(child: CircularProgressIndicator()),
+  //                         errorWidget: (context, url, error) =>
+  //                             Icon(Icons.broken_image),
+  //                       );
+  //                     },
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Widget _buildPriceSection() {
     return Row(
@@ -186,46 +232,113 @@ class EditProductDetailView extends GetView<ImageUploadController> {
     );
   }
 
-  Widget _buildDeliveryForm(ImageUploadController controller) {
+  Widget _buildDeliveryForm(
+    ImageUploadController controller,
+    BuildContext context,
+  ) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 9),
-      padding: const EdgeInsets.all(5),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            // ignore: deprecated_member_use
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+      // margin: const EdgeInsets.symmetric(horizontal: 9),
+      // padding: const EdgeInsets.all(5),
+      // decoration: BoxDecoration(
+      //   color: Colors.white,
+      //   borderRadius: BorderRadius.circular(12),
+      //   boxShadow: [
+      //     BoxShadow(
+      //       // ignore: deprecated_member_use
+      //       color: Colors.black.withOpacity(0.05),
+      //       blurRadius: 10,
+      //       offset: const Offset(0, 2),
+      //     ),
+      //   ],
+      // ),
+      // margin: const EdgeInsets.symmetric(horizontal: 9),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      decoration: BoxDecoration(color: Theme.of(context).colorScheme.surface),
+
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const Text(
+            'تعديل الاسم و السعر :',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 16),
-          _buildTextField(
-            controller: controller.titleController,
-            label: 'اسم المنتج الجديد',
-            icon: Icons.person_outline,
+          // _buildTextField(
+          //   controller: controller.titleController,
+          //   label: 'اسم المنتج الجديد',
+          //   icon: Icons.person_outline,
+          // ),
+          // const SizedBox(height: 12),
+          // _buildTextField(
+          //   controller: controller.priceController,
+          //   label: 'السعر',
+          //   icon: Icons.phone_outlined,
+          //   keyboardType: TextInputType.phone,
+          // ),
+          // const SizedBox(height: 12),
+          // _buildTextField(
+          //   controller: controller.descController,
+          //   label: 'السعر القديم',
+          //   icon: Icons.location_on_outlined,
+          //   maxLines: 2,
+          Row(
+            children: [
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 120,
+                        child: Text(
+                          controller.product.value?.title ?? '',
+                          style: TextStyle(fontSize: 18),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 200,
+                        child: _buildTextField(
+                          controller: controller.titleController,
+                          label: 'اسم المنتج الجديد',
+                          icon: Icons.production_quantity_limits,
+                          maxLines: 1,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 120,
+                        child: Text(
+                          controller.product.value?.price ?? '',
+                          style: TextStyle(fontSize: 18),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 200,
+                        child: _buildTextField(
+                          controller: controller.priceController,
+                          label: 'السعر الجديد',
+                          icon: Icons.price_check_sharp,
+                          keyboardType: TextInputType.phone,
+                          maxLines: 1,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                ],
+              ),
+            ],
           ),
-          const SizedBox(height: 12),
-          _buildTextField(
-            controller: controller.priceController,
-            label: 'السعر',
-            icon: Icons.phone_outlined,
-            keyboardType: TextInputType.phone,
-          ),
-          const SizedBox(height: 12),
-          _buildTextField(
-            controller: controller.descController,
-            label: 'السعر القديم',
-            icon: Icons.location_on_outlined,
-            maxLines: 2,
-          ),
-          const SizedBox(height: 12),
+          // const SizedBox(height: 12),
         ],
       ),
     );

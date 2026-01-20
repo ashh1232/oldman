@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/controller/delivery_controller/delivery_home_controller.dart';
 import 'package:maneger/screen/admin/edit_home_screen.dart';
-import 'package:maneger/screen/admin/admin_order.dart';
-import 'package:maneger/test/dahria_map.dart';
+import 'package:maneger/screen/admin/admin_order_screen.dart';
 import 'package:maneger/screen/admin/admin_delivery.dart';
 
 class AdminHome extends StatelessWidget {
@@ -18,7 +17,7 @@ class AdminHome extends StatelessWidget {
         () => IndexedStack(
           index: controller.currentIndex.value,
           children: [
-            AdminOrder(), // التبويب الرئيسي
+            AdminOrderScreen(), // التبويب الرئيسي
             AdminDelivery(),
             AdminProductScreen(),
           ],

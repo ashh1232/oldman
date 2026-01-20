@@ -340,10 +340,10 @@ class ProfileScreen extends StatelessWidget {
   }
 
   Widget _buildOrderCard(Order order) {
-    final date = DateTime.tryParse(order.createdAt);
+    final date = DateTime.tryParse(order.createdAt.toString());
     final formattedDate = date != null
         ? DateFormat('MMM dd, yyyy').format(date)
-        : order.createdAt;
+        : order.createdAt.toString();
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -383,7 +383,7 @@ class ProfileScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                '\$${order.total.toStringAsFixed(2)}',
+                '\$${order.orderTotal}',
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
@@ -393,11 +393,11 @@ class ProfileScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: _getStatusColor(order.status),
+                  color: _getStatusColor(order.orderStatus!),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(
-                  order.status.toUpperCase(),
+                  order.orderStatus!.toUpperCase(),
                   style: const TextStyle(
                     fontSize: 10,
                     color: Colors.white,

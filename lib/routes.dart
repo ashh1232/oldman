@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:maneger/binding/home_binding.dart';
 import 'package:maneger/screen/admin/addproduct_screen.dart';
+import 'package:maneger/screen/admin/admin_order_details.dart';
 import 'package:maneger/screen/admin/edit_home_screen.dart';
 import 'package:maneger/screen/admin/edit_product_detail_view.dart';
 import 'package:maneger/screen/delivery/deli_map.dart';
@@ -71,6 +72,7 @@ class AppRoutes {
   static const deliHome = '/delihome';
   static const orderConfirmation = '/order-confirmation';
   static const orderDetails = '/orderDetails';
+  static const adminOrderDetails = '/adminOrderDetails';
   static const flutMap = '/flutMap';
   static const deliMap = '/deliMap';
 
@@ -97,6 +99,7 @@ class AppRoutes {
     GetPage(name: addscreen, page: () => AdminProductScreen()),
     GetPage(name: editProductScreen, page: () => EditProductDetailView()),
     GetPage(name: imageUploadScreen, page: () => ImageUploadScreen()),
+    GetPage(name: adminOrderDetails, page: () => AdminOrderDetails()),
     ////////////////// editcat
     GetPage(name: editCatDetailScreen, page: () => EditCatDetailView()),
     GetPage(name: editCatScreen, page: () => EditCategoryScreen()),
