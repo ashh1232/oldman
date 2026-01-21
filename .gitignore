@@ -58,3 +58,5 @@ maneger.iml
 analysis_options.yaml
 .metadata
 .flutter-plugins-dependencies
+pubspec.yaml
+pubspec.lock
