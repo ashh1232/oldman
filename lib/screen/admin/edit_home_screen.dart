@@ -90,8 +90,7 @@ class AdminProductScreen extends StatelessWidget {
                                   Expanded(
                                     child: Row(
                                       children: [
-                                        Text('متوفر'),
-                                        Text('غير متوفر'),
+                                        // Text(product.isAvailable ? 'متوفر' : 'غير متوفر'),
                                       ],
                                     ),
                                   ),
