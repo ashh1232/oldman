@@ -34,7 +34,6 @@ class AdminOrderController extends GetxController {
         // 'user_id': '2',
       });
       // print(respo);
-      print('respo');
       respo.fold(
         (status) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -51,10 +50,10 @@ class AdminOrderController extends GetxController {
             // print(res['data']);
             // statusRequest.value = StatusRequest.success;
             final List decod = res['data'];
-            print(' decod $decod');
+            // print(' decod $decod');
 
             orders.value = decod.map((ban) => Order.fromJson(ban)).toList();
-            print('orders $orders');
+            // print('orders $orders');
             print('respo');
           } else {
             // statusRequest.value = StatusRequest.failure;

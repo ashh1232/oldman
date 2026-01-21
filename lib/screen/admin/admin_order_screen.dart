@@ -19,12 +19,23 @@ class AdminOrderScreen extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
         if (controller.orders.isEmpty) {
-          print(controller.orders);
           return Center(
             child: Obx(() {
-              return Text(
-                "لا توجد منتجات حالياً ${controller.orders.length}",
-                style: TextStyle(fontSize: 16, color: Colors.grey),
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "لا توجد منتجات حالياً ${controller.orders.length}",
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      controller.orders.clear();
+                      await controller.getOrders();
+                    },
+                    child: Text("تحديث"),
+                  ),
+                ],
               );
             }),
           );

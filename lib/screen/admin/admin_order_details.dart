@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/controller/admin/admin_pro_order_controller.dart';
 import 'package:maneger/linkapi.dart';
-import 'package:maneger/model/order_model.dart';
-import 'package:maneger/routes.dart';
 
 class AdminOrderDetails extends StatelessWidget {
   const AdminOrderDetails({super.key});
@@ -23,88 +21,92 @@ class AdminOrderDetails extends StatelessWidget {
       appBar: AppBar(title: const Text("تفاصيل الطلب")),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Container(
-          child: Obx(() {
-            if (controller.isLoading.value) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            return GridView.builder(
-              itemCount: controller.ordersProduct.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisExtent: 250,
-                childAspectRatio: 0.8,
-              ),
-              itemBuilder: (context, index) => Card(
-                elevation: 4,
-                child: Column(
-                  children: [
-                    ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minHeight: 100,
-                        maxHeight: 150,
-                      ),
-                      child: ClipRRect(
-                        child: CachedNetworkImage(
-                          key: ValueKey(
-                            controller.ordersProduct[index].productImage!,
-                          ), // أضف هذا السطر
+        child: Obx(() {
+          if (controller.isLoading.value) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          return GridView.builder(
+            itemCount: controller.ordersProduct.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisExtent: 250,
+              childAspectRatio: 0.8,
+            ),
+            itemBuilder: (context, index) => Card(
+              elevation: 4,
+              child: Column(
+                children: [
+                  ConstrainedBox(
+                    constraints: BoxConstraints(minHeight: 100, maxHeight: 150),
+                    child: ClipRRect(
+                      child: CachedNetworkImage(
+                        key: ValueKey(
+                          controller.ordersProduct[index].productImage!,
+                        ), // أضف هذا السطر
 
-                          imageUrl:
-                              AppLink.productsimages +
-                              controller.ordersProduct[index].productImage!,
-                          width: double.infinity,
-                          height: 130,
-                          fit: BoxFit.cover,
+                        imageUrl:
+                            AppLink.productsimages +
+                            controller.ordersProduct[index].productImage!,
+                        width: double.infinity,
+                        height: 130,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    color: Theme.of(context).colorScheme.surface,
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(7),
+                    child: Column(
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text('اسم المنتج:'),
+                            Text(controller.ordersProduct[index].productName!),
+                          ],
                         ),
-                      ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text('الكمية:'),
+                            Text(
+                              '${controller.ordersProduct[index].itemQuantity!.toString()}x',
+                            ),
+                          ],
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text('السعر: '),
+                            Text(
+                              '${controller.ordersProduct[index].itemTotal!.toString()} ₪',
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                    Container(
-                      color: Theme.of(context).colorScheme.surface,
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(7),
-                      child: Column(
-                        children: [
-                          Text(
-                            controller.ordersProduct[index].productPrice!
-                                .toString(),
-                          ),
-                          Text(
-                            controller.ordersProduct[index].itemQuantity!
-                                .toString(),
-                          ),
-                          Text(
-                            controller.ordersProduct[index].itemTotal!
-                                .toString(),
-                          ),
-                          Text(controller.ordersProduct[index].productName!),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            );
-          }),
-        ),
+            ),
+          );
+        }),
       ),
-      bottomNavigationBar: _buildPriceSummary(
-        context,
-        controller.item.orderSubtotal.toString(),
-        controller.item.createdAt.toString(),
-        controller.item.orderTotal.toString(),
-      ),
+      bottomNavigationBar: Obx(() => _buildPriceSummary(context, controller)),
     );
   }
 }
 
 Widget _buildPriceSummary(
   BuildContext context,
-  String subtotal,
-  String delivery,
-  String total,
+  AdminProOrderController controller,
 ) {
-  void sendOrder() {}
   return Container(
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
@@ -128,14 +130,14 @@ Widget _buildPriceSummary(
                 'المجموع الفرعي:',
                 style: TextStyle(color: Colors.grey),
               ),
-              Text('$subtotal ₪'),
+              Text('${controller.item.orderSubtotal} ₪'),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text('التوصيل:', style: TextStyle(color: Colors.grey)),
-              Text('$delivery ₪'),
+              Text('${controller.item.createdAt} ₪'),
             ],
           ),
           const SizedBox(height: 8),
@@ -148,7 +150,7 @@ Widget _buildPriceSummary(
               ),
 
               Text(
-                '$total ₪',
+                '${controller.item.orderTotal} ₪',
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
@@ -161,7 +163,9 @@ Widget _buildPriceSummary(
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () => sendOrder(),
+              onPressed: controller.isLoading.value
+                  ? null
+                  : () => controller.updateOrderStatus(),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Theme.of(context).colorScheme.onSurface,
                 padding: const EdgeInsets.symmetric(vertical: 5),
@@ -169,14 +173,23 @@ Widget _buildPriceSummary(
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: Text(
-                'ارسل ديليفري',
-                style: const TextStyle(
-                  // color: Theme.,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              child: controller.isLoading.value
+                  ? const SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
+                    )
+                  : const Text(
+                      'ارسل ديليفري',
+                      style: const TextStyle(
+                        // color: Theme.,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
             ),
           ),
         ],
