@@ -88,18 +88,26 @@ class AdminProductScreen extends StatelessWidget {
                                     MainAxisAlignment.spaceAround,
                                 children: [
                                   Expanded(
-                                    child: Text(
-                                      product.title,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                    child: Row(
+                                      children: [
+                                        // Text(product.isAvailable ? 'متوفر' : 'غير متوفر'),
+                                      ],
                                     ),
                                   ),
                                   SizedBox(width: 5),
                                   Column(
                                     children: [
+                                      Container(
+                                        width: 50,
+                                        child: Text(
+                                          product.title,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
                                       Text(
                                         product.price,
                                         maxLines: 1,
@@ -108,16 +116,16 @@ class AdminProductScreen extends StatelessWidget {
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      Text(
-                                        product.originalPrice,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          decoration:
-                                              TextDecoration.lineThrough,
-                                        ),
-                                      ),
+                                      // Text(
+                                      //   product.originalPrice,
+                                      //   maxLines: 1,
+                                      //   overflow: TextOverflow.ellipsis,
+                                      //   style: const TextStyle(
+                                      //     fontWeight: FontWeight.bold,
+                                      //     decoration:
+                                      //         TextDecoration.lineThrough,
+                                      //   ),
+                                      // ),
                                     ],
                                   ),
                                 ],
