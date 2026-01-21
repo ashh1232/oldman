@@ -58,7 +58,7 @@ class DeliOrder extends StatelessWidget {
                 final Order item = controller.orders[index];
                 return InkWell(
                   onTap: () {
-                    Get.toNamed(AppRoutes.adminOrderDetails, arguments: item);
+                    Get.toNamed(AppRoutes.orderDetails, arguments: item);
                   },
                   child: Container(
                     margin: const EdgeInsets.symmetric(

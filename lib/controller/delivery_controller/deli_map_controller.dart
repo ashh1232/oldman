@@ -2,17 +2,22 @@ import 'dart:async';
 import 'dart:convert';
 
 // import 'package:flutter/foundation.dart';
-import 'package:flutter/foundation.dart';
+// import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:maneger/model/order_model.dart';
 
 class DeliMapController extends GetxController {
   final MapController mapController = MapController();
+  final Order item = Get.arguments;
 
-  var currentLatLng = const LatLng(31.417272, 34.970499).obs; // مثال: الرياض
+  var currentLatLng = const LatLng(
+    31.413276037205094,
+    34.976892602610185,
+  ).obs; // مثال: الرياض
   var destinationLatLng = const LatLng(31.410972, 34.970001).obs;
   var routePoints = <LatLng>[].obs;
   var distanceRemaining = 0.0.obs;
@@ -34,6 +39,9 @@ class DeliMapController extends GetxController {
     super.onInit();
     _startTracking();
     _checkAndSetNightMode(); // فحص تلقائي للوضع الليلي عند التشغيل
+    final double? lat = double.tryParse(item.deliveryLat);
+    final double? lng = double.tryParse(item.deliveryLong);
+    destinationLatLng.value = LatLng(lat!, lng!);
   }
 
   @override

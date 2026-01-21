@@ -1,28 +1,80 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maneger/model/order_model.dart';
 import 'package:maneger/routes.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OrderDetails extends StatelessWidget {
-  const OrderDetails({super.key});
+  OrderDetails({super.key});
 
+  Future<void> openMap(String? latStr, String? lngStr) async {
+    // تحويل آمن للنصوص إلى أرقام
+    final double? lat = double.tryParse(latStr ?? '');
+    final double? lng = double.tryParse(lngStr ?? '');
+
+    if (lat == null || lng == null) {
+      Get.snackbar("تنبيه", "إحداثيات الموقع غير صالحة");
+      return;
+    }
+
+    final Uri googleUrl = Uri.parse(
+      'https://www.google.com/maps/search/?api=1&query=$lat,$lng',
+    );
+
+    try {
+      // في Flutter 2026 يفضل استخدام launchUrl مباشرة مع معالجة الخطأ
+      bool launched = await launchUrl(
+        googleUrl,
+        mode: LaunchMode.externalApplication,
+      );
+
+      if (!launched) {
+        Get.snackbar("خطأ", "لا يمكن فتح تطبيق الخرائط");
+      }
+    } catch (e) {
+      Get.snackbar("خطأ", "حدث خطأ غير متوقع: $e");
+    }
+  }
+
+  final Order item = Get.arguments;
+
+  //
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Order Details")),
       body: Center(
-        child: InkWell(
-          onTap: () {
-            Get.toNamed(AppRoutes.deliMap);
-          },
-          child: Column(
-            children: [
-              Text("Order Details"),
-              Text("Order ID: 123456789"),
-              Text("Order Date: 2022-01-01"),
-              Text("Order Total: 100.00"),
-              Text("Order Status: Pending"),
-            ],
-          ),
+        child: Column(
+          children: [
+            Card(
+              elevation: 4,
+              child: ListTile(
+                leading: const Icon(Icons.receipt_long),
+                title: Text("رقم الطلب: ${item.orderId}"),
+                subtitle: Text("حالة الطلب: ${item.orderStatus}"),
+              ),
+            ),
+            const SizedBox(height: 20),
+            // زر التتبع الداخلي
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: () =>
+                    Get.toNamed(AppRoutes.deliMap, arguments: item),
+                icon: const Icon(Icons.location_on),
+                label: const Text("تتبع عبر الخريطة الداخلية"),
+              ),
+            ),
+            const SizedBox(height: 12),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: () => openMap(item.deliveryLat, item.deliveryLong),
+                icon: const Icon(Icons.map_outlined),
+                label: const Text("فتح في خرائط Google"),
+              ),
+            ),
+          ],
         ),
       ),
     );
