@@ -25,55 +25,53 @@ import 'package:maneger/screen/talabat/cart_page.dart';
 import 'package:maneger/screen/auth/login_screen.dart';
 import 'package:maneger/screen/message_view.dart';
 import 'package:maneger/test/flut_map.dart';
-import 'package:maneger/trash/salon_screen.dart';
 import 'package:maneger/screen/auth/signup_screen.dart';
 import 'package:maneger/screen/talabat/category_page.dart';
-// import 'trash/edit_cat_screen.dart';
-// import 'trash/profile_screen.dart';
-// =======
-// import 'package:newmanager/screen/cart_page.dart';
-// import 'package:newmanager/screen/login_screen.dart';
-// import 'package:newmanager/screen/message_view.dart';
-// import 'package:newmanager/trash/salon_screen.dart';
-// import 'package:newmanager/screen/signup_screen.dart';
-// import 'package:newmanager/screen/shein_page.dart';
-// >>>>>>> ba93ef8 (work)
-// import 'package:newmanager/screen/admin/addproduct_screen.dart';
 
 class AppRoutes {
-  static const home = '/';
-  static const talabatScreen = '/talabatScreen';
+  // --- Auth Routes ---
   static const login = '/login';
   static const signup = '/signup';
+
+  // --- User / Talabat Routes ---
+  static const home = '/';
+  static const talabatScreen = '/talabatScreen';
   static const profile = '/profile';
   static const category = '/shein';
   static const productDetail = '/detail';
   static const cartPage = '/cartPage';
   static const checkout = '/checkout';
-  static const mapScreen = '/mapScreen';
   static const favorite = '/favorite';
-  ///////////////
+  static const orderConfirmation = '/order-confirmation';
+  static const mapScreen = '/mapScreen';
+
+  // --- Admin Routes ---
   static const addscreen = '/addscreen';
-  static const editCatDetailScreen = '/editCatDetailScreen';
   static const editProductScreen = '/editProductScreen';
+  static const imageUploadScreen = '/imageUploadScreen';
+  static const adminOrderDetails = '/adminOrderDetails';
   static const editCatScreen = '/editCatScreen';
+  static const editCatDetailScreen = '/editCatDetailScreen';
   static const addnewcat = '/addnewcat';
-  static const addbanner = '/addbanner';
   static const editBanScreen = '/editBanScreen';
   static const editBanDetailScreen = '/editBanDetailScreen';
-  static const mail = '/mail';
-  static const imageUploadScreen = '/imageUploadScreen';
+  static const addbanner = '/addbanner';
+
+  // --- Delivery Routes ---
   static const deliHome = '/delihome';
-  static const orderConfirmation = '/order-confirmation';
   static const orderDetails = '/orderDetails';
-  static const adminOrderDetails = '/adminOrderDetails';
-  static const flutMap = '/flutMap';
   static const deliMap = '/deliMap';
+  static const flutMap = '/flutMap';
+
+  // --- Other ---
+  static const mail = '/mail';
 
   static final routes = [
+    // Auth
     GetPage(name: login, page: () => LoginScreen()),
     GetPage(name: signup, page: () => SignupScreen()),
 
+    // App Core / User
     GetPage(name: home, page: () => HomeScreen(), binding: HomeBinding()),
     GetPage(
       name: talabatScreen,
@@ -83,38 +81,31 @@ class AppRoutes {
     GetPage(name: profile, page: () => ProfileScreen()),
     GetPage(name: category, page: () => CategoryPage()),
     GetPage(name: productDetail, page: () => ProductDetailView()),
-    GetPage(name: mail, page: () => MessageView()),
     GetPage(name: cartPage, page: () => CartPage()),
     GetPage(name: checkout, page: () => CheckoutScreen()),
     GetPage(name: orderConfirmation, page: () => OrderConfirmationScreen()),
     GetPage(name: mapScreen, page: () => MapTal()),
     GetPage(name: favorite, page: () => FavoritesScreen()),
-    ////////////// admin
+
+    // Admin
     GetPage(name: addscreen, page: () => AdminProductScreen()),
     GetPage(name: editProductScreen, page: () => EditProductDetailView()),
     GetPage(name: imageUploadScreen, page: () => ImageUploadScreen()),
     GetPage(name: adminOrderDetails, page: () => AdminOrderDetails()),
-    ////////////////// editcat
     GetPage(name: editCatDetailScreen, page: () => EditCatDetailView()),
     GetPage(name: editCatScreen, page: () => EditCategoryScreen()),
     GetPage(name: addnewcat, page: () => AddNewCat()),
-    /////////////// banner
     GetPage(name: addbanner, page: () => AddBanner()),
     GetPage(name: editBanDetailScreen, page: () => EditBanDetailView()),
     GetPage(name: editBanScreen, page: () => EditBanScreen()),
-    ////////////////// delivery
-    GetPage(
-      name: deliHome,
-      page: () => DeliHome(),
-      // binding: HomeBinding(),
-    ),
+
+    // Delivery
+    GetPage(name: deliHome, page: () => DeliHome()),
     GetPage(name: orderDetails, page: () => OrderDetails()),
     GetPage(name: flutMap, page: () => FlutMap()),
     GetPage(name: deliMap, page: () => DeliMap()),
+
+    // Other
+    GetPage(name: mail, page: () => MessageView()),
   ];
 }
-
-final List<GetPage> getPages = [
-  // GetPage(name: '/home', page: () => HomeScreen()),
-  GetPage(name: '/salon', page: () => SalonView()),
-];

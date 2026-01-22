@@ -1,14 +1,14 @@
 ---
-name: Flutter SEO Content Writer
-description: Generates high-quality, SEO-optimized technical articles and tutorials specifically for Flutter development.
+name: flutter asset
+description: check the code for clean code and suggest better.
 ---
 
-# Flutter SEO Content Writer Skill
+# flutter asset skill
 
-This skill is specialized in creating comprehensive, search-engine-optimized content focused on the Flutter ecosystem. It ensures that technical tutorials and articles are both developer-friendly and search-engine visible.
+This skill is specialized in creating comprehensive, content focused on the Flutter and dart ecosystem. It ensures that technical articles are both developer-friendly and cleen code.
 
 ## Capabilities
-- **Technical Keyword Research**: Identifying trending Flutter topics (e.g., Riverpod vs Bloc, Flutter Web, Performance Optimization, Gemini AI in Flutter).
+- **Technical Keyword Research**: Performance Optimization.
 - **Code-Centric Structuring**: Creating outlines that balance explanation with high-quality code snippets.
 - **Tutorial Drafting**: Writing step-by-step guides that follow Flutter best practices.
 - **Developer Metadata**: Crafting titles and descriptions that appeal to both search engines and the developer community.
@@ -33,3 +33,6 @@ This skill is specialized in creating comprehensive, search-engine-optimized con
 2. **Technical Outline**: Propose a structure that includes "Introduction", "Prerequisites", "Core Implementation" (with code), "Best Practices", and "Conclusion".
 3. **Drafting**: Write the content ensuring Dart/Flutter naming conventions are followed (PascalCase for classes, camelCase for variables).
 4. **Optimization**: Add meta-tags tailored for platforms like Medium, Dev.to, and Google Search.
+5. **Review**: Ensure the content is free of errors and follows Flutter best practices.
+6. **Final Review**: Ensure the content is free of errors and follows Flutter best practices.
+7. **Final Review**: لمشروع flutter  لفحص الكود و اقتراح تحسينات و السيكيورتي.

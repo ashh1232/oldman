@@ -9,6 +9,12 @@ import 'routes.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init(); // Initialize storage
+
+  // Optional: Global error reporting can be added here
+  FlutterError.onError = (details) {
+    FlutterError.presentError(details);
+  };
+
   runApp(const MyApp());
 }
 
@@ -17,15 +23,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final initialTheme = ThemeService().theme;
-
     return GetMaterialApp(
-      title: 'manager app',
-      // Theme Configuration
+      title: 'Docana Manager',
       theme: MyThemes.light,
       darkTheme: MyThemes.dark,
       themeMode: ThemeService().theme, // Loads saved theme from GetStorage
-      // Routing
+
       initialBinding: HomeBinding(),
       initialRoute: AppRoutes.home,
       getPages: AppRoutes.routes,
@@ -35,13 +38,6 @@ class MyApp extends StatelessWidget {
       fallbackLocale: const Locale('en', 'US'),
 
       debugShowCheckedModeBanner: false,
-
-      // home: const ProductListScreen(),
     );
   }
-
-  // String _getInitialRoute() {
-  //   final authController = Get.find<AuthController>();
-  //   return authController.isLoggedIn.value ? AppRoutes.home : AppRoutes.login;
-  // }
 }

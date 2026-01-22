@@ -16,22 +16,40 @@ class Crud {
   Future<Either<StatusRequest, Map>> postData(String linkurl, Map data) async {
     try {
       if (await checkInternet()) {
-        // تمرير الـ headers هنا ضروري جداً
         var response = await http
             .post(Uri.parse(linkurl), body: data, headers: _headers)
             .timeout(const Duration(seconds: 15));
 
-        if (response.statusCode == 200 || response.statusCode == 201) {
-          // استخدام utf8.decode يضمن عدم ظهور رموز غريبة إذا كان السيرفر يعيد نصاً عربياً
-          var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-          return Right(responseBody);
-        } else {
-          return const Left(StatusRequest.serverfailure);
-        }
+        return _handleResponse(response);
       } else {
         return const Left(StatusRequest.offline);
       }
     } catch (e) {
+      return const Left(StatusRequest.serverfailure);
+    }
+  }
+
+  Future<Either<StatusRequest, Map>> getData(String linkurl) async {
+    try {
+      if (await checkInternet()) {
+        var response = await http
+            .get(Uri.parse(linkurl), headers: _headers)
+            .timeout(const Duration(seconds: 15));
+
+        return _handleResponse(response);
+      } else {
+        return const Left(StatusRequest.offline);
+      }
+    } catch (e) {
+      return const Left(StatusRequest.serverfailure);
+    }
+  }
+
+  Either<StatusRequest, Map> _handleResponse(http.Response response) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+      return Right(responseBody);
+    } else {
       return const Left(StatusRequest.serverfailure);
     }
   }

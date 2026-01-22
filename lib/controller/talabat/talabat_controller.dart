@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/class/crud.dart';
@@ -7,41 +5,35 @@ import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/bunner_model.dart';
 import 'package:maneger/model/cat_model.dart';
-import 'dart:async';
-import 'package:http/http.dart' as http;
-
 import 'package:maneger/model/product_model.dart';
+import 'dart:async';
 
-class TalabatController extends GetxController
-// with StateMixin<List<Product>>
-{
-  Rx<StatusRequest> statusRequest = StatusRequest.offline.obs;
-  //
-
-  final Crud _crud = Crud();
+class TalabatController extends GetxController {
+  // Observables
+  final Rx<StatusRequest> statusRequest = StatusRequest.loading.obs;
   final RxList<Bunner> banners = <Bunner>[].obs;
   final RxList<Category> catList = <Category>[].obs;
   final RxList<Product> productList = <Product>[].obs;
 
-  var isLoading = false.obs;
-  var isBanLoading = false.obs;
-  var isCatLoading = false.obs;
-  var hasMore = true.obs;
-  int page = 1;
-  // late StatusRequest statusRequest;
-  late final PageController pageController;
-  late final ScrollController scrollController; // تعريف متأخر أفضل
-
-  Timer? _bannerTimer;
-
+  final RxBool isLoading = false.obs;
+  final RxBool isBanLoading = false.obs;
+  final RxBool isCatLoading = false.obs;
+  final RxBool hasMore = true.obs;
   final RxInt currentBannerIndex = 0.obs;
   final RxBool isScrolled = false.obs;
+
+  final Crud _crud = Crud();
+  int page = 1;
+  Timer? _bannerTimer;
+
+  late final PageController pageController;
+  late final ScrollController scrollController;
 
   @override
   void onInit() {
     pageController = PageController();
     scrollController = ScrollController();
-    initData(); // انقل استدعاء البيانات إلى هنا
+    initData();
 
     scrollController.addListener(() {
       if (scrollController.position.pixels >=
@@ -55,123 +47,103 @@ class TalabatController extends GetxController
   }
 
   Future<void> initData() async {
+    statusRequest.value = StatusRequest.loading;
     try {
-      // 1. نبدأ بحالة التحميل
-      statusRequest.value = StatusRequest.loading;
-
-      // 2. ننفذ العمليات الثلاث بالتوازي لسرعة فائقة
+      // Parallel execution for better startup time
       await Future.wait([getBanners(), getCatData(), getData()]);
 
-      // 3. نقيم الحالة النهائية: إذا كانت القائمة فارغة رغم النجاح نعتبرها failure أو empty
       if (productList.isEmpty && catList.isEmpty) {
         statusRequest.value = StatusRequest.failure;
       } else {
         statusRequest.value = StatusRequest.success;
       }
-
       _startBannerAutoPlay();
     } catch (e) {
-      debugPrint("Error: $e");
       statusRequest.value = StatusRequest.failure;
     }
   }
 
   Future<void> getBanners() async {
     if (isBanLoading.value) return;
+    isBanLoading.value = true;
     try {
-      isBanLoading.value = true;
-      var respo = await _crud.postData(AppLink.banner, {});
-      respo.fold(
-        (status) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (Get.context != null && !Get.isSnackbarOpen) {
-              Get.rawSnackbar(
-                message: "خطأ في التحميل: $status",
-                duration: Duration(seconds: 2),
-              );
-            }
-          });
-        },
-        (res) {
-          if (res['status'] == 'success') {
-            final List<dynamic> decod = res['data'];
-            banners.value = decod.map((ban) => Bunner.fromJson(ban)).toList();
-          } else {}
-        },
-      );
-    } catch (e) {
-      Get.snackbar(('error'), 'error $e');
-    }
-    isBanLoading.value = false;
-  }
-
-  Future<void> getData() async {
-    if (isLoading.value || !hasMore.value) return;
-    try {
-      isLoading(true);
-      var response = await http
-          .get(Uri.parse("${AppLink.server}/product2.php?page=$page"))
-          .timeout(const Duration(seconds: 10));
-      if (response.statusCode == 200) {
-        var jsonResponse = json.decode(response.body);
-        List newDataList =
-            jsonResponse['data']; // Matches the "metadata" PHP structure
-
-        if (newDataList.isEmpty) {
-          hasMore(false); // No more records to fetch
-        } else {
-          List<Product> newProducts = newDataList
-              .map((json) => Product.fromJson(json))
-              .toList();
-          productList.addAll(newProducts);
-          page++;
-          if (jsonResponse['metadata'] != null) {
-            int currentPage = jsonResponse['metadata']['current_page'];
-            int totalPages = jsonResponse['metadata']['total_pages'];
-            if (currentPage >= totalPages) {
-              hasMore(false);
-            }
-          }
+      var response = await _crud.postData(AppLink.banner, {});
+      response.fold((status) => _handleError(status, "فشل تحميل الإعلانات"), (
+        res,
+      ) {
+        if (res['status'] == 'success') {
+          final List decod = res['data'];
+          banners.assignAll(decod.map((ban) => Bunner.fromJson(ban)).toList());
         }
-      }
+      });
     } catch (e) {
-      if (page == 1) _showErrorSnackbar("تحقق من الاتصال بالإنترنت");
+      _handleError(StatusRequest.serverfailure, "خطأ غير متوقع");
     } finally {
-      isLoading(false);
+      isBanLoading.value = false;
     }
   }
 
   Future<void> getCatData() async {
     if (isCatLoading.value) return;
+    isCatLoading.value = true;
     try {
-      isCatLoading.value = true;
-      var respo = await _crud.postData(AppLink.cat, {});
-      respo.fold(
-        (l) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (Get.context != null && !Get.isSnackbarOpen) {
-              Get.rawSnackbar(
-                message: "خطأ في التحميل: $l",
-                duration: Duration(seconds: 2),
-              );
-            }
-          });
-        },
-        (res) {
-          if (res['status'] == "success") {
-            final List<dynamic> decod = res['data'];
-            catList.value = decod.map((e) => Category.fromJson(e)).toList();
-          } else {}
-        },
-      );
+      var response = await _crud.postData(AppLink.cat, {});
+      response.fold((status) => _handleError(status, "فشل تحميل الأقسام"), (
+        res,
+      ) {
+        if (res['status'] == "success") {
+          final List decod = res['data'];
+          catList.assignAll(decod.map((e) => Category.fromJson(e)).toList());
+        }
+      });
     } catch (e) {
-      Get.snackbar(('error'), 'error $e');
+      _handleError(StatusRequest.serverfailure, "خطأ في الاتصال");
+    } finally {
+      isCatLoading.value = false;
     }
-    // مع Obx، لا نحتاج لاستدعاء update()
-    isCatLoading.value = false;
   }
 
-  // دالة مساعدة لعرض الأخطاء دون انهيار الـ Overlay
+  Future<void> getData() async {
+    if (isLoading.value || !hasMore.value) return;
+    isLoading.value = true;
+    try {
+      var response = await _crud.getData("${AppLink.productt}?page=$page");
+      response.fold((status) => _handleError(status, "فشل تحميل المنتجات"), (
+        res,
+      ) {
+        if (res['status'] == 'success') {
+          List newDataList = res['data'];
+          if (newDataList.isEmpty) {
+            hasMore.value = false;
+          } else {
+            productList.addAll(
+              newDataList.map((j) => Product.fromJson(j)).toList(),
+            );
+            page++;
+            if (res['metadata'] != null) {
+              if (res['metadata']['current_page'] >=
+                  res['metadata']['total_pages']) {
+                hasMore.value = false;
+              }
+            }
+          }
+        }
+      });
+    } catch (e) {
+      if (page == 1) _showErrorSnackbar("تحقق من الاتصال بالإنترنت");
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void _handleError(StatusRequest status, String message) {
+    if (status == StatusRequest.offline) {
+      _showErrorSnackbar("أنت غير متصل بالإنترنت");
+    } else {
+      _showErrorSnackbar(message);
+    }
+  }
+
   void _showErrorSnackbar(String message) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!Get.isSnackbarOpen) {
@@ -190,19 +162,13 @@ class TalabatController extends GetxController
     if (banners.length <= 1) return;
 
     _bannerTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      // التأكد أن الصفحة لا تزال معروضة والتحكم متاح
       if (pageController.hasClients &&
           !pageController.position.isScrollingNotifier.value) {
         int nextPage = (currentBannerIndex.value + 1) % banners.length;
-
-        // تحديث المؤشر فوراً لجعل الأنميشن متزامن مع الـ Dots
         currentBannerIndex.value = nextPage;
-
         pageController.animateToPage(
           nextPage,
-          duration: const Duration(
-            milliseconds: 800,
-          ), // أنميشن أطول قليلاً يعطي إحساساً بالفخامة
+          duration: const Duration(milliseconds: 800),
           curve: Curves.fastOutSlowIn,
         );
       }
@@ -215,7 +181,6 @@ class TalabatController extends GetxController
 
   void toggleScroll(bool scrolled) {
     if (isScrolled.value != scrolled) {
-      // فقط حدث القيمة إذا تغيرت الحالة فعلياً
       isScrolled.value = scrolled;
     }
   }
