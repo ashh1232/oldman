@@ -29,11 +29,8 @@ class DeliveryHomeController extends GetxController {
     try {
       isLoading.value = true;
       var respo = await _crud.postData(AppLink.adminOrder, {
-        // 'action': 'get_orders',
-        // 'user_id': '2',
+        'action': 'get_processing_order',
       });
-      // print(respo);
-      print('respo');
       respo.fold(
         (status) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -47,29 +44,16 @@ class DeliveryHomeController extends GetxController {
         },
         (res) {
           if (res['status'] == 'success') {
-            // print(res['data']);
-            // statusRequest.value = StatusRequest.success;
             final List decod = res['data'];
-            print(' decod $decod');
-
             orders.value = decod.map((ban) => Order.fromJson(ban)).toList();
-            print('orders $orders');
-            print('respo');
-          } else {
-            // statusRequest.value = StatusRequest.failure;
-          }
+          } else {}
         },
       );
     } catch (e) {
       Get.snackbar(('error'), 'error $e');
-      // fistatusRequest.value = StatusRequest.failure;
     } finally {
       isLoading.value = false;
     }
-  }
-
-  void updateQuantity(int index, int quantity) {
-    // product[index].quantity = quantity;
   }
 
   void removeProduct(int index) {

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/class/crud.dart';
 import 'package:maneger/class/statusrequest.dart';
-import 'dart:async';
 import 'package:maneger/linkapi.dart';
+import 'dart:async';
 import '../model/bunner_model.dart';
 import '../model/product_model.dart';
 
@@ -14,6 +14,7 @@ class CategoryController extends GetxController
   Rx<StatusRequest> statusRequest = StatusRequest.offline.obs;
   late PageController bannerController;
   late AnimationController dotAnimController;
+  Timer? _autoplayTimer;
   final RxList<Product> productList = <Product>[].obs;
   final RxList<Bunner> banner = <Bunner>[].obs;
   var isBanLoading = false.obs;
@@ -153,25 +154,30 @@ class CategoryController extends GetxController
   }
 
   void _startAutoPlay() {
-    Future.delayed(Duration(seconds: 4), () {
-      if (bannerController.hasClients) {
-        bannerController.nextPage(
+    _autoplayTimer?.cancel();
+    _autoplayTimer = Timer.periodic(Duration(seconds: 4), (timer) {
+      if (bannerController.hasClients && banner.isNotEmpty) {
+        int nextPage = bannerController.page!.toInt() + 1;
+        if (nextPage >= banner.length) {
+          nextPage = 0;
+        }
+        bannerController.animateToPage(
+          nextPage,
           duration: Duration(milliseconds: 600),
           curve: Curves.easeInOut,
         );
       }
-    }).then((_) {
-      _startAutoPlay();
     });
   }
 
   void onBannerPageChanged(int index) {
-    currentBannerIndex.value = banner.length;
+    currentBannerIndex.value = index;
     dotAnimController.forward(from: 0.0);
   }
 
   @override
   void onClose() {
+    _autoplayTimer?.cancel();
     bannerController.dispose();
     dotAnimController.dispose();
     super.onClose();

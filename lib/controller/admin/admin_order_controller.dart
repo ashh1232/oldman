@@ -6,13 +6,12 @@ import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/order_model.dart';
 
 class AdminOrderController extends GetxController {
-  // Rx<StatusRequest> statusRequest = StatusRequest.offline.obs;
   final Crud _crud = Crud();
   var isLoading = false.obs;
   final RxList<Order> orders = <Order>[].obs;
   @override
   void onInit() {
-    getOrders();
+    // Moved getOrders to onReady for better visibility
     super.onInit();
   }
 
@@ -30,7 +29,7 @@ class AdminOrderController extends GetxController {
     try {
       isLoading.value = true;
       var respo = await _crud.postData(AppLink.adminOrder, {
-        // 'action': 'get_orders',
+        'action': 'get_pending_order',
         // 'user_id': '2',
       });
       // print(respo);
@@ -53,8 +52,6 @@ class AdminOrderController extends GetxController {
             // print(' decod $decod');
 
             orders.value = decod.map((ban) => Order.fromJson(ban)).toList();
-            // print('orders $orders');
-            print('respo');
           } else {
             // statusRequest.value = StatusRequest.failure;
           }
@@ -66,10 +63,6 @@ class AdminOrderController extends GetxController {
     } finally {
       isLoading.value = false;
     }
-  }
-
-  void updateQuantity(int index, int quantity) {
-    // product[index].quantity = quantity;
   }
 
   void removeProduct(int index) {

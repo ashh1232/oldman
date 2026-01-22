@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/controller/delivery_controller/delivery_home_controller.dart';
 import 'package:maneger/screen/delivery/deli_order_screen.dart';
-import 'package:maneger/test/dahria_map.dart';
 import 'package:maneger/screen/delivery/deli_profile.dart';
 
 class DeliHome extends StatelessWidget {
@@ -18,7 +17,7 @@ class DeliHome extends StatelessWidget {
           index: controller.currentIndex.value,
           children: [
             DeliOrder(), // التبويب الرئيسي
-            DahriaMap(),
+            DeliProfile(),
             DeliProfile(),
           ],
         ),

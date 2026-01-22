@@ -32,8 +32,6 @@ class AppLink {
   // --- Admin: Orders ---
   static const String order = '$server/order/order.php';
   static const String adminOrder = '$server/order/admin_order.php';
-  static const String adminOrderProduct =
-      '$server/order/admin_order_product.php';
 
   // --- Admin: Category Management ---
   static const String addnewcat = '$server/editcat/add_cat.php';

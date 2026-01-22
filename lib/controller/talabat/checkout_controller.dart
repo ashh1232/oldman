@@ -59,9 +59,7 @@ class CheckoutController extends GetxController {
   }
 
   // Load user data to pre-fill form
-  void loadUserData() async {
-    isLoading.value = false;
-
+  void loadUserData() {
     final user = authController.currentUser.value;
     if (user != null) {
       nameController.text = user.userName;
@@ -71,7 +69,6 @@ class CheckoutController extends GetxController {
     // Get the latest coordinates directly from the Map Controller
     selectedLat.value = mapController.destinationLatLng.value.latitude;
     selectedLong.value = mapController.destinationLatLng.value.longitude;
-    isLoading.value = false;
   }
 
   // void _syncInitialSelectedCount() {
@@ -197,8 +194,8 @@ class CheckoutController extends GetxController {
         'delivery_name': nameController.text.trim(),
         'delivery_phone': phoneController.text.trim(),
         'delivery_address': addressController.text.trim(),
-        'lat': selectedLat.toString(),
-        'long': selectedLong.toString(),
+        'lat': selectedLat.value.toString(),
+        'long': selectedLong.value.toString(),
         'order_notes': notesController.text.trim(),
         'order_items': jsonEncode(orderItems),
       };
@@ -223,6 +220,9 @@ class CheckoutController extends GetxController {
 
           if (responseBody['status'] == 'success') {
             final orderId = responseBody['order_id'].toString();
+
+            // Unfocus keyboard to prevent platform NPE during transition
+            FocusManager.instance.primaryFocus?.unfocus();
 
             // Clear cart
             cartController.products.clear();

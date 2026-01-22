@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -21,7 +22,8 @@ class TalMapController extends GetxController {
   var routePoints = <LatLng>[].obs;
   var currentHeading = 0.0.obs; // إضافة متغير الاتجاه
   bool isMapReady = false;
-  bool s = false;
+  bool isFirstLocationFix = false;
+  var isAutoCenter = true.obs;
 
   ///
   StreamSubscription<Position>? positionStream;
@@ -55,12 +57,6 @@ class TalMapController extends GetxController {
         currentTileUrl.value =
             'https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}';
     }
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-    // fetchRoute();
   }
 
   void onLongPress(LatLng point) {
@@ -112,12 +108,12 @@ class TalMapController extends GetxController {
           locationData['lng'],
         );
 
-        print(
+        debugPrint(
           "📍 Location loaded: ${destinationLatLng.value.latitude}, ${destinationLatLng.value.longitude}",
         );
       }
     } catch (e) {
-      print("⚠️ Error decoding location from storage: $e");
+      debugPrint("⚠️ Error decoding location from storage: $e");
       // Default values in case of corruption
       destinationLatLng.value = const LatLng(0.0, 0.0);
     }
@@ -126,14 +122,13 @@ class TalMapController extends GetxController {
   Future<void> _saveToStorage() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      // Save as a JSON string for easy decoding in CheckoutController
       Map<String, double> locationMap = {
         'lat': destinationLatLng.value.latitude,
         'lng': destinationLatLng.value.longitude,
       };
       await prefs.setString('location', jsonEncode(locationMap));
     } catch (e) {
-      print("Storage Error: $e");
+      debugPrint("Storage Error: $e");
     }
   }
 
@@ -143,12 +138,19 @@ class TalMapController extends GetxController {
   var showTraffic = false.obs;
 
   Future<void> _startTracking() async {
-    // ... (كود التحقق من الصلاحيات السابق) ...
-    LocationPermission permission = await Geolocator.checkPermission();
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) return;
+
+    permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.deniedForever) return;
+      if (permission == LocationPermission.denied) return;
     }
+
+    if (permission == LocationPermission.deniedForever) return;
 
     positionStream =
         Geolocator.getPositionStream(
@@ -159,75 +161,18 @@ class TalMapController extends GetxController {
         ).listen((Position position) {
           LatLng newPos = LatLng(position.latitude, position.longitude);
           currentLatLng.value = newPos;
-          currentHeading.value = position.heading; // تحديث زاوية الدوران
-          if (!s) {
-            s = true;
+          currentHeading.value = position.heading;
+
+          if (!isFirstLocationFix) {
+            isFirstLocationFix = true;
             destinationLatLng.value = currentLatLng.value;
           }
-          // أضف هذا المتغير
-          var isAutoCenter = true.obs;
 
-          // داخل الـ listener الخاص بالـ positionStream
           if (isMapReady && isAutoCenter.value) {
             mapController.moveAndRotate(newPos, 17.0, position.heading);
           }
-
-          // تحديث المسار
-          // fetchRoute();
-          // if (isMapReady) {
-          //   try {
-          //     mapController.moveAndRotate(
-          //       newPos,
-          //       17.0, // أو mapController.camera.zoom
-          //       position.heading,
-          //     );
-          //   } catch (e) {
-          //     // إذا فشل التحريك لأن الخريطة أغلقت، نقوم بإلغاء الاشتراك فوراً
-          //     positionStream?.cancel();
-          //   }
-          // }
         });
   }
-
-  // Future<void> fetchRoute() async {
-  //   try {
-  //     // 1. تحديد المعايير
-  //     // final String profile = transportProfile.value;
-  //     final double startLng = currentLatLng.value.longitude;
-  //     final double startLat = currentLatLng.value.latitude;
-  //     // final double endLng = destinationLatLng.value.longitude;
-  //     // final double endLat = destinationLatLng.value.latitude;
-
-  //     // 2. بناء الرابط باستخدام Uri لضمان عدم وجود أخطاء في الـ Host
-  //     final Uri url = Uri.https(
-  //       'router.project-osrm.org',
-  //       '/route/v1/driving/$startLng,$startLat',
-  //       {'overview': 'full', 'geometries': 'geojson'},
-  //     );
-
-  //     print("🔗 جاري الاتصال بالرابط: $url");
-
-  //     final response = await GetConnect().get(url.toString());
-
-  //     if (response.isOk &&
-  //         response.body['routes'] != null &&
-  //         response.body['routes'].isNotEmpty) {
-  //       // الوصول للمسار الأول (تأكد من وجود [0])
-  //       var routeData = response.body['routes'][0];
-  //       var geometry = routeData['geometry']['coordinates'];
-
-  //       List<LatLng> points = geometry.map<LatLng>((c) {
-  //         // تحويل من [Longitude, Latitude] إلى LatLng(Latitude, Longitude)
-  //         return LatLng(c[1].toDouble(), c[0].toDouble());
-  //       }).toList();
-
-  //       routePoints.assignAll(points);
-  //       // distanceRemaining.value = (routeData['distance'] as num).toDouble();
-  //     }
-  //   } catch (e) {
-  //     print("⚠️ خطأ تقني: $e");
-  //   }
-  // }
 
   @override
   void onClose() {

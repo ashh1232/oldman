@@ -81,13 +81,13 @@ class DeliMap extends StatelessWidget {
               ),
 
               // طبقة العلامات (Markers)
-              MarkerLayer(
-                markers: [
-                  Marker(
-                    point: controller.currentLatLng.value,
-                    child: RepaintBoundary(
-                      child: Obx(
-                        () => Transform.rotate(
+              Obx(
+                () => MarkerLayer(
+                  markers: [
+                    Marker(
+                      point: controller.currentLatLng.value,
+                      child: RepaintBoundary(
+                        child: Transform.rotate(
                           angle:
                               (controller.currentHeading.value *
                               (3.141592653589793 / 180)),
@@ -99,16 +99,16 @@ class DeliMap extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ),
-                  Marker(
-                    point: controller.destinationLatLng.value,
-                    child: const Icon(
-                      Icons.location_on,
-                      color: Colors.red,
-                      size: 45,
+                    Marker(
+                      point: controller.destinationLatLng.value,
+                      child: const Icon(
+                        Icons.location_on,
+                        color: Colors.red,
+                        size: 45,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),

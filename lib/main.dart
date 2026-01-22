@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:maneger/binding/home_binding.dart';
 import 'package:maneger/service/my_theme.dart';
 import 'package:maneger/service/theme_service.dart';
 import 'routes.dart';
@@ -29,7 +28,6 @@ class MyApp extends StatelessWidget {
       darkTheme: MyThemes.dark,
       themeMode: ThemeService().theme, // Loads saved theme from GetStorage
 
-      initialBinding: HomeBinding(),
       initialRoute: AppRoutes.home,
       getPages: AppRoutes.routes,
 

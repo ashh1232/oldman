@@ -33,7 +33,7 @@ class AdminProOrderController extends GetxController {
     if (isLoading.value) return;
     try {
       isLoading.value = true;
-      var respo = await _crud.postData(AppLink.adminOrderProduct, {
+      var respo = await _crud.postData(AppLink.adminOrder, {
         'action': 'get_order_items',
 
         'order_id': item.orderId,
@@ -74,7 +74,7 @@ class AdminProOrderController extends GetxController {
     if (isLoading.value) return;
     try {
       isLoading.value = true;
-      var respo = await _crud.postData(AppLink.adminOrderProduct, {
+      var respo = await _crud.postData(AppLink.adminOrder, {
         'action': 'process_order',
         'order_id': item.orderId,
       });

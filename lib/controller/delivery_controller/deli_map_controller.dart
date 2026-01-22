@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-// import 'package:flutter/foundation.dart';
-// import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
@@ -41,7 +40,13 @@ class DeliMapController extends GetxController {
     _checkAndSetNightMode(); // فحص تلقائي للوضع الليلي عند التشغيل
     final double? lat = double.tryParse(item.deliveryLat);
     final double? lng = double.tryParse(item.deliveryLong);
-    destinationLatLng.value = LatLng(lat!, lng!);
+    if (lat != null && lng != null) {
+      destinationLatLng.value = LatLng(lat, lng);
+    } else {
+      debugPrint(
+        "Invalid delivery coordinates: ${item.deliveryLat}, ${item.deliveryLong}",
+      );
+    }
   }
 
   @override
@@ -97,7 +102,7 @@ class DeliMapController extends GetxController {
         Geolocator.getPositionStream(
           locationSettings: const LocationSettings(
             accuracy: LocationAccuracy.high,
-            distanceFilter: 10, // تحديث كل مترين لزيادة السلاسة
+            distanceFilter: 10, // تحديث كل 10 أمتار لزيادة السلاسة
           ),
         ).listen((Position position) {
           LatLng newPos = LatLng(position.latitude, position.longitude);
@@ -115,7 +120,9 @@ class DeliMapController extends GetxController {
           if (isMapReady) {
             try {
               mapController.moveAndRotate(newPos, 17.5, position.heading);
-            } catch (e) {}
+            } catch (e) {
+              debugPrint("Error moving map: $e");
+            }
           }
         });
   }
@@ -133,7 +140,10 @@ class DeliMapController extends GetxController {
 
       if (response.statusCode == 200) {
         // السحر هنا: معالجة الـ JSON في Isolate منفصل لعدم تجميد الخريطة
-        final List<LatLng> points = parseRoutePoints(response.body);
+        final List<LatLng> points = await compute(
+          parseRoutePoints,
+          response.body,
+        );
 
         // التحديث في الخيط الرئيسي
         routePoints.assignAll(points);
@@ -144,7 +154,7 @@ class DeliMapController extends GetxController {
             .toDouble();
       }
     } catch (e) {
-      print("Fetch route cancelled or failed: $e");
+      debugPrint("Fetch route cancelled or failed: $e");
     }
   }
 

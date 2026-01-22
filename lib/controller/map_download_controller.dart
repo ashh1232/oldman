@@ -74,10 +74,9 @@ class MapDownloadController extends GetxController {
 
   @override
   void onInit() {
-    print('productList');
-
-    getData();
-    print('productList');
+    // print('productList');
+    // getData(); // Disabled: RapidAPI quota exceeded
+    // print('productList');
     super.onInit();
     _store = FMTCStore('mapStore');
   }
