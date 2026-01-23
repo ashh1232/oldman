@@ -28,6 +28,7 @@ migrate_working_dir/
 **/ios/Flutter/.last_build_id
 .dart_tool/
 .dart_tool
+/.dart_tool
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
@@ -60,4 +61,5 @@ analysis_options.yaml
 .metadata
 .flutter-plugins-dependencies
 pubspec.yaml
-pubspec.lock
+/pubspec.yaml
+/pubspec.lock
