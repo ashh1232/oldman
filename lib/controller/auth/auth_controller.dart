@@ -28,7 +28,21 @@ class AuthController extends GetxController {
   Future<void> checkLoginStatus() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('auth_token');
-    isLoggedIn.value = token != null && token.isNotEmpty;
+    final userStr = prefs.getString('current_user');
+
+    if (token != null && token.isNotEmpty) {
+      isLoggedIn.value = true;
+      if (userStr != null) {
+        try {
+          currentUser.value = User.fromJson(jsonDecode(userStr));
+          print('User restored: ${currentUser.value?.userId}');
+        } catch (e) {
+          print('Error restoring user data: $e');
+        }
+      }
+    } else {
+      isLoggedIn.value = false;
+    }
   }
 
   Future<void> login(String email, String password) async {
@@ -46,15 +60,24 @@ class AuthController extends GetxController {
       },
       (data) async {
         if (data['status'] == 'success') {
-          final token = 'login';
+          final token = data['data']['token'];
+          // Use data['data'] directly if that's where the user info is,
+          // or data['data']['user'] if structured that way.
+          // Based on typical PHP CRUD structures:
+          final userData = data['data'];
+
           final prefs = await SharedPreferences.getInstance();
-          await prefs.remove('auth_token');
           await prefs.setString('auth_token', token);
+
+          if (userData != null) {
+            await saveUserData(User.fromJson(userData));
+          }
+
           isLoggedIn.value = true;
           Get.offAllNamed('/home');
         } else {
           errorMessage.value = data['message'] ?? 'Invalid credentials';
-          Get.snackbar('title', (data['status']).toString());
+          Get.snackbar('Login Status', 'Failed');
         }
       },
     );
@@ -73,7 +96,7 @@ class AuthController extends GetxController {
         'username': username,
         'email': email,
         'password': password,
-        'phone': '0518124755',
+        'phone': '0501235235',
       });
       print(response);
       var yy = response.fold((l) => l, (r) => r);
@@ -82,15 +105,22 @@ class AuthController extends GetxController {
       response.fold(
         (failure) {
           errorMessage.value = 'Signup failed. Please try again.';
-          print('object $failure');
+          print('Signup error: $failure');
         },
         (data) async {
           if (data['status'] == 'success') {
-            final token = data['data'];
+            final token = data['data']['token'];
+            final userData = data['data'];
+
             final prefs = await SharedPreferences.getInstance();
             if (token != null) {
               await prefs.setString('auth_token', token);
             }
+
+            if (userData != null) {
+              await saveUserData(User.fromJson(userData));
+            }
+
             isLoggedIn.value = true;
             Get.offAllNamed(AppRoutes.home);
           } else {
@@ -111,7 +141,9 @@ class AuthController extends GetxController {
       await prefs.setString('current_user', jsonEncode(user.toJson()));
       currentUser.value = user;
       isLoggedIn.value = true;
+      print('User data saved: ${user.userId}');
     } catch (e) {
+      print('Failed to save user data: $e');
       Get.snackbar('Error', 'Failed to save user data');
     }
   }
@@ -119,6 +151,8 @@ class AuthController extends GetxController {
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('auth_token');
+    await prefs.remove('current_user');
+    currentUser.value = null;
     isLoggedIn.value = false;
     Get.offAllNamed('/login');
   }

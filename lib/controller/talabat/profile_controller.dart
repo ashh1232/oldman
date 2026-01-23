@@ -5,12 +5,7 @@ import 'package:maneger/controller/auth/auth_controller.dart';
 import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/order_model.dart';
 import 'package:maneger/model/user_model.dart';
-// import 'package:talabat/class/crud.dart';
-// import 'package:talabat/class/statusrequest.dart';
-// import 'package:talabat/controller/auth_controller.dart';
-// import 'package:talabat/linkapi.dart';
-// import 'package:talabat/model/order_model.dart';
-// import 'package:talabat/model/user_model.dart';
+
 import 'package:flutter/material.dart';
 
 class ProfileController extends GetxController {
@@ -33,8 +28,22 @@ class ProfileController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    loadProfile();
-    loadOrders();
+    // Use 'ever' to react when the user is restored or changed
+    ever(authController.currentUser, (User? user) {
+      if (user != null && statusRequest.value == StatusRequest.loading) {
+        loadProfile();
+        loadOrders();
+      }
+    });
+
+    // If user is already loaded (e.g. just logged in), run immediately
+    if (authController.userId != null) {
+      loadProfile();
+      loadOrders();
+    } else {
+      // If we are waiting for restoration, maybe show a loading state
+      // checkLoginStatus is async and might still be running
+    }
   }
 
   @override
@@ -50,9 +59,11 @@ class ProfileController extends GetxController {
   // Load user profile
   Future<void> loadProfile() async {
     statusRequest.value = StatusRequest.loading;
-
+    print('object');
     try {
       final userId = authController.userId;
+      print(userId);
+
       if (userId == null) {
         statusRequest.value = StatusRequest.failure;
         return;
@@ -62,7 +73,7 @@ class ProfileController extends GetxController {
         'action': 'get_profile',
         'user_id': userId,
       });
-
+      print(response);
       response.fold(
         (statusReq) {
           statusRequest.value = statusReq;

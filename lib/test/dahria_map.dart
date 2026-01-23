@@ -270,3 +270,26 @@ class AuthController extends GetxController {
     }
   }
 }
+
+<?php
+/**
+ * Clean data for XSS protection and general cleanup
+ */
+function sanitizeInput($input) {
+    if (is_array($input)) {
+        return array_map('sanitizeInput', $input);
+    }
+    // strip_tags() removes HTML tags
+    // htmlspecialchars() escapes special characters for XSS protection
+    // ENT_QUOTES ensures both ' and " are handled
+    return trim(htmlspecialchars(strip_tags((string)$input), ENT_QUOTES, 'UTF-8'));
+}
+/**
+ * Helper to get and sanitize POST data quickly
+ */
+function filterRequest($requestName) {
+    if (isset($_POST[$requestName])) {
+        return sanitizeInput($_POST[$requestName]);
+    }
+    return null; // Return null if the POST field is missing
+}

@@ -19,7 +19,7 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: const Text('الملف الشخصي'),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 0,
@@ -99,7 +99,7 @@ class ProfileScreen extends StatelessWidget {
           const SizedBox(height: 16),
           Obx(
             () => Text(
-              controller.user.value?.displayName ?? 'User',
+              controller.user.value?.displayName ?? 'المستخدم',
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
           ),
@@ -129,25 +129,25 @@ class ProfileScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Edit Profile',
+                'تعديل الملف الشخصي',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
               _buildEditField(
                 controller: controller.nameController,
-                label: 'Name',
+                label: 'الاسم',
                 icon: Icons.person_outline,
               ),
               const SizedBox(height: 12),
               _buildEditField(
                 controller: controller.phoneController,
-                label: 'Phone',
+                label: 'رقم الهاتف',
                 icon: Icons.phone_outlined,
               ),
               const SizedBox(height: 12),
               _buildEditField(
                 controller: controller.addressController,
-                label: 'Address',
+                label: 'العنوان',
                 icon: Icons.location_on_outlined,
                 maxLines: 2,
               ),
@@ -177,7 +177,7 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                   child: const Text(
-                    'Save Changes',
+                    'حفظ التغييرات',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -189,25 +189,25 @@ class ProfileScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Personal Information',
+                'المعلومات الشخصية',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
               _buildInfoRow(
                 Icons.person_outline,
-                'Name',
+                'الاسم',
                 controller.user.value?.userName ?? 'N/A',
               ),
               const Divider(height: 24),
               _buildInfoRow(
                 Icons.phone_outlined,
-                'Phone',
+                'رقم الهاتف',
                 controller.user.value?.userPhone ?? 'N/A',
               ),
               const Divider(height: 24),
               _buildInfoRow(
                 Icons.location_on_outlined,
-                'Address',
+                'العنوان',
                 controller.user.value?.userAddress ?? 'N/A',
               ),
               const Divider(height: 24),
@@ -293,14 +293,14 @@ class ProfileScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                'Order History',
+                'طلباتي',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               TextButton(
                 onPressed: () {
                   // Navigate to full order history
                 },
-                child: const Text('View All'),
+                child: const Text('عرض الكل'),
               ),
             ],
           ),
@@ -319,7 +319,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'No orders yet',
+                        'لا يوجد طلبات',
                         style: TextStyle(color: Colors.grey[600]),
                       ),
                     ],
@@ -368,7 +368,7 @@ class ProfileScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Order #${order.orderId}',
+                  'طلب #${order.orderId}',
                   style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 4),
@@ -414,15 +414,15 @@ class ProfileScreen extends StatelessWidget {
 
   Color _getStatusColor(String status) {
     switch (status.toLowerCase()) {
-      case 'pending':
+      case 'قيد الانتظار':
         return Colors.orange;
-      case 'processing':
+      case 'قيد المعالجة':
         return Colors.blue;
-      case 'shipped':
+      case 'تم الشحن':
         return Colors.purple;
-      case 'delivered':
+      case 'تم التوصيل':
         return Colors.green;
-      case 'cancelled':
+      case 'تم الالغاء':
         return Colors.red;
       default:
         return Colors.grey;
@@ -440,21 +440,21 @@ class ProfileScreen extends StatelessWidget {
         children: [
           _buildSettingsTile(
             icon: Icons.language,
-            title: 'Language',
-            subtitle: 'Arabic',
+            title: 'اللغة',
+            subtitle: 'العربية',
             onTap: () {},
           ),
           const Divider(height: 1),
           _buildSettingsTile(
             icon: Icons.notifications_outlined,
-            title: 'Notifications',
-            subtitle: 'Enabled',
+            title: 'الاشعارات',
+            subtitle: 'مفعل',
             onTap: () {},
           ),
           const Divider(height: 1),
           _buildSettingsTile(
             icon: Icons.help_outline,
-            title: 'Help & Support',
+            title: 'المساعدة والدعم',
             onTap: () {},
           ),
           const Divider(height: 1),
@@ -492,7 +492,7 @@ class ProfileScreen extends StatelessWidget {
         onPressed: () => controller.logout(),
         icon: const Icon(Icons.logout),
         label: const Text(
-          'Logout',
+          'تسجيل الخروج',
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         style: OutlinedButton.styleFrom(
