@@ -63,37 +63,44 @@ class AuthController extends GetxController {
   }
 
   Future<void> signup(String username, String email, String password) async {
-    statusRequest = StatusRequest.loading;
-    isLoading.value = true;
+    print('signup');
 
-    final response = await crud.postData(AppLink.signup, {
-      'username': username,
-      'email': email,
-      'password': password,
-      'phone': '0518124755',
-    });
-    var yy = response.fold((l) => l, (r) => r);
-    statusRequest = handlingData(yy);
+    try {
+      statusRequest = StatusRequest.loading;
+      isLoading.value = true;
 
-    response.fold(
-      (failure) {
-        errorMessage.value = 'Signup failed. Please try again.';
-      },
-      (data) async {
-        if (data['status'] == 'success') {
-          final token = data['data'];
-          final prefs = await SharedPreferences.getInstance();
-          if (token != null) {
-            await prefs.setString('auth_token', token);
+      final response = await crud.postData(AppLink.signup, {
+        'username': username,
+        'email': email,
+        'password': password,
+        'phone': '0518124755',
+      });
+      print(response);
+      var yy = response.fold((l) => l, (r) => r);
+      statusRequest = handlingData(yy);
+
+      response.fold(
+        (failure) {
+          errorMessage.value = 'Signup failed. Please try again.';
+          print('object $failure');
+        },
+        (data) async {
+          if (data['status'] == 'success') {
+            final token = data['data'];
+            final prefs = await SharedPreferences.getInstance();
+            if (token != null) {
+              await prefs.setString('auth_token', token);
+            }
+            isLoggedIn.value = true;
+            Get.offAllNamed(AppRoutes.home);
+          } else {
+            errorMessage.value = data['message'] ?? 'Signup failed';
           }
-          isLoggedIn.value = true;
-          Get.offAllNamed(AppRoutes.home);
-        } else {
-          errorMessage.value = data['message'] ?? 'Signup failed';
-        }
-      },
-    );
-
+        },
+      );
+    } catch (e) {
+      print('error : $e');
+    }
     isLoading.value = false;
   }
 

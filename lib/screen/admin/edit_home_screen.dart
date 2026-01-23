@@ -35,7 +35,19 @@ class AdminProductScreen extends StatelessWidget {
           return const Center(child: Text("لا يوجد اتصال بالانترنت"));
         } else if (controller.statusRequest.value == StatusRequest.failure ||
             controller.data.isEmpty) {
-          return const Center(child: Text("لا يوجد بيانات"));
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("لا يوجد بيانات"),
+              ElevatedButton(
+                onPressed: () async {
+                  controller.data.clear();
+                  await controller.getData();
+                },
+                child: Text("تحديث"),
+              ),
+            ],
+          );
         } else {
           return CustomScrollView(
             physics: const BouncingScrollPhysics(

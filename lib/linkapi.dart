@@ -6,8 +6,8 @@ class AppLink {
   static const String image = AdminLink.image;
 
   // --- Auth & Profile ---
-  static const String login = '$server/login.php';
-  static const String signup = '$server/signup.php';
+  static const String login = '$server/auth/login.php';
+  static const String signup = '$server/auth/signup.php';
   static const String profile = '$server/profile.php';
   static const String favorites = '$server/favorites.php';
 
