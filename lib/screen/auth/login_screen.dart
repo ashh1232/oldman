@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:maneger/controller/auth/auth_controller.dart';
 import 'package:maneger/routes.dart';
 
@@ -22,25 +23,28 @@ class LoginScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'Welcome Back',
-                style: TextStyle(
+                'مرحبا بكم في طلبات',
+                style: GoogleFonts.lalezar(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 8),
               Text(
-                'Sign in to your account',
-                style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                'تسجيل الدخول',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 48),
               TextField(
                 controller: emailController,
                 decoration: InputDecoration(
-                  labelText: 'Email',
+                  labelText: 'البريد الالكتروني',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -52,7 +56,7 @@ class LoginScreen extends StatelessWidget {
               TextField(
                 controller: passwordController,
                 decoration: InputDecoration(
-                  labelText: 'Password',
+                  labelText: 'كلمة المرور',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -69,8 +73,8 @@ class LoginScreen extends StatelessWidget {
                           if (emailController.text.isEmpty ||
                               passwordController.text.isEmpty) {
                             Get.snackbar(
-                              'Error',
-                              'Please fill in all fields',
+                              'خطأ',
+                              'الرجاء ملء جميع الحقول',
                               snackPosition: SnackPosition.BOTTOM,
                             );
                             return;
@@ -81,7 +85,7 @@ class LoginScreen extends StatelessWidget {
                           );
                         },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFFA6338),
+                    backgroundColor: Theme.of(context).colorScheme.primary,
                     padding: EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -90,7 +94,7 @@ class LoginScreen extends StatelessWidget {
                   child: authController.isLoading.value
                       ? CircularProgressIndicator(color: Colors.white)
                       : Text(
-                          'Login',
+                          'تسجيل الدخول',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -116,7 +120,7 @@ class LoginScreen extends StatelessWidget {
                           );
                         },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFFA6338),
+                    backgroundColor: Theme.of(context).colorScheme.primary,
                     padding: EdgeInsets.symmetric(vertical: 16),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
@@ -148,11 +152,11 @@ class LoginScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Don't have an account? "),
+                  Text("ليس لديك حساب؟ "),
                   GestureDetector(
                     onTap: () => Get.toNamed('/signup'),
                     child: Text(
-                      'Sign Up',
+                      'انشاء حساب',
                       style: TextStyle(
                         color: Color(0xFFFA6338),
                         fontWeight: FontWeight.bold,

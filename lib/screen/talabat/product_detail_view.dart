@@ -222,7 +222,7 @@ class ProductDetailView extends GetView<ProductController> {
       margin: const EdgeInsets.symmetric(vertical: 3),
       padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
-        color: Colors.grey.shade50,
+        color: const Color.fromARGB(38, 250, 250, 250),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -310,160 +310,6 @@ class ProductDetailView extends GetView<ProductController> {
     );
   }
 
-  // Widget _buildColorSection() {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       Text(
-  //         'Color',
-  //         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-  //       ),
-  //       SizedBox(height: 8),
-  //       // Obx(
-  //       //   () => Wrap(
-  //       //     spacing: 8,
-  //       //     children:
-  //       //         controller.product.value.colors.map((color) {
-  //       //           return ChoiceChip(
-  //       //             label: Text(color),
-  //       //             selected: controller.selectedColor.value == color,
-  //       //             onSelected: (selected) => controller.changeColor(color),
-  //       //             backgroundColor: Colors.grey.shade200,
-  //       //             selectedColor: Colors.blue,
-  //       //             labelStyle: TextStyle(
-  //       //               color:
-  //       //                   controller.selectedColor.value == color
-  //       //                       ? Colors.white
-  //       //                       : Colors.black,
-  //       //             ),
-  //       //           );
-  //       //         }).toList(),
-  //       //   ),
-  //       // ),
-  //     ],
-  //   );
-  // }
-
-  // Widget _buildSizeSection() {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: [
-  //       Text(
-  //         'Size',
-  //         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-  //       ),
-  //       SizedBox(height: 8),
-  //       // Obx(
-  //       //   () => Wrap(
-  //       //     spacing: 8,
-  //       //     children:
-  //       //         controller.product.value.sizes.map((size) {
-  //       //           return ChoiceChip(
-  //       //             label: Text(size),
-  //       //             selected: controller.selectedSize.value == size,
-  //       //             onSelected: (selected) => controller.changeSize(size),
-  //       //             backgroundColor: Colors.grey.shade200,
-  //       //             selectedColor: Colors.blue,
-  //       //             labelStyle: TextStyle(
-  //       //               color:
-  //       //                   controller.selectedSize.value == size
-  //       //                       ? Colors.white
-  //       //                       : Colors.black,
-  //       //             ),
-  //       //           );
-  //       //         }).toList(),
-  //       //   ),
-  //       // ),
-  //     ],
-  //   );
-  // }
-
-  // Widget _buildQuantitySection() {
-  //   return Row(
-  //     children: [
-  //       Text(
-  //         'Quantity',
-  //         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-  //       ),
-  //       Spacer(),
-  //       Container(
-  //         decoration: BoxDecoration(
-  //           border: Border.all(color: Colors.grey.shade300),
-  //           borderRadius: BorderRadius.circular(4),
-  //         ),
-  //         child: Row(
-  //           children: [
-  //             IconButton(
-  //               icon: Icon(Icons.remove, size: 20),
-  //               onPressed: controller.decreaseQuantity,
-  //               constraints: BoxConstraints(minWidth: 36, minHeight: 36),
-  //             ),
-  //             Obx(
-  //               () => Padding(
-  //                 padding: EdgeInsets.symmetric(horizontal: 16),
-  //                 child: Text(
-  //                   '${controller.quantity.value}',
-  //                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-  //                 ),
-  //               ),
-  //             ),
-  //             // IconButton(
-  //             // icon: Icon(Icons.add, size: 20),
-  //             // onPressed: controller.increaseQuantity,
-  //             // constraints: BoxConstraints(minWidth: 36, minHeight: 36),
-  //             // ),
-  //           ],
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
-
-  // Widget _buildStockSection() {
-  //   return Obx(
-  //     () => Container(
-  //       padding: EdgeInsets.all(12),
-  //       decoration: BoxDecoration(
-  //         color:
-  //             // controller.product.value.stock > 5
-  //             //     ? Colors.green.shade50
-  //             //     :
-  //             Colors.orange.shade50,
-  //         border: Border.all(
-  //           color:
-  //               // controller.product.value.stock > 5
-  //               //     ? Colors.green.shade300
-  //               //     :
-  //               Colors.orange.shade300,
-  //         ),
-  //         borderRadius: BorderRadius.circular(8),
-  //       ),
-  //       child: Row(
-  //         children: [
-  //           Icon(
-  //             // controller.product.value.stock > 0
-  //             // ? Icons.check_circle
-  //             // :
-  //             Icons.cancel,
-  //             color:
-  //                 // controller.product.value.stock > 0
-  //                 //     ? Colors.green
-  //                 //     :
-  //                 Colors.red,
-  //           ),
-  //           SizedBox(width: 8),
-  //           Text(
-  //             '',
-  //             // controller.product.value.stock > 0
-  //             //     ? 'In Stock (${controller.product.value.stock} available)'
-  //             //     : 'Out of Stock',
-  //             style: TextStyle(fontWeight: FontWeight.bold),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
   Widget _buildActionButtons(Product pro) {
     return Column(
       children: [
@@ -478,7 +324,7 @@ class ProductDetailView extends GetView<ProductController> {
               height: 35,
               margin: EdgeInsets.all(5),
               decoration: BoxDecoration(
-                color: Colors.grey.shade100,
+                color: const Color.fromARGB(96, 245, 245, 245),
                 borderRadius: BorderRadius.circular(3),
               ),
               child: Row(

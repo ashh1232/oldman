@@ -4,12 +4,15 @@ class MyThemes {
   static final light = ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
+
     // في 2026، استخدام ColorScheme.fromSeed هو الأفضل لتوليد ألوان متناسقة
     colorScheme: ColorScheme.fromSeed(
       seedColor: Colors.black, // اللون الأساسي للتطبيق
       brightness: Brightness.light,
       // surface: Colors.white, // لون الأسطح (الكروت، القوائم)
       surface: Colors.white,
+      primary: Colors.black,
+      secondary: Colors.grey,
     ),
     // تغيير الخلفية لرمادي فاتح جداً لإبراز الكروت البيضاء
     scaffoldBackgroundColor: const Color(0xFFF3F3F3),
@@ -47,7 +50,7 @@ class MyThemes {
     colorScheme: ColorScheme.fromSeed(
       seedColor: Colors.white,
       brightness: Brightness.dark,
-      surface: const Color.fromARGB(255, 34, 34, 34), // لون سطح داكن مريح للعين
+      surface: const Color.fromARGB(255, 59, 59, 59), // لون سطح داكن مريح للعين
     ),
     scaffoldBackgroundColor: const Color.fromARGB(
       255,

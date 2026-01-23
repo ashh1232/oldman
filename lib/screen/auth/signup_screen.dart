@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:maneger/controller/auth/auth_controller.dart';
 
 class SignupScreen extends StatelessWidget {
@@ -25,8 +26,8 @@ class SignupScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  'Create Account',
-                  style: TextStyle(
+                  'انشاء حساب',
+                  style: GoogleFonts.lalezar(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                     color: Colors.black87,
@@ -35,7 +36,7 @@ class SignupScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'Sign up to get started',
+                  'انشاء حساب لبدء الاستخدام',
                   style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                   textAlign: TextAlign.center,
                 ),
@@ -43,7 +44,7 @@ class SignupScreen extends StatelessWidget {
                 TextField(
                   controller: usernameController,
                   decoration: InputDecoration(
-                    labelText: 'Username',
+                    labelText: 'اسم المستخدم',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -54,7 +55,7 @@ class SignupScreen extends StatelessWidget {
                 TextField(
                   controller: emailController,
                   decoration: InputDecoration(
-                    labelText: 'Email',
+                    labelText: 'البريد الالكتروني',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -66,7 +67,7 @@ class SignupScreen extends StatelessWidget {
                 TextField(
                   controller: passwordController,
                   decoration: InputDecoration(
-                    labelText: 'Password',
+                    labelText: 'كلمة المرور',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -78,7 +79,7 @@ class SignupScreen extends StatelessWidget {
                 TextField(
                   controller: confirmPasswordController,
                   decoration: InputDecoration(
-                    labelText: 'Confirm Password',
+                    labelText: 'تاكيد كلمة المرور',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -97,8 +98,8 @@ class SignupScreen extends StatelessWidget {
                                 passwordController.text.isEmpty ||
                                 confirmPasswordController.text.isEmpty) {
                               Get.snackbar(
-                                'Error',
-                                'Please fill in all fields',
+                                'خطأ',
+                                'الرجاء ملء جميع الحقول',
                                 snackPosition: SnackPosition.BOTTOM,
                               );
                               return;
@@ -106,8 +107,8 @@ class SignupScreen extends StatelessWidget {
                             if (passwordController.text !=
                                 confirmPasswordController.text) {
                               Get.snackbar(
-                                'Error',
-                                'Passwords do not match',
+                                'خطأ',
+                                'كلمات المرور غير متطابقة',
                                 snackPosition: SnackPosition.BOTTOM,
                               );
                               return;
@@ -119,7 +120,7 @@ class SignupScreen extends StatelessWidget {
                             );
                           },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFFFA6338),
+                      backgroundColor: Theme.of(context).primaryColor,
                       padding: EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -128,7 +129,7 @@ class SignupScreen extends StatelessWidget {
                     child: authController.isLoading.value
                         ? CircularProgressIndicator(color: Colors.white)
                         : Text(
-                            'Sign Up',
+                            'انشاء حساب',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -151,11 +152,11 @@ class SignupScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Already have an account? '),
+                    Text('هل لديك حساب؟ '),
                     GestureDetector(
                       onTap: () => Get.toNamed('/login'),
                       child: Text(
-                        'Login',
+                        'تسجيل الدخول',
                         style: TextStyle(
                           color: Color(0xFFFA6338),
                           fontWeight: FontWeight.bold,
