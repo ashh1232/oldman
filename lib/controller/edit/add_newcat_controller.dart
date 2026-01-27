@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:maneger/class/image_crud.dart';
 import 'package:maneger/class/statusrequest.dart';
+import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/linkapi.dart';
 // import 'package:talabat_admin/class/image_crud.dart';
 // import 'package:talabat_admin/class/statusrequest.dart';
@@ -44,7 +45,7 @@ class AddNewcatController extends GetxController {
 
       isLoading.value = true;
 
-      var response = await crud.postRequestWithFile(AppLink.addnewcat, {
+      var response = await crud.postRequestWithFile(ApiConstants.categories, {
         "name": nameController.text,
       }, selectedImage.value!);
 

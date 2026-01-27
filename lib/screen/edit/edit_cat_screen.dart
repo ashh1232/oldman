@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/controller/edit/edit_cat.dart';
+import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/linkapi.dart';
 import 'package:maneger/routes.dart';
 
@@ -68,7 +69,7 @@ class EditCategoryScreen extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Image.network(
-                                '${AppLink.catsimages}/${cat.image}',
+                                '${ApiConstants.categoriesImages}/${cat.image}',
                                 fit: BoxFit.cover,
                                 width: double.infinity,
                                 // تعامل مع الخطأ في حال لم تحمل الصورة

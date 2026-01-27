@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/class/crud.dart';
 import 'package:maneger/class/statusrequest.dart';
+import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/bunner_model.dart';
 import 'package:maneger/model/cat_model.dart';
@@ -67,7 +68,7 @@ class TalabatController extends GetxController {
     if (isBanLoading.value) return;
     isBanLoading.value = true;
     try {
-      var response = await _crud.postData(AppLink.banner, {});
+      var response = await _crud.postData(ApiConstants.banners, {});
       response.fold((status) => _handleError(status, "فشل تحميل الإعلانات"), (
         res,
       ) {
@@ -87,7 +88,7 @@ class TalabatController extends GetxController {
     if (isCatLoading.value) return;
     isCatLoading.value = true;
     try {
-      var response = await _crud.postData(AppLink.cat, {});
+      var response = await _crud.postData(ApiConstants.categories, {});
       response.fold((status) => _handleError(status, "فشل تحميل الأقسام"), (
         res,
       ) {
@@ -107,7 +108,7 @@ class TalabatController extends GetxController {
     if (isLoading.value || !hasMore.value) return;
     isLoading.value = true;
     try {
-      var response = await _crud.getData("${AppLink.productt}?page=$page");
+      var response = await _crud.getData("${ApiConstants.products}?page=$page");
       response.fold((status) => _handleError(status, "فشل تحميل المنتجات"), (
         res,
       ) {

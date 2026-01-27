@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:maneger/class/crud.dart';
 import 'package:maneger/controller/talabat/cart_controllerw.dart';
+import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/image_model.dart';
 import 'package:maneger/model/product_model.dart';
@@ -74,7 +75,9 @@ class ProductController extends GetxController {
     if (isImageLoading.value) return;
     try {
       isImageLoading.value = true;
-      var respo = await _crud.postData(AppLink.proImages, {'pro_id': id});
+      var respo = await _crud.postData(ApiConstants.productImages, {
+        'pro_id': id,
+      });
       if (isClosed) return;
       respo.fold(
         (status) {

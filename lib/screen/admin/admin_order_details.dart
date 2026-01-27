@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/controller/admin/admin_pro_order_controller.dart';
+import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/linkapi.dart';
 
 class AdminOrderDetails extends StatelessWidget {
@@ -45,7 +46,7 @@ class AdminOrderDetails extends StatelessWidget {
                         ), // أضف هذا السطر
 
                         imageUrl:
-                            AppLink.productsimages +
+                            ApiConstants.productsImages +
                             controller.ordersProduct[index].productImage!,
                         width: double.infinity,
                         height: 130,

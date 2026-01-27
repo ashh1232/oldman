@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:maneger/class/crud.dart';
 import 'package:maneger/controller/admin/admin_order_controller.dart';
+import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/model/order_model.dart' show Order;
 import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/order_products_model.dart';
@@ -33,7 +34,7 @@ class AdminProOrderController extends GetxController {
     if (isLoading.value) return;
     try {
       isLoading.value = true;
-      var respo = await _crud.postData(AppLink.adminOrder, {
+      var respo = await _crud.postData(ApiConstants.adminOrder, {
         'action': 'get_order_items',
 
         'order_id': item.orderId,
@@ -74,7 +75,7 @@ class AdminProOrderController extends GetxController {
     if (isLoading.value) return;
     try {
       isLoading.value = true;
-      var respo = await _crud.postData(AppLink.adminOrder, {
+      var respo = await _crud.postData(ApiConstants.adminOrder, {
         'action': 'process_order',
         'order_id': item.orderId,
       });

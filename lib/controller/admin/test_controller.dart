@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:maneger/class/crud.dart';
 import 'package:maneger/class/handlingdatacontroll.dart';
 import 'package:maneger/class/statusrequest.dart';
+import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/product_model.dart';
 
@@ -19,7 +20,7 @@ class TestController extends GetxController {
 
   // دالة جلب البيانات الخام
   Future<dynamic> _fetchRawData() async {
-    var respo = await crud.postData(AppLink.product, {});
+    var respo = await crud.postData(ApiConstants.products, {});
     return respo.fold((l) => l, (r) => r);
   }
 

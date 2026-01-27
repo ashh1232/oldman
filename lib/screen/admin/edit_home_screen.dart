@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/controller/admin/test_controller.dart';
+import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/linkapi.dart';
 import 'package:maneger/routes.dart';
 import 'package:maneger/widget/loading_card.dart';
@@ -82,7 +83,7 @@ class AdminProductScreen extends StatelessWidget {
                               child: CachedNetworkImage(
                                 imageUrl: product.image.startsWith('http')
                                     ? product.image
-                                    : '${AppLink.productsimages}/${product.image}',
+                                    : '${ApiConstants.productsImages}/${product.image}',
                                 fit: BoxFit.cover,
                                 width: double.infinity,
                                 // تعامل مع الخطأ في حال لم تحمل الصورة

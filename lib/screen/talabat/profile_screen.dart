@@ -170,18 +170,18 @@ class ProfileScreen extends StatelessWidget {
                 icon: Icons.location_on_outlined,
                 maxLines: 2,
               ),
-              const SizedBox(height: 12),
-              _buildEditField(
-                controller: controller.cityController,
-                label: 'City',
-                icon: Icons.location_city_outlined,
-              ),
-              const SizedBox(height: 12),
-              _buildEditField(
-                controller: controller.countryController,
-                label: 'Country',
-                icon: Icons.flag_outlined,
-              ),
+              // const SizedBox(height: 12),
+              // _buildEditField(
+              //   controller: controller.cityController,
+              //   label: 'City',
+              //   icon: Icons.location_city_outlined,
+              // ),
+              // const SizedBox(height: 12),
+              // _buildEditField(
+              //   controller: controller.countryController,
+              //   label: 'Country',
+              //   icon: Icons.flag_outlined,
+              // ),
               const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
@@ -229,18 +229,18 @@ class ProfileScreen extends StatelessWidget {
                 'العنوان',
                 controller.user.value?.userAddress ?? 'N/A',
               ),
-              const Divider(height: 24),
-              _buildInfoRow(
-                Icons.location_city_outlined,
-                'City',
-                controller.user.value?.userCity ?? 'N/A',
-              ),
-              const Divider(height: 24),
-              _buildInfoRow(
-                Icons.flag_outlined,
-                'Country',
-                controller.user.value?.userCountry ?? 'N/A',
-              ),
+              // const Divider(height: 24),
+              // _buildInfoRow(
+              //   Icons.location_city_outlined,
+              //   'City',
+              //   controller.user.value?.userCity ?? 'N/A',
+              // ),
+              // const Divider(height: 24),
+              // _buildInfoRow(
+              //   Icons.flag_outlined,
+              //   'Country',
+              //   controller.user.value?.userCountry ?? 'N/A',
+              // ),
             ],
           );
         }

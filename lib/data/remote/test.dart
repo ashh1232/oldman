@@ -1,18 +1,18 @@
 import 'package:maneger/class/crud.dart';
-import 'package:maneger/linkapi.dart';
+import 'package:maneger/core/constants/api_constants.dart';
 
 class TestData {
   Crud crud;
   TestData(this.crud);
 
   Future<Object> getdata() async {
-    var respo = await crud.postData(AppLink.product, {});
+    var respo = await crud.postData(ApiConstants.products, {});
     // print(respo);
     return respo.fold((l) => l, (r) => r);
   }
 
   Future<Object> getCatt() async {
-    var respo = await crud.postData(AppLink.cat, {});
+    var respo = await crud.postData(ApiConstants.categories, {});
     return respo.fold((l) => l, (r) => r);
   }
 
@@ -22,7 +22,7 @@ class TestData {
     String image,
     int proCat,
   ) async {
-    var respo = await crud.postData(AppLink.signup, {
+    var respo = await crud.postData(ApiConstants.signup, {
       'username': name,
       'email': price,
       'password': image,

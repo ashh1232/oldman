@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:maneger/class/crud.dart';
 import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/controller/auth/auth_controller.dart';
+import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/order_model.dart';
 import 'package:maneger/model/user_model.dart';
@@ -69,7 +70,7 @@ class ProfileController extends GetxController {
         return;
       }
 
-      final response = await _crud.postData(AppLink.profile, {
+      final response = await _crud.postData(ApiConstants.profile, {
         'action': 'get_profile',
         'user_id': userId,
       });
@@ -99,8 +100,8 @@ class ProfileController extends GetxController {
       nameController.text = user.value!.userName;
       phoneController.text = user.value!.userPhone ?? '';
       addressController.text = user.value!.userAddress ?? '';
-      cityController.text = user.value!.userCity ?? '';
-      countryController.text = user.value!.userCountry ?? '';
+      // cityController.text = user.value!.userCity ?? '';
+      // countryController.text = user.value!.userCountry ?? '';
     }
   }
 
@@ -125,7 +126,7 @@ class ProfileController extends GetxController {
       final userId = authController.userId;
       if (userId == null) return;
 
-      final response = await _crud.postData(AppLink.profile, {
+      final response = await _crud.postData(ApiConstants.profile, {
         'action': 'update_profile',
         'user_id': userId,
         'user_name': nameController.text.trim(),
@@ -168,7 +169,7 @@ class ProfileController extends GetxController {
       final userId = authController.userId;
       if (userId == null) return;
 
-      final response = await _crud.postData(AppLink.order, {
+      final response = await _crud.postData(ApiConstants.orders, {
         'action': 'get_orders',
         'user_id': userId,
       });

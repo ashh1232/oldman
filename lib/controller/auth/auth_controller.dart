@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:maneger/class/handlingdatacontroll.dart';
 import 'package:maneger/class/statusrequest.dart';
+import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/model/user_model.dart';
 import 'package:maneger/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,9 +36,8 @@ class AuthController extends GetxController {
       if (userStr != null) {
         try {
           currentUser.value = User.fromJson(jsonDecode(userStr));
-          print('User restored: ${currentUser.value?.userId}');
         } catch (e) {
-          print('Error restoring user data: $e');
+          Get.snackbar('Error', 'Failed to save user data');
         }
       }
     } else {
@@ -49,7 +49,7 @@ class AuthController extends GetxController {
     isLoading.value = true;
     errorMessage.value = '';
 
-    final response = await crud.postData(AppLink.login, {
+    final response = await crud.postData(ApiConstants.login, {
       'phone': phone,
       'password': password,
     });
@@ -86,16 +86,14 @@ class AuthController extends GetxController {
   }
 
   Future<void> signup(String username, String phone, String password) async {
-    print('signup');
     print(username);
     print(phone);
     print(password);
-
     try {
       statusRequest = StatusRequest.loading;
       isLoading.value = true;
 
-      final response = await crud.postData(AppLink.signup, {
+      final response = await crud.postData(ApiConstants.signup, {
         'username': username,
         // 'email': email,
         'password': password,
@@ -104,11 +102,14 @@ class AuthController extends GetxController {
       print(response);
       var yy = response.fold((l) => l, (r) => r);
       statusRequest = handlingData(yy);
-
       response.fold(
         (failure) {
-          errorMessage.value = 'Signup failed. Please try again.';
-          print('Signup error: $failure');
+          // في حال فشل الاتصال أو السيرفر (Left)
+          statusRequest = failure; // مثل serverfailure أو offline
+          errorMessage.value = 'مشكلة في الاتصال بالسيرفر';
+          Get.snackbar('خطأ', 'فشل الاتصال بالشبكة');
+          // statusRequest = failure;
+          // Get.snackbar('خطأ', 'فشل الاتصال بالشبكة ${failure['message']}');
         },
         (data) async {
           if (data['status'] == 'success') {
@@ -128,11 +129,12 @@ class AuthController extends GetxController {
             Get.offAllNamed(AppRoutes.home);
           } else {
             errorMessage.value = data['message'] ?? 'Signup failed';
+            Get.snackbar('خطأ', ' ${data['details'][0]}');
           }
         },
       );
     } catch (e) {
-      print('error : $e');
+      Get.snackbar('Error', 'Failed to save user data $e');
     }
     isLoading.value = false;
   }
@@ -144,9 +146,7 @@ class AuthController extends GetxController {
       await prefs.setString('current_user', jsonEncode(user.toJson()));
       currentUser.value = user;
       isLoggedIn.value = true;
-      print('User data saved: ${user.userId}');
     } catch (e) {
-      print('Failed to save user data: $e');
       Get.snackbar('Error', 'Failed to save user data');
     }
   }

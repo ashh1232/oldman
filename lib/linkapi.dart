@@ -1,47 +1,53 @@
-import 'admin_link.dart';
+import 'core/constants/api_constants.dart';
 
-class AppLink {
+/// Legacy API links - DEPRECATED
+///
+/// This class is kept for backward compatibility.
+/// Please use ApiConstants instead for all new code.
+@Deprecated('Use ApiConstants instead')
+class AppaLink {
   // Base URLs
-  static const String server = AdminLink.server;
-  static const String image = AdminLink.image;
+  static String get server => ApiConstants.baseUrl;
+  static String get image => ApiConstants.imageBaseUrl;
 
   // --- Auth & Profile ---
-  static const String login = '$server/auth/login.php';
-  static const String signup = '$server/auth/signup.php';
-  static const String profile = '$server/profile.php';
-  static const String favorites = '$server/favorites.php';
+  static String get login => ApiConstants.login;
+  static String get signup => ApiConstants.signup;
+  static String get profile => ApiConstants.profile;
+  static String get favorites => ApiConstants.favorites;
 
   // --- Products & Categories ---
-  static const String product = '$server/product.php';
-  static const String productt = '$server/product2.php';
-  static const String proImages = '$server/products/pro_images.php';
-  static const String cat = '$server/catt.php';
-  static const String banner = '$server/banner.php';
+  static String get product => ApiConstants.products;
+  static String get productt => ApiConstants.product2;
+  static String get proImages => ApiConstants.productImages;
+  static String get cat => ApiConstants.categories;
+  static String get banner => ApiConstants.banners;
 
   // --- Image Paths ---
-  static const String productsimages = '$image/productsImages/';
-  static const String catsimages = '$image/catsImages/';
-  static const String bannersimages = '$image/bannersImages/';
+  static String get productsimages => ApiConstants.productsImages;
+  static String get catsimages => ApiConstants.categoriesImages;
+  static String get bannersimages => ApiConstants.bannersImages;
 
   // --- Admin: Products ---
-  static const String addProduct = '$server/admin/add_product.php';
-  static const String uploadImage = '$server/admin/upload_image.php';
-  static const String update = '$server/update_test.php';
-  static const String addpro = '$server/add_test.php';
+  static String get addProduct => ApiConstants.addProduct;
+  static String get uploadImage => ApiConstants.uploadImage;
+  static String get update => ApiConstants.update;
+  static String get addpro => ApiConstants.addTest;
 
   // --- Admin: Orders ---
-  static const String order = '$server/order/order.php';
-  static const String adminOrder = '$server/order/admin_order.php';
+  static String get order => ApiConstants.orders;
+  static String get adminOrder =>
+      '${ApiConstants.baseUrl}/order/admin_order.php';
 
   // --- Admin: Category Management ---
-  static const String addnewcat = '$server/editcat/add_cat.php';
-  static const String category = '$server/editcat/edit_cat.php';
-  static const String uploadcatImage = '$server/editcat/upload_cat_image.php';
+  static String get addnewcat => ApiConstants.addCategory;
+  static String get category => ApiConstants.editCategory;
+  static String get uploadcatImage => ApiConstants.uploadCategoryImage;
 
   // --- Admin: Banner Management ---
-  static const String addnewbanner = '$server/banner/add_ban.php';
-  static const String uploadbanImage = '$server/banner/upload_ban_image.php';
+  static String get addnewbanner => ApiConstants.addBanner;
+  static String get uploadbanImage => ApiConstants.uploadBannerImage;
 
   // --- Delivery ---
-  static const String delivery = '$server/delivery/delivery_order.php';
+  static String get delivery => ApiConstants.delivery;
 }

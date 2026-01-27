@@ -1,4 +1,5 @@
 import 'package:maneger/class/crud.dart';
+import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/linkapi.dart';
 
 class ProductRemote {
@@ -11,7 +12,7 @@ class ProductRemote {
     String price,
     String image,
   ) async {
-    var respo = await crud.postData(AppLink.update, {
+    var respo = await crud.postData(ApiConstants.update, {
       'id': id,
       'name': name,
       'price': price,
@@ -26,7 +27,7 @@ class ProductRemote {
     String image,
     String proCat,
   ) async {
-    var respo = await crud.postData(AppLink.addpro, {
+    var respo = await crud.postData(ApiConstants.addProduct, {
       'name': name,
       'price': price,
       'image': image,
@@ -41,7 +42,7 @@ class ProductRemote {
     String image,
     int proCat,
   ) async {
-    var respo = await crud.postData(AppLink.addpro, {
+    var respo = await crud.postData(ApiConstants.addProduct, {
       'username': name,
       'email': price,
       'password': image,

@@ -12,6 +12,8 @@ import 'package:maneger/model/user_model.dart';
 import 'package:maneger/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../core/constants/api_constants.dart';
+
 class CheckoutController extends GetxController {
   //////////////
   // أضف هذا السطر مع الـ controllers الأخرى
@@ -229,7 +231,7 @@ class CheckoutController extends GetxController {
 
       // print((authController.userId).runtimeType);
 
-      final response = await _crud.postData(AppLink.order, orderData);
+      final response = await _crud.postData(ApiConstants.orders, orderData);
       print(response);
       response.fold(
         (statusReq) {

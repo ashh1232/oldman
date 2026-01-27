@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/class/crud.dart';
 import 'package:maneger/class/statusrequest.dart';
+import 'package:maneger/core/constants/api_constants.dart';
 // import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/order_model.dart';
@@ -28,7 +29,7 @@ class AdminOrderProcessController extends GetxController {
     if (isLoading.value) return;
     isLoading.value = true;
     try {
-      var response = await _crud.postData(AppLink.adminOrder, {
+      var response = await _crud.postData(ApiConstants.adminOrder, {
         'action': 'get_processing_order',
       });
       response.fold((status) => _handleError(status, "فشل تحميل الإعلانات"), (

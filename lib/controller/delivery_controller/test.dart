@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/class/crud.dart';
 import 'package:maneger/class/statusrequest.dart';
+import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/order_del_model.dart';
 
@@ -29,7 +30,7 @@ class DeliveryHomeController extends GetxController {
 
     try {
       isLoading.value = true;
-      var respo = await _crud.postData(AppLink.delivery, {
+      var respo = await _crud.postData(ApiConstants.delivery, {
         'action': 'get_order_details',
         'order_id': '18',
       });

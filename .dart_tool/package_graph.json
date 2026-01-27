@@ -107,6 +107,14 @@
       ]
     },
     {
+      "name": "equatable",
+      "version": "2.0.8",
+      "dependencies": [
+        "collection",
+        "meta"
+      ]
+    },
+    {
       "name": "dartz",
       "version": "0.10.1",
       "dependencies": []
@@ -1420,14 +1428,6 @@
         "file",
         "path",
         "string_scanner"
-      ]
-    },
-    {
-      "name": "equatable",
-      "version": "2.0.8",
-      "dependencies": [
-        "collection",
-        "meta"
       ]
     }
   ],

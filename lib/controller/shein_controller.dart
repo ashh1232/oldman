@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/class/crud.dart';
 import 'package:maneger/class/statusrequest.dart';
+import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/linkapi.dart';
 import 'dart:async';
 import '../model/bunner_model.dart';
@@ -65,7 +66,7 @@ class CategoryController extends GetxController
 
     try {
       isBanLoading.value = true;
-      var respo = await crud.postData(AppLink.category, {
+      var respo = await crud.postData(ApiConstants.categories, {
         'action': 'get_ban_cat',
         'cat_id': id,
       });
@@ -116,7 +117,7 @@ class CategoryController extends GetxController
 
     try {
       isBanLoading.value = true;
-      var respo = await crud.postData(AppLink.category, {
+      var respo = await crud.postData(ApiConstants.categories, {
         'action': 'get_cat_id',
         'cat_id': id,
       });

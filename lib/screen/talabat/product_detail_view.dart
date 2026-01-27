@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maneger/controller/product_controller.dart';
+import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/product_model.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -126,8 +127,8 @@ class ProductDetailView extends GetView<ProductController> {
                   itemCount: totalImages,
                   itemBuilder: (context, index) {
                     String imageUrl = index == 0
-                        ? (AppLink.productsimages + pro.image)
-                        : (AppLink.productsimages +
+                        ? (ApiConstants.productsImages + pro.image)
+                        : (ApiConstants.productsImages +
                               controller.image[index - 1].image);
 
                     return CachedNetworkImage(
@@ -192,8 +193,8 @@ class ProductDetailView extends GetView<ProductController> {
                           borderRadius: BorderRadius.circular(6),
                           child: CachedNetworkImage(
                             imageUrl: index == 0
-                                ? (AppLink.productsimages + pro.image)
-                                : (AppLink.productsimages +
+                                ? (ApiConstants.productsImages + pro.image)
+                                : (ApiConstants.productsImages +
                                       controller.image[index - 1].image),
                             fit: BoxFit.cover,
                           ),

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maneger/core/constants/api_constants.dart';
 import '../../controller/talabat/cart_controllerw.dart';
 import '../../linkapi.dart';
 import '../../model/product_model.dart';
@@ -51,7 +52,7 @@ class CartItemWidget extends StatelessWidget {
                   key: ValueKey(product.image),
                   imageUrl: product.image.startsWith('http')
                       ? product.image
-                      : "${AppLink.productsimages}/${product.image}",
+                      : "${ApiConstants.productsImages}/${product.image}",
                   width: 80,
                   height: 80,
                   fit: BoxFit.cover,

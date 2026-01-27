@@ -1,60 +1,61 @@
+import '../config/environment_manager.dart';
+
 /// API endpoints and configuration constants
 ///
 /// Centralized location for all API-related constants
+/// URLs are now dynamically loaded from the current environment
 class ApiConstants {
   ApiConstants._(); // Private constructor to prevent instantiation
 
-  // Base URLs (move to environment variables in production)
-  static const String devServer = 'http://192.168.43.19/doc/docana-back';
-  static const String prodServer =
-      'https://api.yourapp.com'; // Replace with actual
+  // Get environment manager instance
+  static final _env = EnvironmentManager();
 
-  // Use dev server by default (change for production builds)
-  static const String baseUrl = devServer;
-  static const String imageBaseUrl = 'http://192.168.43.19/img';
+  // Base URLs (dynamically loaded from environment)
+  static String get baseUrl => _env.serverUrl;
+  static String get imageBaseUrl => _env.imageUrl;
 
   // API Endpoints
-  static const String login = '$baseUrl/login.php';
-  static const String signup = '$baseUrl/signup.php';
-  static const String profile = '$baseUrl/profile.php';
+  static String get login => '$baseUrl/auth/login.php';
+  static String get signup => '$baseUrl/auth/signup.php';
+  static String get profile => '$baseUrl/auth/profile.php';
 
   // Products
-  static const String products = '$baseUrl/product.php';
-  static const String product2 = '$baseUrl/product2.php';
-  static const String productImages = '$baseUrl/products/pro_images.php';
+  static String get products => '$baseUrl/product.php';
+  static String get product2 => '$baseUrl/product2.php';
+  static String get productImages => '$baseUrl/products/pro_images.php';
 
   // Categories
-  static const String categories = '$baseUrl/catt.php';
-  static const String addCategory = '$baseUrl/editcat/add_cat.php';
-  static const String uploadCategoryImage =
+  static String get categories => '$baseUrl/catt.php';
+  static String get addCategory => '$baseUrl/editcat/add_cat.php';
+  static String get uploadCategoryImage =>
       '$baseUrl/editcat/upload_cat_image.php';
-  static const String editCategory = '$baseUrl/editcat/edit_cat.php';
+  static String get editCategory => '$baseUrl/editcat/edit_cat.php';
 
   // Banners
-  static const String banners = '$baseUrl/banner.php';
-  static const String addBanner = '$baseUrl/banner/add_ban.php';
-  static const String uploadBannerImage =
-      '$baseUrl/banner/upload_ban_image.php';
+  static String get banners => '$baseUrl/banner.php';
+  static String get addBanner => '$baseUrl/banner/add_ban.php';
+  static String get uploadBannerImage => '$baseUrl/banner/upload_ban_image.php';
 
   // Orders
-  static const String orders = '$baseUrl/order/order.php';
-  static const String delivery = '$baseUrl/delivery/delivery_order.php';
+  static String get orders => '$baseUrl/order/order.php';
+  static String get delivery => '$baseUrl/delivery/delivery_order.php';
 
   // Favorites
-  static const String favorites = '$baseUrl/favorites.php';
+  static String get favorites => '$baseUrl/favorites.php';
 
   // Admin
-  static const String addProduct = '$baseUrl/admin/add_product.php';
-  static const String uploadImage = '$baseUrl/admin/upload_image.php';
+  static String get addProduct => '$baseUrl/admin/add_product.php';
+  static String get uploadImage => '$baseUrl/admin/upload_image.php';
+  static String get adminOrder => '$baseUrl/order/admin_order.php';
 
   // Misc
-  static const String update = '$baseUrl/update_test.php';
-  static const String addTest = '$baseUrl/add_test.php';
+  static String get update => '$baseUrl/update_test.php';
+  static String get addTest => '$baseUrl/add_test.php';
 
   // Image Paths
-  static const String productsImages = '$imageBaseUrl/productsImages/';
-  static const String categoriesImages = '$imageBaseUrl/catsImages/';
-  static const String bannersImages = '$imageBaseUrl/bannersImages/';
+  static String get productsImages => '$imageBaseUrl/productsImages/';
+  static String get categoriesImages => '$imageBaseUrl/catsImages/';
+  static String get bannersImages => '$imageBaseUrl/bannersImages/';
 
   // API Timeouts
   static const Duration connectionTimeout = Duration(seconds: 30);

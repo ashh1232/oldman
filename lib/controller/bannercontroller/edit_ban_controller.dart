@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:maneger/class/crud.dart';
 import 'package:maneger/class/handlingdatacontroll.dart';
 import 'package:maneger/class/statusrequest.dart';
+import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/linkapi.dart';
 import '../../model/bunner_model.dart';
 
@@ -23,7 +24,9 @@ class EditBanController extends GetxController {
   Future<void> getData() async {
     statusRequest.value = StatusRequest.loading;
     try {
-      var respo = await crud.postData(AppLink.banner, {'action': 'get_cat'});
+      var respo = await crud.postData(ApiConstants.banners, {
+        'action': 'get_cat',
+      });
       statusRequest.value = handlingData(respo);
       // return
       if (statusRequest.value == StatusRequest.success) {

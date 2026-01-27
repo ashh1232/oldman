@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:maneger/controller/admin/test_controller.dart';
+import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/bunner_model.dart';
 
@@ -79,7 +80,7 @@ class EditDetailBanController extends GetxController {
     statusMessage.value = 'تحديث صورة المنتج...';
     Get.snackbar('تحديث صورة المنتج', 'جاري تحديث صورة المنتج...');
     try {
-      final url = Uri.parse(AppLink.uploadbanImage);
+      final url = Uri.parse(ApiConstants.uploadBannerImage);
       final request = http.MultipartRequest('POST', url);
       // Add the product_id field so PHP knows which record to update
       request.fields['banner_id'] = productId;

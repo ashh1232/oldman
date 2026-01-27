@@ -11,8 +11,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init(); // Initialize storage
 
-  // Initialize PRODUCTION environment
-  EnvironmentManager().initialize(AppEnvironment.production);
+  // Initialize STAGING environment
+  EnvironmentManager().initialize(AppEnvironment.staging);
 
   // Optional: Global error reporting can be added here
   FlutterError.onError = (details) {
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Docana Manager',
+      title: 'Docana Manager (Staging)',
       theme: MyThemes.light,
       darkTheme: MyThemes.dark,
       themeMode: ThemeService().theme, // Loads saved theme  from GetStorage
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       locale: const Locale('ar', 'SA'),
       fallbackLocale: const Locale('en', 'US'),
 
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: true, // Show debug banner in staging
     );
   }
 }

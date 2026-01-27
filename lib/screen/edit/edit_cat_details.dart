@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/controller/edit/edit_detail_cat_controller.dart';
+import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/linkapi.dart';
 import '../../model/cat_model.dart';
 
@@ -113,7 +114,8 @@ class EditCatDetailView extends GetView<EditDetailCatController> {
                       itemCount: 1,
                       itemBuilder: (context, index) {
                         return CachedNetworkImage(
-                          imageUrl: '${AppLink.image}${cat.image}',
+                          imageUrl:
+                              '${ApiConstants.categoriesImages}${cat.image}',
                           fit: BoxFit.cover,
                           placeholder: (context, url) =>
                               Center(child: CircularProgressIndicator()),
