@@ -11,6 +11,7 @@ import 'package:maneger/controller/product_controller.dart';
 import 'package:maneger/controller/shein_controller.dart';
 import 'package:maneger/controller/talabat/cart_controllerw.dart';
 import 'package:maneger/controller/talabat/checkout_controller.dart';
+import 'package:maneger/controller/talabat/profile_controller.dart';
 import 'package:maneger/controller/talabat/tal_map_controller.dart';
 import 'package:maneger/controller/talabat/talabat_controller.dart';
 
@@ -48,5 +49,6 @@ class HomeBinding extends Bindings {
       fenix: true,
     );
     Get.lazyPut<TestController>(() => TestController(), fenix: true);
+    Get.lazyPut<ProfileController>(() => ProfileController(), fenix: true);
   }
 }

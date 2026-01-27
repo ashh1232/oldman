@@ -1,8 +1,8 @@
 class User {
   final String userId;
   final String userName;
-  final String userEmail;
-  final String? userPhone;
+  final String? userEmail;
+  final String userPhone;
   final String? userImage;
   final String? userAddress;
   final String? userCity;
@@ -12,8 +12,8 @@ class User {
   User({
     required this.userId,
     required this.userName,
-    required this.userEmail,
-    this.userPhone,
+    this.userEmail,
+    required this.userPhone,
     this.userImage,
     this.userAddress,
     this.userCity,
@@ -25,8 +25,8 @@ class User {
     return User(
       userId: json['user_id'].toString(),
       userName: json['user_name'] as String,
-      userEmail: json['user_email'] as String,
-      userPhone: json['user_phone'] as String?,
+      // userEmail: json['user_email'] as String ?? '',
+      userPhone: json['user_phone'] as String,
       userImage: json['user_image'] as String?,
       userAddress: json['user_address'] as String?,
       userCity: json['user_city'] as String?,
@@ -57,5 +57,5 @@ class User {
   }
 
   // Helper method to get display name
-  String get displayName => userName.isNotEmpty ? userName : userEmail;
+  String get displayName => userName.isNotEmpty ? userName : userPhone;
 }

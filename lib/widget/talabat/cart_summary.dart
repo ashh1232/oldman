@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maneger/routes.dart';
 import '../../controller/talabat/cart_controllerw.dart';
 
 class CartSummaryWidget extends StatelessWidget {
   final CartController cartController;
+  final bool isLoggedIn;
 
-  const CartSummaryWidget({super.key, required this.cartController});
+  const CartSummaryWidget({
+    super.key,
+    required this.cartController,
+    required this.isLoggedIn,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +59,9 @@ class CartSummaryWidget extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () => cartController.checkout(),
+                  onPressed: () => isLoggedIn
+                      ? cartController.checkout()
+                      : Get.toNamed(AppRoutes.login),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.onSurface,
                     padding: const EdgeInsets.symmetric(vertical: 5),

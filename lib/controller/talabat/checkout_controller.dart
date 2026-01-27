@@ -5,8 +5,10 @@ import 'package:maneger/class/crud.dart';
 import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/controller/auth/auth_controller.dart';
 import 'package:maneger/controller/talabat/cart_controllerw.dart';
+import 'package:maneger/controller/talabat/profile_controller.dart';
 import 'package:maneger/controller/talabat/tal_map_controller.dart';
 import 'package:maneger/linkapi.dart';
+import 'package:maneger/model/user_model.dart';
 import 'package:maneger/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,8 +16,10 @@ class CheckoutController extends GetxController {
   //////////////
   // أضف هذا السطر مع الـ controllers الأخرى
   final TalMapController mapController = Get.find<TalMapController>();
+  final ProfileController profileController = Get.find<ProfileController>();
   final isLoading = false.obs;
   final ismap = false.obs;
+  final RxBool isEditing = false.obs;
 
   late RxDouble selectedLat = 0.0.obs;
   late RxDouble selectedLong = 0.0.obs;
@@ -26,6 +30,8 @@ class CheckoutController extends GetxController {
   final Crud _crud = Crud();
   final AuthController authController = Get.find<AuthController>();
   final CartController cartController = Get.find<CartController>();
+  // final Rx<User?> user = Rx<User?>(null);
+  Rx<User?> get user => profileController.user;
 
   // Form controllers
   final nameController = TextEditingController();
@@ -46,6 +52,7 @@ class CheckoutController extends GetxController {
     super.onInit();
     loadUserData();
     await _loadFromStorage();
+    _fillFormControllers();
   }
 
   @override
@@ -58,14 +65,32 @@ class CheckoutController extends GetxController {
     super.onClose();
   }
 
+  // Fill form controllers with user data
+  void _fillFormControllers() {
+    if (user.value != null) {
+      nameController.text = user.value!.userName;
+      phoneController.text = user.value!.userPhone ?? '';
+      addressController.text = user.value!.userAddress ?? '';
+      // cityController.text = user.value!.userCity ?? '';
+      // countryController.text = user.value!.userCountry ?? '';
+    }
+  }
+
+  void toggleEditMode() {
+    isEditing.value = !isEditing.value;
+    if (!isEditing.value) {
+      _fillFormControllers(); // Reset form if canceling edit
+    }
+  }
+
   // Load user data to pre-fill form
   void loadUserData() {
-    final user = authController.currentUser.value;
-    if (user != null) {
-      nameController.text = user.userName;
-      phoneController.text = user.userPhone ?? '';
-      addressController.text = user.userAddress ?? '';
-    }
+    // final user = authController.currentUser.value;
+    // if (user != null) {
+    //   nameController.text = user.userName;
+    //   phoneController.text = user.userPhone ?? '';
+    //   addressController.text = user.userAddress ?? '';
+    // }
     // Get the latest coordinates directly from the Map Controller
     selectedLat.value = mapController.destinationLatLng.value.latitude;
     selectedLong.value = mapController.destinationLatLng.value.longitude;
@@ -184,7 +209,7 @@ class CheckoutController extends GetxController {
       final orderData = {
         'action': 'create_order',
         'user_id':
-            authController.userId ?? '2', // Default to 1 if not logged in
+            authController.userId ?? '9', // Default to 1 if not logged in
         'total': total.toStringAsFixed(2),
 
         'subtotal': subtotal.toStringAsFixed(2),
@@ -205,7 +230,7 @@ class CheckoutController extends GetxController {
       // print((authController.userId).runtimeType);
 
       final response = await _crud.postData(AppLink.order, orderData);
-
+      print(response);
       response.fold(
         (statusReq) {
           // Error
@@ -214,6 +239,7 @@ class CheckoutController extends GetxController {
           Get.snackbar('Error', 'Failed to place order. Please try again.');
         },
         (responseBody) {
+          print(responseBody);
           // Success
           isProcessing.value = false;
           statusRequest.value = StatusRequest.success;
@@ -233,6 +259,7 @@ class CheckoutController extends GetxController {
               arguments: {'order_id': orderId, 'total': total},
             );
           } else {
+            print(responseBody['message']);
             Get.snackbar(
               'Error',
               responseBody['message'] ?? 'Failed to place order',
@@ -241,6 +268,7 @@ class CheckoutController extends GetxController {
         },
       );
     } catch (e) {
+      print(e);
       isProcessing.value = false;
       statusRequest.value = StatusRequest.serverfailure;
       Get.snackbar('Error', 'An error occurred: $e');

@@ -45,12 +45,12 @@ class AuthController extends GetxController {
     }
   }
 
-  Future<void> login(String email, String password) async {
+  Future<void> login(String phone, String password) async {
     isLoading.value = true;
     errorMessage.value = '';
 
     final response = await crud.postData(AppLink.login, {
-      'username': email,
+      'phone': phone,
       'password': password,
     });
 
@@ -85,8 +85,11 @@ class AuthController extends GetxController {
     isLoading.value = false;
   }
 
-  Future<void> signup(String username, String email, String password) async {
+  Future<void> signup(String username, String phone, String password) async {
     print('signup');
+    print(username);
+    print(phone);
+    print(password);
 
     try {
       statusRequest = StatusRequest.loading;
@@ -94,9 +97,9 @@ class AuthController extends GetxController {
 
       final response = await crud.postData(AppLink.signup, {
         'username': username,
-        'email': email,
+        // 'email': email,
         'password': password,
-        'phone': '0501235235',
+        'phone': phone,
       });
       print(response);
       var yy = response.fold((l) => l, (r) => r);

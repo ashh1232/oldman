@@ -35,7 +35,23 @@ class ProfileScreen extends StatelessWidget {
       body: Obx(() {
         if (controller.statusRequest.value == StatusRequest.loading &&
             controller.user.value == null) {
-          return const Center(child: CircularProgressIndicator());
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 20),
+                _buildProfileHeader(controller),
+                const SizedBox(height: 20),
+                _buildProfileInfo(controller),
+                const SizedBox(height: 16),
+                _buildOrderHistory(controller),
+                const SizedBox(height: 16),
+                _buildSettings(controller),
+                const SizedBox(height: 16),
+                _buildLogoutButton(controller),
+                const SizedBox(height: 24),
+              ],
+            ),
+          );
         }
 
         return SingleChildScrollView(
@@ -72,7 +88,10 @@ class ProfileScreen extends StatelessWidget {
                 radius: 50,
                 backgroundColor: Colors.blue[100],
                 backgroundImage: controller.user.value?.fullImageUrl != null
-                    ? NetworkImage(controller.user.value!.fullImageUrl!)
+                    ? NetworkImage(
+                        controller.user.value!.fullImageUrl ??
+                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7k9dXNmhJCaCKwqr66SOrvRxD7814hZF62Q&s',
+                      )
                     : null,
                 child: controller.user.value?.fullImageUrl == null
                     ? Icon(Icons.person, size: 50, color: Colors.blue[700])

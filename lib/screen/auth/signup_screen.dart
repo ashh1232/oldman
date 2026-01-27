@@ -6,7 +6,7 @@ import 'package:maneger/controller/auth/auth_controller.dart';
 class SignupScreen extends StatelessWidget {
   final AuthController authController = Get.put(AuthController());
   final TextEditingController usernameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
@@ -53,15 +53,15 @@ class SignupScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 16),
                 TextField(
-                  controller: emailController,
+                  controller: phoneController,
                   decoration: InputDecoration(
-                    labelText: 'البريد الالكتروني',
+                    labelText: 'رقم الهاتف',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    prefixIcon: Icon(Icons.email),
+                    prefixIcon: Icon(Icons.phone),
                   ),
-                  keyboardType: TextInputType.emailAddress,
+                  keyboardType: TextInputType.phone,
                 ),
                 SizedBox(height: 16),
                 TextField(
@@ -94,7 +94,7 @@ class SignupScreen extends StatelessWidget {
                         ? null
                         : () {
                             if (usernameController.text.isEmpty ||
-                                emailController.text.isEmpty ||
+                                phoneController.text.isEmpty ||
                                 passwordController.text.isEmpty ||
                                 confirmPasswordController.text.isEmpty) {
                               Get.snackbar(
@@ -113,9 +113,18 @@ class SignupScreen extends StatelessWidget {
                               );
                               return;
                             }
+                            if (phoneController.text.length != 10) {
+                              Get.snackbar(
+                                'خطأ',
+                                'الرجاء إدخال رقم هاتف صحيح',
+                                snackPosition: SnackPosition.BOTTOM,
+                              );
+                              return;
+                            }
                             authController.signup(
                               usernameController.text.trim(),
-                              emailController.text.trim(),
+                              phoneController.text.trim(),
+
                               passwordController.text.trim(),
                             );
                           },
