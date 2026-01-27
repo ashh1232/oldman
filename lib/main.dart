@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       title: 'Docana Manager',
       theme: MyThemes.light,
       darkTheme: MyThemes.dark,
-      themeMode: ThemeService().theme, // Loads saved theme from GetStorage
+      themeMode: ThemeService().theme, // Loads saved theme  from GetStorage
 
       initialRoute: AppRoutes.home,
       getPages: AppRoutes.routes,

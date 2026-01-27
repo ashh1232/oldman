@@ -56,7 +56,9 @@ class CheckoutMapPreview extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 child: Obx(() {
                   if (controller.ismap.value) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(
+                      child: Icon(Icons.location_off, size: 55),
+                    );
                   }
                   if (controller.selectedLat.value == 0.0 &&
                       controller.selectedLong.value == 0.0) {

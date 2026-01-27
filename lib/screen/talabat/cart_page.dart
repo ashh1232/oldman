@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/controller/talabat/cart_controllerw.dart';
+import 'package:maneger/routes.dart';
 import '../../widget/talabat/cart_item.dart';
 import '../../widget/talabat/cart_summary.dart';
 
@@ -70,6 +71,51 @@ class CartPage extends StatelessWidget {
   Widget _buildCartContent(BuildContext context) {
     return Column(
       children: [
+        cartController.isLoggedIn.value
+            ? SizedBox()
+            : Container(
+                // padding: EdgeInsets.all(3),
+                margin: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                width: double.infinity,
+                height: 35,
+                child: Center(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'يرجى تسجيل الدخول لإضافة منتجات إلى السلة',
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          foregroundColor: Colors.white,
+                        ),
+                        onPressed: () {
+                          Get.toNamed(AppRoutes.login);
+                        },
+                        child: Text(
+                          'تسجيل الدخول',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
         // Header
         Padding(
           padding: const EdgeInsets.all(16),
@@ -113,7 +159,10 @@ class CartPage extends StatelessWidget {
           ),
         ),
         // Total summary and checkout
-        CartSummaryWidget(cartController: cartController),
+        CartSummaryWidget(
+          cartController: cartController,
+          isLoggedIn: cartController.isLoggedIn.value,
+        ),
       ],
     );
   }
