@@ -129,7 +129,7 @@ class AuthController extends GetxController {
             Get.offAllNamed(AppRoutes.home);
           } else {
             errorMessage.value = data['message'] ?? 'Signup failed';
-            Get.snackbar('خطأ', ' ${data['details'][0]}');
+            Get.snackbar('خطأ', ' ${data['details']}');
           }
         },
       );
