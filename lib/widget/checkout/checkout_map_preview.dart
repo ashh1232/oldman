@@ -56,13 +56,36 @@ class CheckoutMapPreview extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
                 child: Obx(() {
                   if (controller.ismap.value) {
-                    return const Center(
-                      child: Icon(Icons.location_off, size: 55),
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+
+                      children: [
+                        Icon(Icons.location_off, size: 55),
+                        Text(
+                          "لا يوجد موقع محدد",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ],
                     );
                   }
                   if (controller.selectedLat.value == 0.0 &&
                       controller.selectedLong.value == 0.0) {
-                    return const Center(child: Text('لا يوجد موقع محدد'));
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.location_off, size: 55),
+                          Text(
+                            "لا يوجد موقع محدد",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
+                    );
                   }
 
                   return IgnorePointer(

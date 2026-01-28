@@ -56,7 +56,7 @@ class CheckoutDeliveryForm extends StatelessWidget {
                   const SizedBox(height: 16),
                   _buildEditField(
                     controller: controller.nameController,
-                    label: 'الاسم',
+                    label: 'الاسم الكامل',
                     icon: Icons.person_outline,
                   ),
                   const SizedBox(height: 12),
@@ -68,7 +68,7 @@ class CheckoutDeliveryForm extends StatelessWidget {
                   const SizedBox(height: 12),
                   _buildEditField(
                     controller: controller.addressController,
-                    label: 'العنوان',
+                    label: 'العنوان (اسم الحارة)',
                     icon: Icons.location_on_outlined,
                     maxLines: 2,
                   ),

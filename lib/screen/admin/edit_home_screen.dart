@@ -55,6 +55,13 @@ class AdminProductScreen extends StatelessWidget {
               parent: AlwaysScrollableScrollPhysics(),
             ),
             slivers: [
+              SliverToBoxAdapter(
+                child: SafeArea(
+                  child: Column(
+                    children: [SizedBox(height: 200, child: Container())],
+                  ),
+                ),
+              ),
               CupertinoSliverRefreshControl(
                 onRefresh: () async => await controller.getData(),
               ),
@@ -62,7 +69,7 @@ class AdminProductScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 sliver: SliverGrid.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
+                    crossAxisCount: 3,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                     childAspectRatio: 0.7,

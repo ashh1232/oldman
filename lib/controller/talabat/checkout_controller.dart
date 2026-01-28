@@ -54,7 +54,17 @@ class CheckoutController extends GetxController {
     super.onInit();
     loadUserData();
     await _loadFromStorage();
-    _fillFormControllers();
+  }
+
+  @override
+  void onReady() {
+    profileController.user.listen((user) {
+      if (user != null) {
+        _fillFormControllers();
+      }
+    });
+
+    super.onReady();
   }
 
   @override
@@ -62,7 +72,6 @@ class CheckoutController extends GetxController {
     nameController.dispose();
     phoneController.dispose();
     addressController.dispose();
-
     notesController.dispose();
     super.onClose();
   }
@@ -134,9 +143,9 @@ class CheckoutController extends GetxController {
 
   // Calculate totals
   double get subtotal => cartController.subtotal;
-  double get tax => cartController.tax;
+  // double get tax => cartController.tax;
   double get shipping => shippingCost.value;
-  double get total => subtotal + tax + shipping;
+  double get total => subtotal + shipping;
 
   // Select payment method
   void selectPaymentMethod(String method) {
