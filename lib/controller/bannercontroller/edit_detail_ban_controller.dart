@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 // import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:maneger/controller/admin/test_controller.dart';
+import 'package:maneger/controller/vendor_controller/test_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/bunner_model.dart';

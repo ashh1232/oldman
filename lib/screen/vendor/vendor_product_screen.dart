@@ -3,13 +3,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/class/statusrequest.dart';
-import 'package:maneger/controller/admin/test_controller.dart';
+import 'package:maneger/controller/vendor_controller/test_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/routes.dart';
 import 'package:maneger/widget/loading_card.dart';
 
-class AdminProductScreen extends StatelessWidget {
-  const AdminProductScreen({super.key});
+class VendorProductScreen extends StatelessWidget {
+  const VendorProductScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

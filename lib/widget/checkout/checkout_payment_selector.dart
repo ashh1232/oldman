@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controller/talabat/checkout_controller.dart';
+import '../../controller/talabat_controller/checkout_controller.dart';
 
 class CheckoutPaymentSelector extends StatelessWidget {
   final CheckoutController controller;

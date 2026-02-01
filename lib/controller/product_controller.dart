@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:maneger/class/crud.dart';
-import 'package:maneger/controller/talabat/cart_controllerw.dart';
+import 'package:maneger/controller/talabat_controller/cart_controllerw.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/image_model.dart';

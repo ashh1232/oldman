@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:maneger/controller/auth/auth_controller.dart';
+import 'package:maneger/controller/auth_controller/auth_controller.dart';
 import 'package:maneger/model/product_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:talabat/controller/auth_controller.dart';

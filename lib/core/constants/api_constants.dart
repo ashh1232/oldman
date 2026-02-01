@@ -43,7 +43,7 @@ class ApiConstants {
   // Favorites
   static String get favorites => '$baseUrl/favorites.php';
 
-  // Admin
+  // Vendor
   static String get newVendor => '$baseUrl/admin/new_vendor.php';
   static String get addProduct => '$baseUrl/admin/add_product.php';
   static String get uploadImage => '$baseUrl/admin/upload_image.php';

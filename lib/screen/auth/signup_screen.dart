@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:maneger/controller/auth/auth_controller.dart';
+import 'package:maneger/controller/auth_controller/auth_controller.dart';
 
 class SignupScreen extends StatelessWidget {
   final AuthController authController = Get.put(AuthController());

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
-import 'package:maneger/controller/talabat/tal_map_controller.dart';
+import 'package:maneger/controller/talabat_controller/tal_map_controller.dart';
 
 class MapTal extends StatelessWidget {
   const MapTal({super.key});

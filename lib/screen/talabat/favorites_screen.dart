@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:maneger/controller/talabat/favorites_controller.dart';
+import 'package:maneger/controller/talabat_controller/favorites_controller.dart';
 // import 'package:talabat/controller/favorites_controller.dart';
 // import 'package:talabat/routes.dart';
 import 'package:cached_network_image/cached_network_image.dart';

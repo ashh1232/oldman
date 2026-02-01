@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
-import 'package:maneger/controller/talabat/talabat_controller.dart';
+import 'package:maneger/controller/talabat_controller/talabat_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/linkapi.dart';
 import 'package:maneger/screen/talabat/product_detail_view.dart';

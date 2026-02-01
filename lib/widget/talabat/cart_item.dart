@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/core/constants/api_constants.dart';
-import '../../controller/talabat/cart_controllerw.dart';
+import '../../controller/talabat_controller/cart_controllerw.dart';
 import '../../linkapi.dart';
 import '../../model/product_model.dart';
 

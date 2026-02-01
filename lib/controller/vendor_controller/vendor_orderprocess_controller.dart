@@ -7,7 +7,7 @@ import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/order_model.dart';
 
-class AdminOrderProcessController extends GetxController {
+class VendorOrderProcessController extends GetxController {
   final Rx<StatusRequest> statusRequest = StatusRequest.loading.obs;
 
   final Crud _crud = Crud();

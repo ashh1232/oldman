@@ -1,17 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:maneger/controller/admin/admin_orderprocess_controller.dart';
+import 'package:maneger/controller/vendor_controller/vendor_orderprocess_controller.dart';
 import 'package:maneger/model/order_model.dart';
 import 'package:maneger/routes.dart';
 
-class AdminDelivery extends StatelessWidget {
-  const AdminDelivery({super.key});
+class VendorDelivery extends StatelessWidget {
+  const VendorDelivery({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final AdminOrderProcessController controller = Get.put(
-      AdminOrderProcessController(),
+    final VendorOrderProcessController controller = Get.put(
+      VendorOrderProcessController(),
     );
 
     return Scaffold(

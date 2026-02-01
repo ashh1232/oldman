@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../controller/talabat/checkout_controller.dart';
+import '../../controller/talabat_controller/checkout_controller.dart';
 
 class CheckoutNotes extends StatelessWidget {
   final CheckoutController controller;

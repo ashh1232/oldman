@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AdminProfile extends StatelessWidget {
-  const AdminProfile({super.key});
+class VendorProfile extends StatelessWidget {
+  const VendorProfile({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:maneger/controller/talabat/checkout_controller.dart';
+import 'package:maneger/controller/talabat_controller/checkout_controller.dart';
 import 'package:maneger/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -1,19 +1,19 @@
 import 'package:get/get.dart';
 import 'package:maneger/class/api_service.dart';
 import 'package:maneger/class/crud.dart';
-import 'package:maneger/controller/admin/image_upload_controller.dart';
-import 'package:maneger/controller/admin/test_controller.dart';
-import 'package:maneger/controller/auth/auth_controller.dart';
+import 'package:maneger/controller/vendor_controller/image_upload_controller.dart';
+import 'package:maneger/controller/vendor_controller/test_controller.dart';
+import 'package:maneger/controller/auth_controller/auth_controller.dart';
 import 'package:maneger/controller/delivery_controller/deli_map_controller.dart';
 import 'package:maneger/controller/delivery_controller/delivery_home_controller.dart';
 import 'package:maneger/controller/home_screen_controller.dart';
 import 'package:maneger/controller/product_controller.dart';
 import 'package:maneger/controller/shein_controller.dart';
-import 'package:maneger/controller/talabat/cart_controllerw.dart';
-import 'package:maneger/controller/talabat/checkout_controller.dart';
-import 'package:maneger/controller/talabat/profile_controller.dart';
-import 'package:maneger/controller/talabat/tal_map_controller.dart';
-import 'package:maneger/controller/talabat/talabat_controller.dart';
+import 'package:maneger/controller/talabat_controller/cart_controllerw.dart';
+import 'package:maneger/controller/talabat_controller/checkout_controller.dart';
+import 'package:maneger/controller/talabat_controller/profile_controller.dart';
+import 'package:maneger/controller/talabat_controller/tal_map_controller.dart';
+import 'package:maneger/controller/talabat_controller/talabat_controller.dart';
 
 class HomeBinding extends Bindings {
   @override

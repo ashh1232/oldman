@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/class/crud.dart';
+import 'package:maneger/controller/talabat_controller/profile_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/model/order_model.dart';
+import 'package:maneger/model/user_model.dart';
 import 'package:maneger/model/usr_model.dart';
 
 class DeliveryHomeController extends GetxController {
+  final ProfileController _profileController = Get.find<ProfileController>();
   // Rx<StatusRequest> statusRequest = StatusRequest.offline.obs;
+  Rx<User?> get user => _profileController.user;
   final Crud _crud = Crud();
   var isLoading = false.obs;
   var isAdminLoading = false.obs;
@@ -29,11 +33,12 @@ class DeliveryHomeController extends GetxController {
   }
 
   Future<void> newVendor() async {
+    print(user.value!.userId);
     ho.value++;
     try {
       var respo = await _crud.postData(ApiConstants.newVendor, {
         'action': 'add_new_vendor',
-        'user_id': '10',
+        'user_id': user.value!.userId,
       });
       print('object');
       print(respo);

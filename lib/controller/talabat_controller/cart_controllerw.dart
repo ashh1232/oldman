@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:maneger/controller/auth/auth_controller.dart';
+import 'package:maneger/controller/auth_controller/auth_controller.dart';
 import 'package:maneger/model/product_model.dart';
 import 'package:maneger/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class CartController extends GetxController {
   final AuthController _authController = Get.find<AuthController>();
   // Observable variables
-  final products = <Product>[].obs;
+  final RxList<Product> products = <Product>[].obs;
   final isLoading = false.obs;
   final selectedCount = 0.obs;
   final selectAll = true.obs;

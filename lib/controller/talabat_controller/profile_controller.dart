@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:maneger/class/crud.dart';
 import 'package:maneger/class/statusrequest.dart';
-import 'package:maneger/controller/auth/auth_controller.dart';
+import 'package:maneger/controller/auth_controller/auth_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/order_model.dart';

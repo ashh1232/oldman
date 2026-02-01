@@ -1,18 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:maneger/controller/admin/admin_pro_order_controller.dart';
+import 'package:maneger/controller/vendor_controller/vendor_pro_order_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
-import 'package:maneger/linkapi.dart';
 
-class AdminOrderDetails extends StatelessWidget {
-  const AdminOrderDetails({super.key});
+class VendorOrderDetails extends StatelessWidget {
+  const VendorOrderDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
     // التأكد من أن arguments ليست null
-    final AdminProOrderController controller = Get.put(
-      AdminProOrderController(),
+    final VendorProOrderController controller = Get.put(
+      VendorProOrderController(),
     );
     if (Get.arguments == null) {
       return const Scaffold(body: Center(child: Text("لا توجد بيانات")));
@@ -106,7 +105,7 @@ class AdminOrderDetails extends StatelessWidget {
 
 Widget _buildPriceSummary(
   BuildContext context,
-  AdminProOrderController controller,
+  VendorProOrderController controller,
 ) {
   return Container(
     padding: const EdgeInsets.all(16),

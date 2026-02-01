@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/routes.dart';
-import '../../controller/talabat/cart_controllerw.dart';
+import '../../controller/talabat_controller/cart_controllerw.dart';
 
 class CartSummaryWidget extends StatelessWidget {
   final CartController cartController;

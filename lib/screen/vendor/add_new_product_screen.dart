@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:maneger/controller/admin/new_product_controller.dart';
+import 'package:maneger/controller/vendor_controller/new_product_controller.dart';
 // import 'package:talabat_admin/controller/new_product_controller.dart';
 
-class ImageUploadScreen extends StatelessWidget {
-  const ImageUploadScreen({super.key});
+class AddNewProductScreen extends StatelessWidget {
+  const AddNewProductScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

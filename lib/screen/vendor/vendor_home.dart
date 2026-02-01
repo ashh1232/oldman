@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/controller/delivery_controller/delivery_home_controller.dart';
-import 'package:maneger/screen/admin/edit_home_screen.dart';
-import 'package:maneger/screen/admin/admin_order_screen.dart';
-import 'package:maneger/screen/admin/admin_delivery.dart';
+import 'package:maneger/screen/vendor/vendor_product_screen.dart';
+import 'package:maneger/screen/vendor/vendor_order_screen.dart';
+import 'package:maneger/screen/vendor/vendor_delivery.dart';
 
-class AdminHome extends StatelessWidget {
-  AdminHome({super.key});
+class VendorHome extends StatelessWidget {
+  VendorHome({super.key});
   final DeliveryHomeController controller = Get.find();
 
   @override
@@ -18,12 +18,12 @@ class AdminHome extends StatelessWidget {
             ? IndexedStack(
                 index: controller.currentIndex.value,
                 children: [
-                  AdminOrderScreen(), // التبويب الرئيسي
-                  AdminDelivery(),
-                  AdminProductScreen(),
+                  VendorOrderScreen(), // التبويب الرئيسي
+                  VendorDelivery(),
+                  VendorProductScreen(),
                 ],
               )
-            : newAdmin(),
+            : newVendor(),
       ),
 
       bottomNavigationBar: Obx(
@@ -63,7 +63,7 @@ class AdminHome extends StatelessWidget {
     );
   }
 
-  Center newAdmin() => Center(
+  Center newVendor() => Center(
     child: SafeArea(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

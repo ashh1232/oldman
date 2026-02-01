@@ -1,15 +1,15 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:maneger/class/crud.dart';
-import 'package:maneger/controller/admin/admin_order_controller.dart';
+import 'package:maneger/controller/vendor_controller/vendor_order_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/model/order_model.dart' show Order;
 import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/order_products_model.dart';
 
-class AdminProOrderController extends GetxController {
+class VendorProOrderController extends GetxController {
   final Order item = Get.arguments;
-  late AdminOrderController mainController;
+  late VendorOrderController mainController;
 
   RxList<OrderProductsModel> ordersProduct = <OrderProductsModel>[].obs;
   RxBool isLoading = false.obs;
@@ -17,8 +17,8 @@ class AdminProOrderController extends GetxController {
   @override
   void onInit() {
     // التأكد من وجود الكنترولر الأساسي عند بدء التشغيل
-    if (Get.isRegistered<AdminOrderController>()) {
-      mainController = Get.find<AdminOrderController>();
+    if (Get.isRegistered<VendorOrderController>()) {
+      mainController = Get.find<VendorOrderController>();
     }
     super.onInit();
   }
@@ -104,7 +104,7 @@ class AdminProOrderController extends GetxController {
       isLoading.value = false;
 
       // تحديث القائمة الرئيسية قبل العودة
-      if (Get.isRegistered<AdminOrderController>()) {
+      if (Get.isRegistered<VendorOrderController>()) {
         mainController.orders.clear();
         await mainController.getOrders();
       }

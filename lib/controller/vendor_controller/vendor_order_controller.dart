@@ -5,7 +5,7 @@ import 'package:maneger/core/constants/api_constants.dart';
 // import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/model/order_model.dart';
 
-class AdminOrderController extends GetxController {
+class VendorOrderController extends GetxController {
   final Crud _crud = Crud();
   var isLoading = false.obs;
   final RxList<Order> orders = <Order>[].obs;

@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:maneger/binding/home_binding.dart';
-import 'package:maneger/screen/admin/addproduct_screen.dart';
-import 'package:maneger/screen/admin/admin_order_details.dart';
-import 'package:maneger/screen/admin/edit_home_screen.dart';
-import 'package:maneger/screen/admin/edit_product_detail_view.dart';
+import 'package:maneger/screen/vendor/add_new_product_screen.dart';
+import 'package:maneger/screen/vendor/vendor_order_details.dart';
+import 'package:maneger/screen/vendor/vendor_product_screen.dart';
+import 'package:maneger/screen/vendor/edit_product_detail_view.dart';
 import 'package:maneger/screen/delivery/deli_map.dart';
 import 'package:maneger/screen/delivery/order_details.dart';
 import 'package:maneger/screen/home_screen.dart';
@@ -88,10 +88,10 @@ class AppRoutes {
     GetPage(name: favorite, page: () => FavoritesScreen()),
 
     // Admin
-    GetPage(name: addscreen, page: () => AdminProductScreen()),
+    GetPage(name: addscreen, page: () => VendorProductScreen()),
     GetPage(name: editProductScreen, page: () => EditProductDetailView()),
-    GetPage(name: imageUploadScreen, page: () => ImageUploadScreen()),
-    GetPage(name: adminOrderDetails, page: () => AdminOrderDetails()),
+    GetPage(name: imageUploadScreen, page: () => AddNewProductScreen()),
+    GetPage(name: adminOrderDetails, page: () => VendorOrderDetails()),
     GetPage(name: editCatDetailScreen, page: () => EditCatDetailView()),
     GetPage(name: editCatScreen, page: () => EditCategoryScreen()),
     GetPage(name: addnewcat, page: () => AddNewCat()),

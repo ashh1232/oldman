@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:maneger/controller/talabat/cart_controllerw.dart';
+import 'package:maneger/controller/talabat_controller/cart_controllerw.dart';
 import 'package:maneger/routes.dart';
 import '../../widget/talabat/cart_item.dart';
 import '../../widget/talabat/cart_summary.dart';

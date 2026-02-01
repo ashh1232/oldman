@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
-import '../../controller/talabat/checkout_controller.dart';
+import '../../controller/talabat_controller/checkout_controller.dart';
 
 class CheckoutMapPreview extends StatelessWidget {
   final CheckoutController controller;

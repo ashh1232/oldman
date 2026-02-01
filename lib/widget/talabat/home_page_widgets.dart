@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maneger/core/constants/api_constants.dart';
-import '../../controller/talabat/talabat_controller.dart';
+import '../../controller/talabat_controller/talabat_controller.dart';
 import '../../linkapi.dart';
 import '../../routes.dart';
 import '../loading_card.dart';

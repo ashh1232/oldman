@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:maneger/controller/admin/admin_order_controller.dart';
+import 'package:maneger/controller/vendor_controller/vendor_order_controller.dart';
 import 'package:maneger/model/order_model.dart';
 import 'package:maneger/routes.dart';
 
-class AdminOrderScreen extends StatelessWidget {
-  const AdminOrderScreen({super.key});
+class VendorOrderScreen extends StatelessWidget {
+  const VendorOrderScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final AdminOrderController controller = Get.put(AdminOrderController());
+    final VendorOrderController controller = Get.put(VendorOrderController());
 
     return Scaffold(
       body: Obx(() {
