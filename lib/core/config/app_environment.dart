@@ -40,9 +40,8 @@ class EnvironmentConfig {
   /// TODO: Update with actual staging server URL
   static const EnvironmentConfig staging = EnvironmentConfig(
     environment: AppEnvironment.staging,
-    serverUrl:
-        'https://staging-api.yourdomain.com', // PLACEHOLDER - Update this
-    imageUrl: 'https://staging-img.yourdomain.com', // PLACEHOLDER - Update this
+    serverUrl: 'http://192.168.1.66/docana-back', // PLACEHOLDER - Update this
+    imageUrl: 'http://192.168.1.66/img', // PLACEHOLDER - Update this
     displayName: 'Staging',
   );
 

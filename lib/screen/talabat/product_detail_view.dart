@@ -197,6 +197,10 @@ class ProductDetailView extends GetView<ProductController> {
                                 : (ApiConstants.productsImages +
                                       controller.image[index - 1].image),
                             fit: BoxFit.cover,
+                            placeholder: (context, url) =>
+                                Center(child: CircularProgressIndicator()),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.broken_image),
                           ),
                         ),
                       ),

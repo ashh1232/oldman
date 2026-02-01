@@ -68,6 +68,7 @@ class TalabatController extends GetxController {
     if (isBanLoading.value) return;
     isBanLoading.value = true;
     try {
+      print(ApiConstants.banners);
       var response = await _crud.postData(ApiConstants.banners, {});
       response.fold((status) => _handleError(status, "فشل تحميل الإعلانات"), (
         res,
