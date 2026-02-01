@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/class/crud.dart';
 import 'package:maneger/core/constants/api_constants.dart';
-import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/order_model.dart';
 import 'package:maneger/model/usr_model.dart';
 
@@ -14,7 +13,7 @@ class DeliveryHomeController extends GetxController {
   final RxList<Order> orders = <Order>[].obs;
   final RxList<UserModel> admin = <UserModel>[].obs;
   var isAdmin = false.obs;
-
+  RxInt ho = 0.obs;
   @override
   void onInit() {
     getOrders();
@@ -27,6 +26,46 @@ class DeliveryHomeController extends GetxController {
     super.onReady();
     getOrders(); // انقل استدعاء البيانات إلى هنا
     getAdmin();
+  }
+
+  Future<void> newVendor() async {
+    ho.value++;
+    try {
+      var respo = await _crud.postData(ApiConstants.newVendor, {
+        'action': 'add_new_vendor',
+        'user_id': '10',
+      });
+      print('object');
+      print(respo);
+      respo.fold(
+        (status) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (Get.context != null && !Get.isSnackbarOpen) {
+              Get.rawSnackbar(
+                message: "خطأ في التحميل",
+                duration: Duration(milliseconds: 900),
+              );
+            }
+          });
+        },
+        (res) {
+          if (res['status'] == 'failure') {
+            isAdmin.value = false;
+          }
+          if (res['status'] == 'success') {
+            isAdmin.value = true;
+            final List decod = res['data'];
+            print(res);
+            print(decod);
+            admin.value = decod.map((ban) => UserModel.fromJson(ban)).toList();
+          } else {}
+        },
+      );
+    } catch (e) {
+      Get.snackbar(('error'), 'error $e');
+    } finally {
+      isAdminLoading.value = false;
+    }
   }
 
   Future<void> getAdmin() async {

@@ -11,34 +11,43 @@ class ManagerScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            SizedBox(height: 20),
             Container(
-              padding: EdgeInsets.only(top: 50),
-              height: 200,
-              color: Colors.amber,
-              child: ListView.builder(
-                itemCount: 200,
-                scrollDirection: Axis.horizontal,
-
-                itemBuilder: (c, i) => Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('data'),
+              height: 150,
+              child: newMethod(
+                context,
+                Center(
+                  child: Text('طلبات التجار', style: TextStyle(fontSize: 30)),
                 ),
               ),
             ),
-            newMethod(context, Text('data')),
-            newMethod(context, Text('data')),
-            newMethod(context, Text('data')),
-            newMethod(context, Text('data')),
-            newMethod(context, Text('data')),
-            newMethod(context, Text('data')),
-            newMethod(context, Text('data')),
-            newMethod(context, Text('data')),
-            newMethod(context, Text('data')),
-            newMethod(context, Text('data')),
-            newMethod(context, Text('data')),
-            newMethod(context, Text('data')),
-            newMethod(context, Text('data')),
-            newMethod(context, Text('data')),
+            Container(
+              height: MediaQuery.of(context).size.height / 2,
+              child: ListView.builder(
+                itemCount: 20,
+
+                // scrollDirection: Axis.vertical,
+                itemBuilder: (c, i) => newMethod(context, Text('data')),
+              ),
+            ),
+            Container(
+              height: 150,
+              child: newMethod(
+                context,
+                Center(
+                  child: Text('طلبات التجار', style: TextStyle(fontSize: 30)),
+                ),
+              ),
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height / 2,
+              child: ListView.builder(
+                itemCount: 20,
+
+                // scrollDirection: Axis.vertical,
+                itemBuilder: (c, i) => newMethod(context, Text('aaaa')),
+              ),
+            ),
           ],
         ),
       ),
@@ -47,7 +56,7 @@ class ManagerScreen extends StatelessWidget {
 
   Container newMethod(BuildContext context, Widget widget) {
     return Container(
-      width: double.infinity,
+      width: MediaQuery.of(context).size.width,
       margin: EdgeInsets.only(top: 7),
       padding: EdgeInsets.all(20),
       color: Theme.of(context).colorScheme.surface,

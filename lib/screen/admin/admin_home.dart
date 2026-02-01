@@ -68,12 +68,14 @@ class AdminHome extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('لا يوجد بيانات'),
+          Text(
+            'انت تاجر و تريد عرض منتوجاتك هنا \n قدم طلب عضويه مجاني \n ${controller.ho}',
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 50),
           ElevatedButton(
-            onPressed: () {
-              controller.getOrders();
-            },
-            child: Text('تحديث'),
+            onPressed: () => controller.newVendor(),
+            child: Text('تقديم طلب'),
           ),
         ],
       ),
