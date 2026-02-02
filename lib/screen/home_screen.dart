@@ -4,7 +4,7 @@ import 'package:maneger/controller/home_screen_controller.dart';
 import 'package:maneger/screen/vendor/vendor_home.dart';
 import 'package:maneger/screen/vendor/vendor_product_screen.dart';
 import 'package:maneger/screen/delivery/deli_home.dart';
-import 'package:maneger/screen/manager_screen.dart';
+import 'package:maneger/screen/admin/manager_screen.dart';
 import 'package:maneger/screen/talabat/talabat_home_screen.dart'; // تأكد أن AniAppbarScreen مستوردة هنا
 
 class HomeScreen extends GetView<HomeScreenController> {

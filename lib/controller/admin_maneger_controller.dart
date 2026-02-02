@@ -3,11 +3,10 @@ import 'package:get/get.dart';
 import 'package:maneger/class/crud.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/model/user_model.dart';
-import 'package:maneger/model/usr_model.dart';
 
 class AdminManegerController extends GetxController {
   final Crud _crud = Crud();
-
+  RxBool isAdminLoading = false.obs;
   RxList<User> admin = <User>[].obs;
   @override
   void onInit() {
@@ -16,13 +15,10 @@ class AdminManegerController extends GetxController {
   }
 
   Future<void> newVendor() async {
-    print('user.value!.userId');
     try {
       var respo = await _crud.postData(ApiConstants.newVendor, {
         'action': 'get_all_admin_orders',
       });
-      print('object123');
-      print(respo);
       respo.fold(
         (status) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -41,10 +37,8 @@ class AdminManegerController extends GetxController {
           if (res['status'] == 'success') {
             // isAdmin.value = true;
             final List decod = res['data'];
-            print(res);
-            print(decod);
+
             admin.value = decod.map((ban) => User.fromJson(ban)).toList();
-            print(admin.value);
           } else {}
         },
       );
@@ -52,6 +46,41 @@ class AdminManegerController extends GetxController {
       Get.snackbar(('error'), 'error $e');
     } finally {
       // isAdminLoading.value = false;
+    }
+  }
+
+  Future<void> acceptAdmin(String userId) async {
+    try {
+      isAdminLoading.value = true;
+      var respo = await _crud.postData(ApiConstants.newVendor, {
+        'action': 'accept_vendor_request',
+        'user_id': userId,
+      });
+      respo.fold(
+        (status) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (Get.context != null && !Get.isSnackbarOpen) {
+              Get.rawSnackbar(
+                message: "خطأ في التحميل",
+                duration: Duration(milliseconds: 900),
+              );
+            }
+          });
+        },
+        (res) {
+          if (res['status'] == 'failure') {
+            isAdminLoading.value = false;
+          }
+          if (res['status'] == 'success') {
+            Get.snackbar(('status'), 'success', backgroundColor: Colors.green);
+          } else {}
+        },
+      );
+    } catch (e) {
+      Get.snackbar(('error'), 'error $e', backgroundColor: Colors.red);
+    } finally {
+      isAdminLoading.value = false;
+      newVendor();
     }
   }
 }

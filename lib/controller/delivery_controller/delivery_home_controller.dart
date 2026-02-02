@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/class/crud.dart';
+import 'package:maneger/controller/auth_controller/auth_controller.dart';
 import 'package:maneger/controller/talabat_controller/profile_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/model/order_model.dart';
@@ -8,9 +9,11 @@ import 'package:maneger/model/user_model.dart';
 import 'package:maneger/model/usr_model.dart';
 
 class DeliveryHomeController extends GetxController {
-  final ProfileController _profileController = Get.find<ProfileController>();
+  // final ProfileController _profileController = Get.find<ProfileController>();
+  final AuthController authController = Get.find<AuthController>();
+
   // Rx<StatusRequest> statusRequest = StatusRequest.offline.obs;
-  Rx<User?> get user => _profileController.user;
+  // Rx<User?> get user => authController.userId;
   final Crud _crud = Crud();
   var isLoading = false.obs;
   var isAdminLoading = false.obs;
@@ -20,28 +23,35 @@ class DeliveryHomeController extends GetxController {
   RxInt ho = 0.obs;
   @override
   void onInit() {
-    getOrders();
+    // getOrders();
     super.onInit();
   }
 
   var currentIndex = 0.obs;
   @override
-  void onReady() {
+  void onReady() async {
     super.onReady();
     getOrders(); // انقل استدعاء البيانات إلى هنا
-    getAdmin();
+    await getAdmin();
+    ever(authController.currentUser, (User? user) {
+      if (user != null) {
+        getAdmin();
+      }
+    });
+    if (authController.userId != null) {
+      await getAdmin();
+    } else {}
   }
 
   Future<void> newVendor() async {
-    print(user.value!.userId);
+    final userId = authController.userId;
     ho.value++;
     try {
       var respo = await _crud.postData(ApiConstants.newVendor, {
         'action': 'add_new_vendor',
-        'user_id': user.value!.userId,
+        'user_id': userId,
       });
-      print('object');
-      print(respo);
+
       respo.fold(
         (status) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -60,8 +70,8 @@ class DeliveryHomeController extends GetxController {
           if (res['status'] == 'success') {
             isAdmin.value = true;
             final List decod = res['data'];
-            print(res);
-            print(decod);
+            // print(res);
+            // print(decod);
             admin.value = decod.map((ban) => UserModel.fromJson(ban)).toList();
           } else {}
         },
@@ -74,18 +84,26 @@ class DeliveryHomeController extends GetxController {
   }
 
   Future<void> getAdmin() async {
+    final userId = authController.userId;
+
     print("getAdmin");
-    if (isAdminLoading.value) return;
+    // if (isAdminLoading.value) return;
     // statusRequest.value = StatusRequest.loading;
 
     try {
+      print("1");
+      print(userId);
+      print(userId);
+
       isAdminLoading.value = true;
       var respo = await _crud.postData(ApiConstants.adminOrder, {
         'action': 'is_admin',
-        'usr_id': '1',
+        'usr_id': userId,
       });
-      print('object');
-      print(respo);
+      print("2");
+
+      print('res12www3$respo');
+
       respo.fold(
         (status) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -100,12 +118,16 @@ class DeliveryHomeController extends GetxController {
         (res) {
           if (res['status'] == 'failure') {
             isAdmin.value = false;
+            print('res123$res');
           }
           if (res['status'] == 'success') {
+            print('res');
+
             isAdmin.value = true;
             final List decod = res['data'];
-            print(res);
-            print(decod);
+            print('res');
+            // print(res);
+            // print(decod);
             admin.value = decod.map((ban) => UserModel.fromJson(ban)).toList();
           } else {}
         },
