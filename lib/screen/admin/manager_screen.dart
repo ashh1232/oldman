@@ -13,7 +13,10 @@ class ManagerScreen extends StatelessWidget {
     return Scaffold(
       // backgroundColor: Colors.blue,
       body:
-          // SingleChildScrollView(
+          //  SingleChildScrollView(
+          //   physics: const BouncingScrollPhysics(
+          //     parent: AlwaysScrollableScrollPhysics(),
+          //   ),
           //   child:
           Column(
             children: [
@@ -119,8 +122,8 @@ class ManagerScreen extends StatelessWidget {
                 ),
               ),
             ],
-            // ),
           ),
+      // ),
     );
   }
 
