@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:maneger/controller/admin_maneger_controller.dart';
+import 'package:maneger/controller/admin/admin_maneger_controller.dart';
 
 class ManagerScreen extends StatelessWidget {
   ManagerScreen({super.key});
@@ -11,30 +11,39 @@ class ManagerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.blue,
-      body:
-          //  SingleChildScrollView(
-          //   physics: const BouncingScrollPhysics(
-          //     parent: AlwaysScrollableScrollPhysics(),
-          //   ),
-          //   child:
-          Column(
-            children: [
-              SizedBox(height: 20),
-              Container(
-                height: 150,
-                child: newMethod(
-                  context,
-                  Center(
-                    child: Text('طلبات التجار', style: TextStyle(fontSize: 30)),
-                  ),
-                ),
+      body: Column(
+        children: [
+          SizedBox(height: 20),
+          SizedBox(
+            height: 150,
+            child: newMethod(
+              context,
+              Center(
+                child: Text('طلبات التجار', style: TextStyle(fontSize: 30)),
               ),
-              Expanded(
-                child: Container(
-                  // height: MediaQuery.of(context).size.height / 2,
-                  child: Obx(
-                    () => ListView.builder(
+            ),
+          ),
+          newMethod(
+            context,
+            TextButton(
+              onPressed: () {
+                adminManegerController.getVendorRequest();
+              },
+              child: Text('تحديث'),
+            ),
+          ),
+          Expanded(
+            child: Obx(
+              () => adminManegerController.admin.isEmpty
+                  ? newMethod(
+                      context,
+                      Center(
+                        child: Text('فارغ', style: TextStyle(fontSize: 30)),
+                      ),
+                    )
+                  : adminManegerController.isAdminLoading.value
+                  ? CircularProgressIndicator()
+                  : ListView.builder(
                       itemCount: adminManegerController.admin.length,
 
                       // scrollDirection: Axis.vertical,
@@ -118,11 +127,10 @@ class ManagerScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
+        ],
+      ),
       // ),
     );
   }

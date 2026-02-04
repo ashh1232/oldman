@@ -10,11 +10,11 @@ class AdminManegerController extends GetxController {
   RxList<User> admin = <User>[].obs;
   @override
   void onInit() {
-    newVendor();
+    getVendorRequest();
     super.onInit();
   }
 
-  Future<void> newVendor() async {
+  Future<void> getVendorRequest() async {
     try {
       var respo = await _crud.postData(ApiConstants.newVendor, {
         'action': 'get_all_admin_orders',
@@ -50,6 +50,7 @@ class AdminManegerController extends GetxController {
   }
 
   Future<void> acceptAdmin(String userId) async {
+    print(userId);
     try {
       isAdminLoading.value = true;
       var respo = await _crud.postData(ApiConstants.newVendor, {
@@ -72,15 +73,20 @@ class AdminManegerController extends GetxController {
             isAdminLoading.value = false;
           }
           if (res['status'] == 'success') {
-            Get.snackbar(('status'), 'success', backgroundColor: Colors.green);
+            admin.removeWhere((user) => user.userId == userId);
+            Get.rawSnackbar(
+              message: 'تم القبول',
+              backgroundColor: Colors.lightGreen,
+              duration: Duration(milliseconds: 900),
+            );
           } else {}
         },
       );
     } catch (e) {
       Get.snackbar(('error'), 'error $e', backgroundColor: Colors.red);
     } finally {
+      getVendorRequest();
       isAdminLoading.value = false;
-      newVendor();
     }
   }
 }

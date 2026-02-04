@@ -76,3 +76,4 @@ pubspec.yaml
 .dart_tool\package_config.json
 C:\code\2.3\maneger\.dart_tool\version
 .dart_tool\version
+*.dart_tool/

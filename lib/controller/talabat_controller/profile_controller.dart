@@ -29,12 +29,12 @@ class ProfileController extends GetxController {
   void onInit() {
     super.onInit();
     // Use 'ever' to react when the user is restored or changed
-    ever(authController.currentUser, (User? user) {
-      if (user != null && statusRequest.value == StatusRequest.loading) {
-        loadProfile();
-        loadOrders();
-      }
-    });
+    // ever(authController.currentUser, (User? user) {
+    //   if (user != null && statusRequest.value == StatusRequest.loading) {
+    //     loadProfile();
+    //     loadOrders();
+    //   }
+    // });
 
     // If user is already loaded (e.g. just logged in), run immediately
     if (authController.userId != null) {
@@ -59,11 +59,8 @@ class ProfileController extends GetxController {
   // Load user profile
   Future<void> loadProfile() async {
     statusRequest.value = StatusRequest.loading;
-    print('object');
     try {
       final userId = authController.userId;
-      print(userId);
-
       if (userId == null) {
         statusRequest.value = StatusRequest.failure;
         return;
@@ -73,8 +70,6 @@ class ProfileController extends GetxController {
         'action': 'get_profile',
         'user_id': userId,
       });
-      print('profile');
-      print(response);
       response.fold(
         (statusReq) {
           statusRequest.value = statusReq;
@@ -115,7 +110,6 @@ class ProfileController extends GetxController {
 
   // Update profile
   Future<void> updateProfile() async {
-    print('Update');
     if (nameController.text.trim().isEmpty) {
       Get.snackbar('Error', 'Name cannot be empty');
       return;
@@ -144,7 +138,6 @@ class ProfileController extends GetxController {
         },
         (responseBody) {
           if (responseBody['status'] == 'success') {
-            print(response);
             Get.snackbar(
               'Success',
               'Profile updated successfully',

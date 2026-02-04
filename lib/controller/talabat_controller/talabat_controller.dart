@@ -68,7 +68,7 @@ class TalabatController extends GetxController {
     if (isBanLoading.value) return;
     isBanLoading.value = true;
     try {
-      print(ApiConstants.banners);
+      // print(ApiConstants.banners);
       var response = await _crud.postData(ApiConstants.banners, {});
       response.fold((status) => _handleError(status, "فشل تحميل الإعلانات"), (
         res,
@@ -96,6 +96,7 @@ class TalabatController extends GetxController {
         if (res['status'] == "success") {
           final List decod = res['data'];
           catList.assignAll(decod.map((e) => Category.fromJson(e)).toList());
+          // print(decod);
         }
       });
     } catch (e) {

@@ -27,13 +27,9 @@ class AuthController extends GetxController {
   }
 
   Future<void> checkLoginStatus() async {
-    print('checklogin');
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('auth_token');
     final userStr = prefs.getString('current_user');
-    print(token);
-    print(userStr);
-    print('checklogin');
 
     if (token != null && token.isNotEmpty) {
       isLoggedIn.value = true;

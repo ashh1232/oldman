@@ -2,18 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/class/crud.dart';
 import 'package:maneger/controller/auth_controller/auth_controller.dart';
-import 'package:maneger/controller/talabat_controller/profile_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/model/order_model.dart';
 import 'package:maneger/model/user_model.dart';
 import 'package:maneger/model/usr_model.dart';
 
 class DeliveryHomeController extends GetxController {
-  // final ProfileController _profileController = Get.find<ProfileController>();
   final AuthController authController = Get.find<AuthController>();
 
-  // Rx<StatusRequest> statusRequest = StatusRequest.offline.obs;
-  // Rx<User?> get user => authController.userId;
   final Crud _crud = Crud();
   var isLoading = false.obs;
   var isAdminLoading = false.obs;
@@ -21,26 +17,34 @@ class DeliveryHomeController extends GetxController {
   final RxList<UserModel> admin = <UserModel>[].obs;
   var isAdmin = false.obs;
   RxInt ho = 0.obs;
+  User? get zuser => authController.currentUser.value;
   @override
-  void onInit() {
-    // getOrders();
+  void onInit() async {
+    // zuser = await authController.userId;
+    authController.checkLoginStatus().then((value) => print(zuser));
+    print('zuser');
+    print(zuser);
+    print('zuser');
     super.onInit();
   }
 
+  // String? get zuser => authController.userId;
   var currentIndex = 0.obs;
   @override
-  void onReady() async {
+  void onReady() {
     super.onReady();
     getOrders(); // انقل استدعاء البيانات إلى هنا
-    await getAdmin();
-    ever(authController.currentUser, (User? user) {
-      if (user != null) {
-        getAdmin();
-      }
-    });
-    if (authController.userId != null) {
-      await getAdmin();
-    } else {}
+
+    // authController.checkLoginStatus().then((value) => getAdmin());
+
+    // ever(authController.currentUser, (User? user) {
+    //   if (user != null) {
+    getAdmin();
+    //   }
+    // });
+    // if (authController.userId != null) {
+    //   await getAdmin();
+    // } else {}
   }
 
   Future<void> newVendor() async {
@@ -68,7 +72,6 @@ class DeliveryHomeController extends GetxController {
             isAdmin.value = false;
           }
           if (res['status'] == 'success') {
-            isAdmin.value = true;
             final List decod = res['data'];
             // print(res);
             // print(decod);
@@ -84,56 +87,44 @@ class DeliveryHomeController extends GetxController {
   }
 
   Future<void> getAdmin() async {
-    final userId = authController.userId;
-
-    print("getAdmin");
-    // if (isAdminLoading.value) return;
-    // statusRequest.value = StatusRequest.loading;
+    isAdminLoading.value = true;
 
     try {
-      print("1");
-      print(userId);
-      print(userId);
+      // 1. يفضل انتظار حالة تسجيل الدخول قبل المتابعة
+      await authController.checkLoginStatus();
 
-      isAdminLoading.value = true;
+      // 2. تأكد من أن المستخدم ليس null قبل إرسال الطلب
+      if (zuser == null) {
+        isAdminLoading.value = false;
+        return;
+      }
+
       var respo = await _crud.postData(ApiConstants.adminOrder, {
         'action': 'is_admin',
-        'usr_id': userId,
+        'usr_id': zuser!.userId,
       });
-      print("2");
-
-      print('res12www3$respo');
 
       respo.fold(
         (status) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (Get.context != null && !Get.isSnackbarOpen) {
-              Get.rawSnackbar(
-                message: "خطأ في التحميل: $status",
-                duration: Duration(seconds: 2),
-              );
-            }
-          });
+          // استخدام Get.snackbar مباشرة أسهل وأكثر توافقاً مع GetX
+          Get.snackbar(
+            "تنبيه",
+            "خطأ في التحميل: $status",
+            snackPosition: SnackPosition.BOTTOM,
+          );
         },
         (res) {
-          if (res['status'] == 'failure') {
-            isAdmin.value = false;
-            print('res123$res');
-          }
           if (res['status'] == 'success') {
-            print('res');
-
             isAdmin.value = true;
             final List decod = res['data'];
-            print('res');
-            // print(res);
-            // print(decod);
             admin.value = decod.map((ban) => UserModel.fromJson(ban)).toList();
-          } else {}
+          } else {
+            isAdmin.value = false; // تأكد من إعادة التعيين في حال الفشل
+          }
         },
       );
     } catch (e) {
-      Get.snackbar(('error'), 'error $e');
+      Get.snackbar('Error', 'حدث خطأ غير متوقع: $e');
     } finally {
       isAdminLoading.value = false;
     }

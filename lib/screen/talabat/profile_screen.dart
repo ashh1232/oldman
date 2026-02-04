@@ -416,7 +416,7 @@ class ProfileScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(
-                  order.orderStatus!.toUpperCase(),
+                  _getStatusText(order.orderStatus!),
                   style: const TextStyle(
                     fontSize: 10,
                     color: Colors.white,
@@ -433,18 +433,35 @@ class ProfileScreen extends StatelessWidget {
 
   Color _getStatusColor(String status) {
     switch (status.toLowerCase()) {
-      case 'قيد الانتظار':
+      case 'pending':
         return Colors.orange;
-      case 'قيد المعالجة':
+      case 'processing':
         return Colors.blue;
-      case 'تم الشحن':
+      case 'shipped':
         return Colors.purple;
-      case 'تم التوصيل':
+      case 'delivered':
         return Colors.green;
-      case 'تم الالغاء':
+      case 'cancelled':
         return Colors.red;
       default:
         return Colors.grey;
+    }
+  }
+
+  String _getStatusText(String status) {
+    switch (status.toLowerCase()) {
+      case 'pending':
+        return 'قيد الانتظار';
+      case 'processing':
+        return 'قيد المعالجة';
+      case 'shipped':
+        return 'تم الشحن';
+      case 'delivered':
+        return 'تم التوصيل';
+      case 'cancelled':
+        return 'تم الالغاء';
+      default:
+        return 'قيد الانتظار';
     }
   }
 
