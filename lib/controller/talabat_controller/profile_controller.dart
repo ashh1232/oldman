@@ -3,7 +3,6 @@ import 'package:maneger/class/crud.dart';
 import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/controller/auth_controller/auth_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
-import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/order_model.dart';
 import 'package:maneger/model/user_model.dart';
 
@@ -14,7 +13,7 @@ class ProfileController extends GetxController {
   final AuthController authController = Get.find<AuthController>();
 
   // Observable variables
-  final Rx<User?> user = Rx<User?>(null);
+  Rx<User?> get user => authController.currentUser;
   final RxList<Order> orders = <Order>[].obs;
   final statusRequest = StatusRequest.loading.obs;
   final RxBool isEditing = false.obs;
@@ -74,6 +73,7 @@ class ProfileController extends GetxController {
         'action': 'get_profile',
         'user_id': userId,
       });
+      print('profile');
       print(response);
       response.fold(
         (statusReq) {
@@ -115,6 +115,7 @@ class ProfileController extends GetxController {
 
   // Update profile
   Future<void> updateProfile() async {
+    print('Update');
     if (nameController.text.trim().isEmpty) {
       Get.snackbar('Error', 'Name cannot be empty');
       return;
@@ -128,12 +129,12 @@ class ProfileController extends GetxController {
 
       final response = await _crud.postData(ApiConstants.profile, {
         'action': 'update_profile',
-        'user_id': userId,
+        'user_id': user.value!.userId.toString(),
         'user_name': nameController.text.trim(),
         'user_phone': phoneController.text.trim(),
         'user_address': addressController.text.trim(),
-        'user_city': cityController.text.trim(),
-        'user_country': countryController.text.trim(),
+        // 'user_city': cityController.text.trim(),
+        // 'user_country': countryController.text.trim(),
       });
 
       response.fold(
@@ -143,6 +144,7 @@ class ProfileController extends GetxController {
         },
         (responseBody) {
           if (responseBody['status'] == 'success') {
+            print(response);
             Get.snackbar(
               'Success',
               'Profile updated successfully',

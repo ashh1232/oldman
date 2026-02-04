@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../controller/message_controller.dart';
+import '../../controller/message_controller.dart';
 
 class MessageView extends StatelessWidget {
   final MessageController controller = Get.put(MessageController());

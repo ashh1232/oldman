@@ -23,7 +23,7 @@ import 'package:maneger/screen/talabat/product_detail_view.dart';
 import 'package:maneger/screen/talabat/profile_screen.dart';
 import 'package:maneger/screen/talabat/cart_page.dart';
 import 'package:maneger/screen/auth/login_screen.dart';
-import 'package:maneger/screen/message_view.dart';
+import 'package:maneger/screen/talabat/message_view.dart';
 import 'package:maneger/test/flut_map.dart';
 import 'package:maneger/screen/auth/signup_screen.dart';
 import 'package:maneger/screen/talabat/category_page.dart';
