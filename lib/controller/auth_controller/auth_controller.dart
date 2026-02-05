@@ -101,8 +101,8 @@ class AuthController extends GetxController {
         'phone': phone,
       });
       print(response);
-      var yy = response.fold((l) => l, (r) => r);
-      statusRequest = handlingData(yy);
+      // var yy = response.fold((l) => l, (r) => r);
+      // statusRequest = handlingData(yy);
       response.fold(
         (failure) {
           // في حال فشل الاتصال أو السيرفر (Left)
@@ -113,6 +113,7 @@ class AuthController extends GetxController {
           // Get.snackbar('خطأ', 'فشل الاتصال بالشبكة ${failure['message']}');
         },
         (data) async {
+          print(data['message']);
           if (data['status'] == 'success') {
             final token = data['data']['token'];
             final userData = data['data'];
@@ -130,7 +131,7 @@ class AuthController extends GetxController {
             Get.offAllNamed(AppRoutes.home);
           } else {
             errorMessage.value = data['message'] ?? 'Signup failed';
-            Get.snackbar('خطأ', ' ${data['details']}');
+            Get.snackbar('خطأ', ' ${data['message']}');
           }
         },
       );

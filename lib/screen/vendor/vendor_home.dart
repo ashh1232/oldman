@@ -58,7 +58,7 @@ class VendorHome extends StatelessWidget {
                   ),
                 ],
               )
-            : Container(height: 1),
+            : SizedBox.shrink(),
       ),
     );
   }

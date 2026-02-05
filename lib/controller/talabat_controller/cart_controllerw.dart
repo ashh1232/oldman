@@ -17,6 +17,9 @@ class CartController extends GetxController {
   RxBool get isLoggedIn => _authController.isLoggedIn;
   // Sample data - replace with actual API calls
   final RxString vendorId = ''.obs;
+  // حساب عدد التجار الفريدين في السلة
+  int get uniqueVendorsCount => products.map((p) => p.vendorId).toSet().length;
+
   //
   @override
   void onInit() {

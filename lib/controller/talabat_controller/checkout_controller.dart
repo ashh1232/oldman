@@ -218,17 +218,18 @@ class CheckoutController extends GetxController {
       }).toList();
 
       // استخراج الـ IDs الفريدة
-      final vendorIds = cartController.products
+      final vendorIdsList = cartController.products
+          .where((product) => product.vendorId != null) // تأكد أن الـ ID موجود
           .map((product) => product.vendorId.toString())
           .toSet() // لحذف التكرار
-          .join(','); // تحويلها لـ "1,2,5"
-
+          .toList(); // تحويلها لـ "1,2,5"
+      print(vendorIdsList);
       // Prepare order data
       final orderData = {
         'action': 'create_order',
         'user_id':
             authController.userId ?? '9', // Default to 1 if not logged in
-        'vendor_id': vendorIds,
+        'vendor_id': vendorIdsList.join(','),
 
         /// how to get all venders id for checkout
         'total': total.toStringAsFixed(2),

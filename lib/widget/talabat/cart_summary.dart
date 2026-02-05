@@ -36,6 +36,36 @@ class CartSummaryWidget extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               _buildPriceRow('المجموع الفرعي:', cartController.subtotal),
+              // _buildPriceRow('عدد التجار:', '${cartController.uniqueVendorsCount}'),
+              Obx(() {
+                if (cartController.uniqueVendorsCount > 1) {
+                  return Container(
+                    padding: EdgeInsets.all(10),
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.amber.shade100,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Colors.amber),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.info_outline, color: Colors.amber.shade900),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            "لقد أضفت منتجات من ${cartController.uniqueVendorsCount} تجار مختلفين. سيتم تطبيق رسوم شحن إضافية.",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.amber.shade900,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                return SizedBox.shrink(); // لا يظهر شيء إذا كان تاجر واحد فقط
+              }),
               _buildPriceRow('التوصيل:', cartController.delivery),
               const SizedBox(height: 8),
               Row(

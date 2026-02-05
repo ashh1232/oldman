@@ -48,7 +48,8 @@ class Crud {
   Either<StatusRequest, Map> _handleResponse(http.Response response) {
     if (response.statusCode == 200 ||
         response.statusCode == 201 ||
-        response.statusCode == 400) {
+        response.statusCode == 400 ||
+        response.statusCode == 409) {
       var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
       return Right(responseBody);
     } else {

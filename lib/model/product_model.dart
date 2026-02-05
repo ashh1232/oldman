@@ -46,8 +46,8 @@ class Product {
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
-      id: (json['id'] ?? json['product_id'] ?? "1").toString(),
-      vendorId: json['vendor_id'].toString(),
+      id: (json['id'] ?? json['product_id'] ?? "0").toString(),
+      vendorId: (json['vendor_id'] ?? "0").toString(),
 
       title: (json['title'] ?? json['product_name'] ?? "بدون عنوان").toString(),
       price: (json['price'] ?? json['product_price'] ?? "0").toString(),
@@ -79,20 +79,20 @@ class Product {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'title': title,
-      'description': description,
-      'image': image,
-      'originalPrice': originalPrice,
-      'price': price,
+      'product_id': id, // نستخدم الاسم المتوقع في الـ Backend
+      'vendor_id': vendorId,
+      'product_name': title,
+      'product_desc': description,
+      'product_image': image,
+      'product_price': price,
       'quantity': quantity,
-      'product_blurhash': blurHash, // إضافة الحقل هنا أيضاً
+      'product_blurhash': blurHash,
     };
   }
 
-  int get totalPrice {
+  double get totalPrice {
     try {
-      return (int.tryParse(price) ?? 0) * quantity;
+      return (double.tryParse(price) ?? 0) * quantity;
     } catch (e) {
       return 0;
     }
