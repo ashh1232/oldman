@@ -7,7 +7,6 @@ import 'package:maneger/controller/auth_controller/auth_controller.dart';
 import 'package:maneger/controller/talabat_controller/cart_controllerw.dart';
 import 'package:maneger/controller/talabat_controller/profile_controller.dart';
 import 'package:maneger/controller/talabat_controller/tal_map_controller.dart';
-import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/user_model.dart';
 import 'package:maneger/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -210,17 +209,28 @@ class CheckoutController extends GetxController {
       final orderItems = cartController.products.map((product) {
         return {
           'product_id': product.id,
+          'vendor_id': product.vendorId,
           'product_name': product.title,
           'product_image': product.image,
           'product_price': product.price,
           'quantity': product.quantity,
         };
       }).toList();
+
+      // استخراج الـ IDs الفريدة
+      final vendorIds = cartController.products
+          .map((product) => product.vendorId.toString())
+          .toSet() // لحذف التكرار
+          .join(','); // تحويلها لـ "1,2,5"
+
       // Prepare order data
       final orderData = {
         'action': 'create_order',
         'user_id':
             authController.userId ?? '9', // Default to 1 if not logged in
+        'vendor_id': vendorIds,
+
+        /// how to get all venders id for checkout
         'total': total.toStringAsFixed(2),
 
         'subtotal': subtotal.toStringAsFixed(2),

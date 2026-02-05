@@ -422,6 +422,7 @@ class ProductDetailView extends GetView<ProductController> {
               onPressed: () {
                 controller.addToCart(
                   id: pro.id,
+                  vendorId: pro.vendorId,
                   img: pro.image,
                   title: pro.title,
                   price: pro.price,

@@ -101,6 +101,7 @@ class TalabatController extends GetxController {
       });
     } catch (e) {
       _handleError(StatusRequest.serverfailure, "خطأ في الاتصال");
+      print(e);
     } finally {
       isCatLoading.value = false;
     }
@@ -123,6 +124,7 @@ class TalabatController extends GetxController {
               newDataList.map((j) => Product.fromJson(j)).toList(),
             );
             page++;
+            print(newDataList);
             if (res['metadata'] != null) {
               if (res['metadata']['current_page'] >=
                   res['metadata']['total_pages']) {

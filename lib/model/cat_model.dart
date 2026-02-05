@@ -13,8 +13,8 @@ class Category {
   factory Category.fromJson(Map<String, dynamic> json) {
     return Category(
       id: (json['id'] ?? json['categories_id'] ?? "1").toString(),
-      title:
-          (json['title'] ?? json['categories_name'] ?? "بدون عنوان").toString(),
+      title: (json['title'] ?? json['categories_name'] ?? "بدون عنوان")
+          .toString(),
       image: json['categories_image'] as String,
       type: json['cat_main'] as int,
       // Use null-aware operators (??) for safety

@@ -16,6 +16,8 @@ class CartController extends GetxController {
   final selectAll = true.obs;
   RxBool get isLoggedIn => _authController.isLoggedIn;
   // Sample data - replace with actual API calls
+  final RxString vendorId = ''.obs;
+  //
   @override
   void onInit() {
     super.onInit();
@@ -72,12 +74,20 @@ class CartController extends GetxController {
       for (var item in decodedData) {
         try {
           Map<String, dynamic> map = item is String ? jsonDecode(item) : item;
+          print(map);
+
           loadedProducts.add(Product.fromJson(map));
         } catch (e) {
           continue;
         }
       }
       products.assignAll(loadedProducts);
+      vendorId.value = products
+          .map((product) => product.vendorId.toString())
+          .toSet() // لحذف التكرار
+          .join(','); // تحويلها لـ "1,2,5"
+      print(loadedProducts);
+      print(vendorId);
     } catch (e) {
       // تخطي العنصر التالف بدلاً من إيقاف التطبيق بالكامل
     }

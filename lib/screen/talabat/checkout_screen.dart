@@ -4,7 +4,6 @@ import 'package:maneger/controller/talabat_controller/checkout_controller.dart';
 import '../../widget/checkout/checkout_order_summary.dart';
 import '../../widget/checkout/checkout_delivery_form.dart';
 import '../../widget/checkout/checkout_map_preview.dart';
-import '../../widget/checkout/checkout_payment_selector.dart';
 import '../../widget/checkout/checkout_notes.dart';
 
 class CheckoutScreen extends StatelessWidget {

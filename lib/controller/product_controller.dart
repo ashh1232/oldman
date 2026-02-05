@@ -150,6 +150,7 @@ class ProductController extends GetxController {
 
   void addToCart({
     required String id,
+    required String vendorId,
     required String img,
     required String title,
     required String price,
@@ -159,6 +160,7 @@ class ProductController extends GetxController {
 
     final cartItem = Product(
       id: id,
+      vendorId: vendorId,
       title: title,
       image: img,
       originalPrice: currentProduct?.originalPrice ?? "0",
@@ -168,7 +170,7 @@ class ProductController extends GetxController {
       categoryId: '1',
       blurHash: '',
     );
-
+    print(cartItem);
     // 2. البحث عن المنتج في السلة
     final int existingIndex = cartController.products.indexWhere(
       (p) => p.id == id,

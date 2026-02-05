@@ -48,12 +48,13 @@ class AuthController extends GetxController {
   Future<void> login(String phone, String password) async {
     isLoading.value = true;
     errorMessage.value = '';
-
+    print(phone);
+    print(password);
     final response = await crud.postData(ApiConstants.login, {
       'phone': phone,
       'password': password,
     });
-
+    print(response);
     response.fold(
       (failure) {
         errorMessage.value = 'Login failed. Please try again.';
