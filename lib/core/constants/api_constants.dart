@@ -22,8 +22,8 @@ class ApiConstants {
   static String get profile => '$baseUrl/auth/profile.php';
 
   // Products
-  static String get products => '$baseUrl/product.php';
-  static String get product2 => '$baseUrl/product2.php';
+  static String get products => '$baseUrl/products/product.php';
+  static String get productpage => '$baseUrl/products/product_page.php';
   static String get productImages => '$baseUrl/products/pro_images.php';
 
   // Categories

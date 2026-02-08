@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:maneger/class/crud.dart';
 import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/core/constants/api_constants.dart';
-import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/bunner_model.dart';
 import 'package:maneger/model/cat_model.dart';
 import 'package:maneger/model/product_model.dart';
@@ -143,7 +142,9 @@ class TalabatController extends GetxController {
     if (isLoading.value || !hasMore.value) return;
     isLoading.value = true;
     try {
-      var response = await _crud.getData("${ApiConstants.products}?page=$page");
+      var response = await _crud.getData(
+        "${ApiConstants.productpage}?page=$page",
+      );
       response.fold((status) => _handleError(status, "فشل تحميل المنتجات"), (
         res,
       ) {
@@ -156,7 +157,6 @@ class TalabatController extends GetxController {
               newDataList.map((j) => Product.fromJson(j)).toList(),
             );
             page++;
-            print(newDataList);
             if (res['metadata'] != null) {
               if (res['metadata']['current_page'] >=
                   res['metadata']['total_pages']) {

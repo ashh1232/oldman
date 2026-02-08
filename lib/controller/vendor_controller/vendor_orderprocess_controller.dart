@@ -4,7 +4,6 @@ import 'package:maneger/class/crud.dart';
 import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 // import 'package:maneger/class/statusrequest.dart';
-import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/order_model.dart';
 
 class VendorOrderProcessController extends GetxController {
@@ -13,10 +12,6 @@ class VendorOrderProcessController extends GetxController {
   final Crud _crud = Crud();
   var isLoading = false.obs;
   final RxList<Order> orders = <Order>[].obs;
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   var currentIndex = 0.obs;
   @override

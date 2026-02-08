@@ -1,0 +1,188 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:maneger/class/crud.dart';
+import 'package:maneger/controller/auth_controller/auth_controller.dart';
+import 'package:maneger/core/constants/api_constants.dart';
+import 'package:maneger/model/order_model.dart';
+import 'package:maneger/model/user_model.dart';
+import 'package:maneger/model/usr_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class VenHomeController extends GetxController {
+  final AuthController authController = Get.find<AuthController>();
+
+  final Crud _crud = Crud();
+  var isLoading = false.obs;
+  var isAdminLoading = false.obs;
+  final RxList<Order> orders = <Order>[].obs;
+  final RxList<UserModel> admin = <UserModel>[].obs;
+  var isAdmin = false.obs;
+  RxInt ho = 0.obs;
+  User? get zuser => authController.currentUser.value;
+  RxString currentVendor = ''.obs;
+  @override
+  void onInit() async {
+    // zuser = await authController.userId;
+    authController.checkLoginStatus().then((value) => print(zuser));
+
+    super.onInit();
+  }
+
+  // String? get zuser => authController.userId;
+  var currentIndex = 0.obs;
+  @override
+  void onReady() {
+    super.onReady();
+    // انقل استدعاء البيانات إلى هنا
+
+    // authController.checkLoginStatus().then((value) => getAdmin());
+
+    // ever(authController.currentUser, (User? user) {
+    //   if (user != null) {
+    //     getAdmin();
+    //   }
+    // });
+    // if (authController.userId != null) {
+    getAdmin().then((a) => getOrders());
+    // } else {}
+  }
+
+  Future<void> newVendor() async {
+    final userId = authController.userId;
+    ho.value++;
+    try {
+      var respo = await _crud.postData(ApiConstants.newVendor, {
+        'action': 'add_new_vendor',
+        'user_id': userId,
+      });
+
+      respo.fold(
+        (status) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (Get.context != null && !Get.isSnackbarOpen) {
+              Get.rawSnackbar(
+                message: "خطأ في التحميل",
+                duration: Duration(milliseconds: 900),
+              );
+            }
+          });
+        },
+        (res) {
+          if (res['status'] == 'failure') {
+            isAdmin.value = false;
+          }
+          if (res['status'] == 'success') {
+            final List decod = res['data'];
+            // print(res);
+            // print(decod);
+            admin.value = decod.map((ban) => UserModel.fromJson(ban)).toList();
+          } else {}
+        },
+      );
+    } catch (e) {
+      Get.snackbar(('error'), 'error $e');
+    } finally {
+      isAdminLoading.value = false;
+    }
+  }
+
+  Future<void> getAdmin() async {
+    isAdminLoading.value = true;
+
+    try {
+      // 1. يفضل انتظار حالة تسجيل الدخول قبل المتابعة
+      await authController.checkLoginStatus();
+
+      // 2. تأكد من أن المستخدم ليس null قبل إرسال الطلب
+      if (zuser == null) {
+        isAdminLoading.value = false;
+        return;
+      }
+
+      var respo = await _crud.postData(ApiConstants.adminOrder, {
+        'action': 'is_admin',
+        'usr_id': zuser!.userId,
+      });
+      respo.fold(
+        (status) {
+          // استخدام Get.snackbar مباشرة أسهل وأكثر توافقاً مع GetX
+          Get.snackbar(
+            "تنبيه",
+            "خطأ في التحميل: $status",
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        },
+        (res) {
+          if (res['status'] == 'success') {
+            bool admin = res['is_admin'];
+            isAdmin.value = admin;
+            if (res['vendor_data'] != null) {
+              String vend = res['vendor_data'].toString();
+              currentVendor.value = vend;
+              _saveVendorData(currentVendor.value);
+            } else {
+              Get.snackbar('خطأ', ' ${res['message']}');
+            }
+          } else {
+            isAdmin.value = false; // تأكد من إعادة التعيين في حال الفشل
+          }
+        },
+      );
+    } catch (e) {
+      Get.snackbar('Error', 'حدث خطأ غير متوقع: $e');
+    } finally {
+      isAdminLoading.value = false;
+    }
+  }
+
+  // Save user data after login
+  Future<void> _saveVendorData(String vedor) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('current_vendor', vedor);
+      currentVendor.value = vedor;
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to save user data');
+    }
+  }
+
+  Future<void> getOrders() async {
+    if (isLoading.value) return;
+    // statusRequest.value = StatusRequest.loading;
+
+    try {
+      isLoading.value = true;
+      var respo = await _crud.postData(ApiConstants.adminOrder, {
+        'action': 'get_processing_order',
+      });
+      respo.fold(
+        (status) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (Get.context != null && !Get.isSnackbarOpen) {
+              Get.rawSnackbar(
+                message: "خطأ في التحميل: $status",
+                duration: Duration(seconds: 2),
+              );
+            }
+          });
+        },
+        (res) {
+          if (res['status'] == 'success') {
+            final List decod = res['data'];
+            orders.value = decod.map((ban) => Order.fromJson(ban)).toList();
+          } else {}
+        },
+      );
+    } catch (e) {
+      Get.snackbar(('error'), 'error $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void removeProduct(int index) {
+    orders.removeAt(index);
+  }
+}

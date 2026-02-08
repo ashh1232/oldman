@@ -96,7 +96,7 @@ class ProfileController extends GetxController {
     }
   }
 
-  bool validateInput() {
+  bool _validateInput() {
     if (nameController.text.trim().isEmpty) {
       Get.snackbar(
         'خطأ',
@@ -125,7 +125,7 @@ class ProfileController extends GetxController {
     }
 
     // Add phone number format validation
-    if (!isValidPhoneNumber(phoneController.text.trim())) {
+    if (!_isValidPhone(phoneController.text.trim())) {
       Get.snackbar(
         'خطأ',
         'يرجى إدخال رقم هاتف صحيح',
@@ -143,7 +143,7 @@ class ProfileController extends GetxController {
       return false;
     }
 
-    if (addressController.text.trim().length < 5) {
+    if (addressController.text.trim().length < 3) {
       Get.snackbar(
         'خطأ',
         'يجب أن يكون العنوان أكثر من 5 أحرف',
@@ -155,13 +155,22 @@ class ProfileController extends GetxController {
     return true;
   }
 
-  // Helper method to validate phone number format
-  bool isValidPhoneNumber(String phone) {
-    // Clean the input first
-    String cleanPhone = phone.replaceAll(RegExp(r'[ -]'), '');
-
-    return _phoneRegex.hasMatch(cleanPhone);
+  // Phone number validation
+  bool _isValidPhone(String phone) {
+    // Supports Palestinian (970), Israeli (972), or Jordanian (962) formats
+    final pattern = RegExp(
+      r'^(00970|\+970|0)?5[0-9]{8}$|^(\+972|0)[23489]\d{7}$|^(\+962|0)7[789]\d{7}$',
+    );
+    return pattern.hasMatch(phone.replaceAll(RegExp(r'\s+'), ''));
   }
+
+  // Helper method to validate phone number format
+  // bool isValidPhoneNumber(String phone) {
+  //   // Clean the input first
+  //   String cleanPhone = phone.replaceAll(RegExp(r'[ -]'), '');
+
+  //   return _phoneRegex.hasMatch(cleanPhone);
+  // }
 
   // Fill form controllers with user data
   void _fillFormControllers() {
@@ -185,7 +194,7 @@ class ProfileController extends GetxController {
   // Update profile
   // Update profile
   Future<void> updateProfile() async {
-    if (!validateInput()) return;
+    if (!_validateInput()) return;
 
     statusRequest.value = StatusRequest.loading;
 

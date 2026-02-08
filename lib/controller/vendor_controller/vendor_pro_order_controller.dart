@@ -4,7 +4,6 @@ import 'package:maneger/class/crud.dart';
 import 'package:maneger/controller/vendor_controller/vendor_order_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/model/order_model.dart' show Order;
-import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/order_products_model.dart';
 
 class VendorProOrderController extends GetxController {
@@ -78,6 +77,7 @@ class VendorProOrderController extends GetxController {
       var respo = await _crud.postData(ApiConstants.adminOrder, {
         'action': 'process_order',
         'order_id': item.orderId,
+        'vendor_id': '1',
       });
       respo.fold(
         (status) {

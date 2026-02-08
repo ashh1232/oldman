@@ -29,8 +29,8 @@ class VendorOrderController extends GetxController {
     try {
       isLoading.value = true;
       var respo = await _crud.postData(ApiConstants.adminOrder, {
-        'action': 'get_pending_order',
-        // 'user_id': '2',
+        'action': 'get_pending_order_vendor',
+        'vendor_id': '48',
       });
       // print(respo);
       respo.fold(

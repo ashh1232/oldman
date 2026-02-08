@@ -30,7 +30,6 @@ class CartPage extends StatelessWidget {
         if (cartController.products.isEmpty) {
           return _buildEmptyCart();
         }
-
         return _buildCartContent(context);
       }),
     );

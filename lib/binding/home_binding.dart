@@ -14,6 +14,7 @@ import 'package:maneger/controller/talabat_controller/checkout_controller.dart';
 import 'package:maneger/controller/talabat_controller/profile/profile_controller.dart';
 import 'package:maneger/controller/talabat_controller/tal_map_controller.dart';
 import 'package:maneger/controller/talabat_controller/talabat_controller.dart';
+import 'package:maneger/controller/vendor_controller/ven_home_controller.dart';
 
 class HomeBinding extends Bindings {
   @override
@@ -43,7 +44,8 @@ class HomeBinding extends Bindings {
     );
     Get.lazyPut<DeliMapController>(() => DeliMapController(), fenix: true);
 
-    ///admin
+    ///Vendor
+    Get.lazyPut<VenHomeController>(() => VenHomeController(), fenix: true);
     Get.lazyPut<ImageUploadController>(
       () => ImageUploadController(),
       fenix: true,
