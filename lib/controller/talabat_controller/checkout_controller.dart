@@ -14,25 +14,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/constants/api_constants.dart';
 
 class CheckoutController extends GetxController {
-  //////////////
-  // أضف هذا السطر مع الـ controllers الأخرى
+  // Controllers
   final TalMapController mapController = Get.find<TalMapController>();
   final ProfileController profileController = Get.find<ProfileController>();
-  final isLoading = false.obs;
-  final ismap = false.obs;
-  final RxBool isEditing = false.obs;
-
-  late RxDouble selectedLat = 0.0.obs;
-  late RxDouble selectedLong = 0.0.obs;
-  // لتخزين الإحداثيات المختارة
-  // double get selectedLat => mapController.destinationLatLng.value.latitude;
-  // double get selectedLong => mapController.destinationLatLng.value.longitude;
-  /////////
-  final Crud _crud = Crud();
   final AuthController authController = Get.find<AuthController>();
   final CartController cartController = Get.find<CartController>();
-  // final Rx<User?> user = Rx<User?>(null);
-  Rx<User?> get user => profileController.user;
+
+  // State flags
+  final ismap = false.obs;
+  final RxBool isEditing = false.obs;
+  final Crud _crud = Crud();
+
+  // Location coordinates
+  late RxDouble selectedLat = 0.0.obs;
+  late RxDouble selectedLong = 0.0.obs;
 
   // Form controllers
   final nameController = TextEditingController();
@@ -41,29 +36,39 @@ class CheckoutController extends GetxController {
   final notesController = TextEditingController();
 
   // Observable variables
-  final RxString selectedPaymentMethod = 'cash'.obs;
   final RxBool isProcessing = false.obs;
-  final statusRequest = StatusRequest.loading.obs;
+  final statusRequest =
+      StatusRequest.loading.obs; // Changed to loading initially
 
   // Shipping cost
   final RxDouble shippingCost = 5.0.obs;
 
+  // Computed properties
+  double get subtotal => cartController.subtotal;
+  double get shipping => shippingCost.value;
+  double get total => subtotal + shipping;
+
+  User? get currentUser => profileController.user.value;
+
   @override
-  void onInit() async {
+  void onInit() {
     super.onInit();
-    loadUserData();
-    await _loadFromStorage();
+
+    // Listen to user changes
+    ever(profileController.user, (_) => _fillFormControllers());
+
+    // Initialize data after controller setup
+    Future.microtask(() {
+      loadUserData();
+      _loadFromStorage();
+      statusRequest.value = StatusRequest.success; // Set to success after init
+    });
   }
 
   @override
   void onReady() {
-    profileController.user.listen((user) {
-      if (user != null) {
-        _fillFormControllers();
-      }
-    });
-
     super.onReady();
+    // Additional setup if needed
   }
 
   @override
@@ -77,12 +82,10 @@ class CheckoutController extends GetxController {
 
   // Fill form controllers with user data
   void _fillFormControllers() {
-    if (user.value != null) {
-      nameController.text = user.value!.userName;
-      phoneController.text = user.value!.userPhone ?? '';
-      addressController.text = user.value!.userAddress ?? '';
-      // cityController.text = user.value!.userCity ?? '';
-      // countryController.text = user.value!.userCountry ?? '';
+    if (currentUser != null) {
+      nameController.text = currentUser!.userName;
+      phoneController.text = currentUser!.userPhone ?? '';
+      addressController.text = currentUser!.userAddress ?? '';
     }
   }
 
@@ -95,60 +98,56 @@ class CheckoutController extends GetxController {
 
   // Load user data to pre-fill form
   void loadUserData() {
-    // final user = authController.currentUser.value;
-    // if (user != null) {
-    //   nameController.text = user.userName;
-    //   phoneController.text = user.userPhone ?? '';
-    //   addressController.text = user.userAddress ?? '';
-    // }
-    // Get the latest coordinates directly from the Map Controller
+    _syncCoordinatesFromMap();
+  }
+
+  void _syncCoordinatesFromMap() {
     selectedLat.value = mapController.destinationLatLng.value.latitude;
     selectedLong.value = mapController.destinationLatLng.value.longitude;
   }
 
-  // void _syncInitialSelectedCount() {
-  //   selectedCount.value = products.where((p) => p.isSelected).length;
-  //   selectAll.value =
-  //       products.isNotEmpty && products.every((p) => p.isSelected);
-  // }
+  // Load location from shared preferences
   Future<void> _loadFromStorage() async {
     ismap.value = true;
     try {
       final prefs = await SharedPreferences.getInstance();
       final String? raw = prefs.getString('location');
 
-      if (raw == null || raw.isEmpty) return;
+      if (raw != null && raw.isNotEmpty) {
+        final Map<String, dynamic> locationData = jsonDecode(raw);
 
-      // 1. Decode the JSON string back into a Map
-      final Map<String, dynamic> locationData = jsonDecode(raw);
+        if (locationData.containsKey('lat') &&
+            locationData.containsKey('lng')) {
+          selectedLat.value = locationData['lat'].toDouble();
+          selectedLong.value = locationData['lng'].toDouble();
 
-      // 2. Assign values to your Rx variables
-      if (locationData.containsKey('lat') && locationData.containsKey('lng')) {
-        selectedLat.value = locationData['lat'];
-        selectedLong.value = locationData['lng'];
-
-        print(
-          "📍 Location loaded: ${selectedLat.value}, ${selectedLong.value}",
-        );
+          print(
+            "📍 Location loaded: ${selectedLat.value}, ${selectedLong.value}",
+          );
+        }
       }
     } catch (e) {
       print("⚠️ Error decoding location from storage: $e");
-      // Default values in case of corruption
-      selectedLat.value = 0.0;
-      selectedLong.value = 0.0;
+      // Keep default 0.0 values if error occurs
     }
     ismap.value = false;
   }
 
-  // Calculate totals
-  double get subtotal => cartController.subtotal;
-  // double get tax => cartController.tax;
-  double get shipping => shippingCost.value;
-  double get total => subtotal + shipping;
+  // Coordinate validation
+  bool _isValidCoordinates() {
+    return selectedLat.value != 0.0 &&
+        selectedLong.value != 0.0 &&
+        selectedLat.value.abs() <= 90 &&
+        selectedLong.value.abs() <= 180;
+  }
 
-  // Select payment method
-  void selectPaymentMethod(String method) {
-    selectedPaymentMethod.value = method;
+  // Phone number validation
+  bool _isValidPhone(String phone) {
+    // Supports Palestinian (970), Israeli (972), or Jordanian (962) formats
+    final pattern = RegExp(
+      r'^(00970|\+970|0)?5[0-9]{8}$|^(\+972|0)[23489]\d{7}$|^(\+962|0)7[789]\d{7}$',
+    );
+    return pattern.hasMatch(phone.replaceAll(RegExp(r'\s+'), ''));
   }
 
   // Validate form
@@ -165,6 +164,14 @@ class CheckoutController extends GetxController {
       );
       return false;
     }
+    if (!_isValidPhone(phoneController.text.trim())) {
+      Get.snackbar(
+        'خطأ',
+        'رقم هاتف غير صحيح',
+        backgroundColor: Colors.red.shade100,
+      );
+      return false;
+    }
     if (addressController.text.trim().isEmpty) {
       Get.snackbar(
         'خطأ',
@@ -173,31 +180,26 @@ class CheckoutController extends GetxController {
       );
       return false;
     }
-    // if (cityController.text.trim().isEmpty) {
-    //   Get.snackbar(
-    //     'Error',
-    //     'Please enter your city',
-    //     backgroundColor: Colors.red.shade100,
-    //   );
-    //   return false;
-    // }
-    // if (countryController.text.trim().isEmpty) {
-    //   Get.snackbar(
-    //     'Error',
-    //     'Please enter your country',
-    //     backgroundColor: Colors.red.shade100,
-    //   );
-    //   return false;
-    // }
+    if (!_isValidCoordinates()) {
+      Get.snackbar(
+        'خطأ',
+        'الرجاء تحديد موقع التوصيل على الخريطة',
+        backgroundColor: Colors.red.shade100,
+      );
+      return false;
+    }
     return true;
   }
 
   // Place order
   Future<void> placeOrder() async {
     if (!validateForm()) return;
-
     if (cartController.products.isEmpty) {
-      Get.snackbar('Error', 'Your cart is empty');
+      Get.snackbar(
+        'خطأ',
+        'عربة التسوق فارغة',
+        backgroundColor: Colors.red.shade100,
+      );
       return;
     }
 
@@ -206,6 +208,7 @@ class CheckoutController extends GetxController {
 
     try {
       // Prepare order items
+
       final orderItems = cartController.products.map((product) {
         return {
           'product_id': product.id,
@@ -216,28 +219,27 @@ class CheckoutController extends GetxController {
           'quantity': product.quantity,
         };
       }).toList();
+      // Extract unique vendor IDs
 
-      // استخراج الـ IDs الفريدة
       final vendorIdsList = cartController.products
-          .where((product) => product.vendorId != null) // تأكد أن الـ ID موجود
+          .where((product) => product.vendorId != null)
           .map((product) => product.vendorId.toString())
-          .toSet() // لحذف التكرار
-          .toList(); // تحويلها لـ "1,2,5"
-      print(vendorIdsList);
+          .toSet()
+          .toList();
+      // Extract unique vendor IDs
+      final uniqueVendorsCount = cartController.products
+          .map((p) => p.vendorId)
+          .toSet()
+          .length;
+
       // Prepare order data
       final orderData = {
         'action': 'create_order',
-        'user_id':
-            authController.userId ?? '9', // Default to 1 if not logged in
-        'vendor_id': vendorIdsList.join(','),
-
-        /// how to get all venders id for checkout
+        'user_id': authController.userId ?? '9',
+        'vendor_id': uniqueVendorsCount > 1 ? '1' : vendorIdsList.join(','),
         'total': total.toStringAsFixed(2),
-
         'subtotal': subtotal.toStringAsFixed(2),
-        // 'tax': tax.toStringAsFixed(2),
         'shipping': shipping.toStringAsFixed(2),
-
         'delivery_name': nameController.text.trim(),
         'delivery_phone': phoneController.text.trim(),
         'delivery_address': addressController.text.trim(),
@@ -246,30 +248,31 @@ class CheckoutController extends GetxController {
         'order_notes': notesController.text.trim(),
         'order_items': jsonEncode(orderItems),
       };
-
-      // Send request to API
-
-      // print((authController.userId).runtimeType);
+      print('orderData');
+      print(orderData);
 
       final response = await _crud.postData(ApiConstants.orders, orderData);
-      print(response);
+
       response.fold(
         (statusReq) {
-          // Error
+          // Error handling
           statusRequest.value = statusReq;
           isProcessing.value = false;
-          Get.snackbar('Error', 'Failed to place order. Please try again.');
+          Get.snackbar(
+            'خطأ',
+            'فشل في إتمام الطلب. يرجى المحاولة مرة أخرى.',
+            backgroundColor: Colors.red.shade100,
+          );
         },
         (responseBody) {
           print(responseBody);
-          // Success
           isProcessing.value = false;
           statusRequest.value = StatusRequest.success;
 
           if (responseBody['status'] == 'success') {
             final orderId = responseBody['order_id'].toString();
 
-            // Unfocus keyboard to prevent platform NPE during transition
+            // Unfocus keyboard
             FocusManager.instance.primaryFocus?.unfocus();
 
             // Clear cart
@@ -281,23 +284,33 @@ class CheckoutController extends GetxController {
               arguments: {'order_id': orderId, 'total': total},
             );
           } else {
-            print(responseBody['message']);
             Get.snackbar(
-              'Error',
-              responseBody['message'] ?? 'Failed to place order',
+              'خطأ',
+              responseBody['message'] ?? 'فشل في إتمام الطلب',
+              backgroundColor: Colors.red.shade100,
             );
           }
         },
       );
     } catch (e) {
-      print(e);
+      print('Place Order Error: $e');
       isProcessing.value = false;
       statusRequest.value = StatusRequest.serverfailure;
-      Get.snackbar('Error', 'An error occurred: $e');
+      Get.snackbar(
+        'خطأ',
+        'حدث خطأ أثناء إتمام الطلب',
+        backgroundColor: Colors.red.shade100,
+      );
     }
   }
 
   void openMap() {
     Get.toNamed(AppRoutes.mapScreen);
+  }
+
+  // Fallback for user address coordinates if needed
+  void _syncCoordinatesFromUserAddress() {
+    // Implement reverse geocoding based on user address if available
+    // This would require an API call to convert address to coordinates
   }
 }

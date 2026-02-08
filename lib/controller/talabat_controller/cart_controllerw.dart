@@ -26,10 +26,10 @@ class CartController extends GetxController {
     super.onInit();
     loadProducts();
 
-    // SharedPreferences.getInstance().then((prefs) {
-    //   // prefs.clear(); // احذف التعليق وشغل التطبيق مرة واحدة ثم أعده
-    //   loadProducts();
-    // });
+    SharedPreferences.getInstance().then((prefs) {
+      // prefs.clear(); // احذف التعليق وشغل التطبيق مرة واحدة ثم أعده
+      loadProducts();
+    });
     // Persist whenever products change
     ever(products, (_) => _saveToStorage());
   }
