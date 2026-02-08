@@ -208,6 +208,7 @@ class CheckoutController extends GetxController {
 
     try {
       // Prepare order items
+
       final orderItems = cartController.products.map((product) {
         return {
           'product_id': product.id,
@@ -218,19 +219,24 @@ class CheckoutController extends GetxController {
           'quantity': product.quantity,
         };
       }).toList();
-
       // Extract unique vendor IDs
+
       final vendorIdsList = cartController.products
           .where((product) => product.vendorId != null)
           .map((product) => product.vendorId.toString())
           .toSet()
           .toList();
+      // Extract unique vendor IDs
+      final uniqueVendorsCount = cartController.products
+          .map((p) => p.vendorId)
+          .toSet()
+          .length;
 
       // Prepare order data
       final orderData = {
         'action': 'create_order',
         'user_id': authController.userId ?? '9',
-        'vendor_id': vendorIdsList.join(','),
+        'vendor_id': uniqueVendorsCount > 1 ? '1' : vendorIdsList.join(','),
         'total': total.toStringAsFixed(2),
         'subtotal': subtotal.toStringAsFixed(2),
         'shipping': shipping.toStringAsFixed(2),

@@ -163,6 +163,7 @@ class AuthController extends GetxController {
   }
 
   String? get userId => currentUser.value?.userId;
+  String? get vendorId => currentUser.value?.userId;
 
   // Update current user
   void updateUser(User user) {
