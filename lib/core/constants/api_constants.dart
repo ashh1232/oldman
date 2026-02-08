@@ -1,3 +1,5 @@
+import 'package:maneger/screen/delivery/order_details.dart';
+
 import '../config/environment_manager.dart';
 
 /// API endpoints and configuration constants
@@ -38,7 +40,6 @@ class ApiConstants {
 
   // Orders
   static String get orders => '$baseUrl/order/order.php';
-  static String get delivery => '$baseUrl/delivery/delivery_order.php';
 
   // Favorites
   static String get favorites => '$baseUrl/favorites.php';

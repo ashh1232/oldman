@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:maneger/class/statusrequest.dart';
-import 'package:maneger/controller/talabat_controller/profile_controller.dart';
+import 'package:maneger/controller/talabat_controller/profile/profile_controller.dart';
 
 import '../../model/order_model.dart';
 // import 'package:talabat/class/statusrequest.dart';

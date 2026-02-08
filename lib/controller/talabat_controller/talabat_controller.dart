@@ -23,6 +23,38 @@ class TalabatController extends GetxController {
   final RxInt currentBannerIndex = 0.obs;
   final RxBool isScrolled = false.obs;
 
+  // Add these properties to your controller
+  final RxBool hasError = false.obs;
+  final RxBool isCatError = false.obs;
+
+  Future<void> refreshHome() async {
+    page = 1;
+    hasMore.value = true;
+    hasError.value = false;
+    productList.clear();
+    await initData();
+  }
+
+  // Add these methods to your controller
+  void setError(bool value) {
+    hasError.value = value;
+  }
+
+  void setCatError(bool value) {
+    isCatError.value = value;
+  }
+
+  Future<void> loadCategories() async {
+    try {
+      isCatError.value = false;
+      await getCatData();
+
+      // Your category loading logic here
+    } catch (e) {
+      isCatError.value = true;
+    }
+  }
+
   final Crud _crud = Crud();
   int page = 1;
   Timer? _bannerTimer;
@@ -142,6 +174,8 @@ class TalabatController extends GetxController {
   }
 
   void _handleError(StatusRequest status, String message) {
+    hasError.value = true; // تفعيل واجهة الخطأ للمنتجات
+
     if (status == StatusRequest.offline) {
       _showErrorSnackbar("أنت غير متصل بالإنترنت");
     } else {

@@ -11,7 +11,7 @@ import 'package:maneger/controller/product_controller.dart';
 import 'package:maneger/controller/shein_controller.dart';
 import 'package:maneger/controller/talabat_controller/cart_controllerw.dart';
 import 'package:maneger/controller/talabat_controller/checkout_controller.dart';
-import 'package:maneger/controller/talabat_controller/profile_controller.dart';
+import 'package:maneger/controller/talabat_controller/profile/profile_controller.dart';
 import 'package:maneger/controller/talabat_controller/tal_map_controller.dart';
 import 'package:maneger/controller/talabat_controller/talabat_controller.dart';
 

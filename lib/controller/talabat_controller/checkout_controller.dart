@@ -5,7 +5,7 @@ import 'package:maneger/class/crud.dart';
 import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/controller/auth_controller/auth_controller.dart';
 import 'package:maneger/controller/talabat_controller/cart_controllerw.dart';
-import 'package:maneger/controller/talabat_controller/profile_controller.dart';
+import 'package:maneger/controller/talabat_controller/profile/profile_controller.dart';
 import 'package:maneger/controller/talabat_controller/tal_map_controller.dart';
 import 'package:maneger/model/user_model.dart';
 import 'package:maneger/routes.dart';

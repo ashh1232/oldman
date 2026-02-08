@@ -9,6 +9,13 @@ import 'package:maneger/model/user_model.dart';
 import 'package:flutter/material.dart';
 
 class ProfileController extends GetxController {
+  // Add this as a static member
+  static final RegExp _phoneRegex = RegExp(r'''
+    ^(970|00970|\+970)[23489]\d{7}$|
+    ^(972|00972|\+972)5[0234589]\d{7}$|
+    ^0?[23489]\d{7}$|
+    ^0?5[0234589]\d{7}$
+  ''', caseSensitive: false);
   final Crud _crud = Crud();
   final AuthController authController = Get.find<AuthController>();
 
@@ -29,12 +36,12 @@ class ProfileController extends GetxController {
   void onInit() {
     super.onInit();
     // Use 'ever' to react when the user is restored or changed
-    // ever(authController.currentUser, (User? user) {
-    //   if (user != null && statusRequest.value == StatusRequest.loading) {
-    //     loadProfile();
-    //     loadOrders();
-    //   }
-    // });
+    ever(authController.currentUser, (User? user) {
+      if (user != null && statusRequest.value == StatusRequest.loading) {
+        loadProfile();
+        loadOrders();
+      }
+    });
 
     // If user is already loaded (e.g. just logged in), run immediately
     if (authController.userId != null) {
@@ -89,6 +96,73 @@ class ProfileController extends GetxController {
     }
   }
 
+  bool validateInput() {
+    if (nameController.text.trim().isEmpty) {
+      Get.snackbar(
+        'خطأ',
+        'اسم المستخدم مطلوب',
+        backgroundColor: Colors.red.shade100,
+      );
+      return false;
+    }
+
+    if (nameController.text.trim().length < 2) {
+      Get.snackbar(
+        'خطأ',
+        'يجب أن يكون اسم المستخدم أكثر من حرفين',
+        backgroundColor: Colors.red.shade100,
+      );
+      return false;
+    }
+
+    if (phoneController.text.trim().isEmpty) {
+      Get.snackbar(
+        'خطأ',
+        'رقم الهاتف مطلوب',
+        backgroundColor: Colors.red.shade100,
+      );
+      return false;
+    }
+
+    // Add phone number format validation
+    if (!isValidPhoneNumber(phoneController.text.trim())) {
+      Get.snackbar(
+        'خطأ',
+        'يرجى إدخال رقم هاتف صحيح',
+        backgroundColor: Colors.red.shade100,
+      );
+      return false;
+    }
+
+    if (addressController.text.trim().isEmpty) {
+      Get.snackbar(
+        'خطأ',
+        'العنوان مطلوب',
+        backgroundColor: Colors.red.shade100,
+      );
+      return false;
+    }
+
+    if (addressController.text.trim().length < 5) {
+      Get.snackbar(
+        'خطأ',
+        'يجب أن يكون العنوان أكثر من 5 أحرف',
+        backgroundColor: Colors.red.shade100,
+      );
+      return false;
+    }
+
+    return true;
+  }
+
+  // Helper method to validate phone number format
+  bool isValidPhoneNumber(String phone) {
+    // Clean the input first
+    String cleanPhone = phone.replaceAll(RegExp(r'[ -]'), '');
+
+    return _phoneRegex.hasMatch(cleanPhone);
+  }
+
   // Fill form controllers with user data
   void _fillFormControllers() {
     if (user.value != null) {
@@ -109,17 +183,23 @@ class ProfileController extends GetxController {
   }
 
   // Update profile
+  // Update profile
   Future<void> updateProfile() async {
-    if (nameController.text.trim().isEmpty) {
-      Get.snackbar('Error', 'Name cannot be empty');
-      return;
-    }
+    if (!validateInput()) return;
 
     statusRequest.value = StatusRequest.loading;
 
     try {
       final userId = authController.userId;
-      if (userId == null) return;
+      if (userId == null) {
+        Get.snackbar(
+          'خطأ',
+          'لم يتم العثور على معلومات المستخدم',
+          backgroundColor: Colors.red.shade100,
+        );
+        statusRequest.value = StatusRequest.failure;
+        return;
+      }
 
       final response = await _crud.postData(ApiConstants.profile, {
         'action': 'update_profile',
@@ -134,27 +214,35 @@ class ProfileController extends GetxController {
       response.fold(
         (statusReq) {
           statusRequest.value = statusReq;
-          Get.snackbar('Error', 'Failed to update profile');
+          Get.snackbar(
+            'خطأ',
+            'فشل تحديث الملف الشخصي',
+            backgroundColor: Colors.red.shade100,
+          );
         },
         (responseBody) {
           if (responseBody['status'] == 'success') {
             Get.snackbar(
-              'Success',
-              'Profile updated successfully',
+              'نجاح',
+              'تم تحديث الملف الشخصي بنجاح',
               backgroundColor: Colors.green.shade100,
             );
-            loadProfile(); // Reload profile
-            isEditing.value = false;
+            loadProfile(); // Reload profile to reflect changes
+            isEditing.value = false; // Exit edit mode
             statusRequest.value = StatusRequest.success;
           } else {
-            Get.snackbar('Error', responseBody['message'] ?? 'Update failed');
+            Get.snackbar(
+              'خطأ',
+              responseBody['message'] ?? 'فشل التحديث',
+              backgroundColor: Colors.red.shade100,
+            );
             statusRequest.value = StatusRequest.failure;
           }
         },
       );
     } catch (e) {
       statusRequest.value = StatusRequest.serverfailure;
-      Get.snackbar('Error', 'An error occurred: $e');
+      Get.snackbar('خطأ', 'حدث خطأ: $e', backgroundColor: Colors.red.shade100);
     }
   }
 
