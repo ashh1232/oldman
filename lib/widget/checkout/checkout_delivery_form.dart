@@ -110,19 +110,19 @@ class CheckoutDeliveryForm extends StatelessWidget {
                   _buildInfoRow(
                     Icons.person_outline,
                     'الاسم',
-                    controller.user.value?.userName ?? 'N/A',
+                    controller.currentUser?.userName ?? 'N/A',
                   ),
                   const Divider(height: 24),
                   _buildInfoRow(
                     Icons.phone_outlined,
                     'رقم الهاتف',
-                    controller.user.value?.userPhone ?? 'N/A',
+                    controller.currentUser?.userPhone ?? 'N/A',
                   ),
                   const Divider(height: 24),
                   _buildInfoRow(
                     Icons.location_on_outlined,
                     'العنوان',
-                    controller.user.value?.userAddress ?? 'N/A',
+                    controller.currentUser?.userAddress ?? 'N/A',
                   ),
                 ],
               );
