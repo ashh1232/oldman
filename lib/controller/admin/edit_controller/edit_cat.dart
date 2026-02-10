@@ -5,7 +5,7 @@ import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/linkapi.dart';
 
-import '../../model/cat_model.dart';
+import '../../../model/cat_model.dart';
 
 class EditCatController extends GetxController {
   Crud crud = Crud();

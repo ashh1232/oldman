@@ -4,11 +4,12 @@ import 'package:get/get.dart';
 // import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:maneger/controller/vendor_controller/test_controller.dart';
+import 'package:maneger/controller/admin/edit_controller/edit_cat.dart';
+import 'package:maneger/controller/vendor_controller/vendor_pro_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/linkapi.dart';
 
-import '../../model/cat_model.dart';
+import '../../../model/cat_model.dart';
 // import 'package:talabat_admin/controller/test_controller.dart';
 // import 'package:talabat_admin/linkapi.dart';
 
@@ -119,7 +120,7 @@ class EditDetailCatController extends GetxController {
     } finally {
       isLoading.value = false;
     }
-    await Get.find<TestController>().getData();
+    await Get.find<EditCatController>().getData();
     update();
   }
 

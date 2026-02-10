@@ -6,11 +6,14 @@ import 'package:maneger/class/image_crud.dart';
 import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/linkapi.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:talabat_admin/class/image_crud.dart';
 // import 'package:talabat_admin/class/statusrequest.dart';
 // import 'package:talabat_admin/linkapi.dart';
 
 class NewProductController extends GetxController {
+  RxString currentVendor = ''.obs;
+
   ImageCrud crud = ImageCrud();
   var statusRequest = StatusRequest.offline.obs;
 
@@ -45,7 +48,32 @@ class NewProductController extends GetxController {
   void onInit() {
     nameController = TextEditingController();
     priceController = TextEditingController();
+    checkVendor();
     super.onInit();
+  }
+
+  Future<void> checkVendor() async {
+    print('aaaaaaaaaaaaaaaaaaaa');
+
+    final prefs = await SharedPreferences.getInstance();
+    print(prefs);
+    final userStr = prefs.getString('current_vendor');
+    print(userStr);
+
+    if (userStr != null && userStr.isNotEmpty) {
+      isLoading.value = true;
+
+      try {
+        currentVendor.value = userStr;
+        print('asdasdasd');
+        print(currentVendor);
+        isLoading.value = false;
+      } catch (e) {
+        Get.snackbar('Error', 'Failed to save user data');
+      }
+    } else {
+      isLoading.value = false;
+    }
   }
 
   // فنكشن اختيار الصورة
@@ -73,6 +101,7 @@ class NewProductController extends GetxController {
       var cleanedData = _prepareData({
         "name": nameController.text,
         "price": priceController.text,
+        "vendor": currentVendor.value.toString(),
       });
 
       var response = await crud.postRequestWithFile(

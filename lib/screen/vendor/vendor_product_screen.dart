@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/class/statusrequest.dart';
-import 'package:maneger/controller/vendor_controller/test_controller.dart';
+import 'package:maneger/controller/vendor_controller/vendor_pro_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/routes.dart';
 import 'package:maneger/widget/loading_card.dart';
@@ -13,7 +13,7 @@ class VendorProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TestController controller = Get.find();
+    final VendorProController controller = Get.find();
     return Scaffold(
       appBar: AppBar(
         title: const Text("المنتجات"),
@@ -54,6 +54,9 @@ class VendorProductScreen extends StatelessWidget {
               parent: AlwaysScrollableScrollPhysics(),
             ),
             slivers: [
+              CupertinoSliverRefreshControl(
+                onRefresh: () async => controller.getData(),
+              ),
               SliverToBoxAdapter(
                 child: SafeArea(
                   child: Column(

@@ -3,11 +3,10 @@ import 'package:maneger/class/crud.dart';
 import 'package:maneger/class/handlingdatacontroll.dart';
 import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/core/constants/api_constants.dart';
-import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/product_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class TestController extends GetxController {
+class VendorProController extends GetxController {
   final Crud crud = Crud(); // استخدام final أفضل
 
   Rx<StatusRequest> statusRequest = StatusRequest.offline.obs;

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:maneger/controller/vendor_controller/test_controller.dart';
+import 'package:maneger/controller/vendor_controller/vendor_pro_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/product_model.dart';
@@ -121,7 +121,7 @@ class ImageUploadController extends GetxController {
         if (result['status'] == 'success') {
           uploadedImageUrl.value = result['filename'] ?? "";
           Get.snackbar('تم التحديث', 'تم التحديث بنجاح!');
-          await Get.find<TestController>().getData();
+          await Get.find<VendorProController>().getData();
           Get.back();
           // Refresh product list if necessary
           // Get.find<ProductController>().getData();

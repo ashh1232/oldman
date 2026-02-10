@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:maneger/class/api_service.dart';
 import 'package:maneger/class/crud.dart';
 import 'package:maneger/controller/vendor_controller/image_upload_controller.dart';
-import 'package:maneger/controller/vendor_controller/test_controller.dart';
+import 'package:maneger/controller/vendor_controller/vendor_pro_controller.dart';
 import 'package:maneger/controller/auth_controller/auth_controller.dart';
 import 'package:maneger/controller/delivery_controller/deli_map_controller.dart';
 import 'package:maneger/controller/delivery_controller/delivery_home_controller.dart';
@@ -50,7 +50,7 @@ class HomeBinding extends Bindings {
       () => ImageUploadController(),
       fenix: true,
     );
-    Get.lazyPut<TestController>(() => TestController(), fenix: true);
+    Get.lazyPut<VendorProController>(() => VendorProController(), fenix: true);
     Get.lazyPut<ProfileController>(() => ProfileController(), fenix: true);
   }
 }
