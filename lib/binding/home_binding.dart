@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:maneger/class/api_service.dart';
 import 'package:maneger/class/crud.dart';
+import 'package:maneger/controller/auth_controller/storage_service.dart';
 import 'package:maneger/controller/vendor_controller/image_upload_controller.dart';
 import 'package:maneger/controller/vendor_controller/vendor_pro_controller.dart';
 import 'package:maneger/controller/auth_controller/auth_controller.dart';
@@ -22,6 +23,7 @@ class HomeBinding extends Bindings {
     // Core Services (Permanent)
     Get.put(Crud(), permanent: true);
     Get.put(ApiService(), permanent: true);
+    Get.put(StorageService(), permanent: true);
 
     // Auth Controller
     Get.lazyPut<AuthController>(() => AuthController(), fenix: true);

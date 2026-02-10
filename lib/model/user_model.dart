@@ -5,8 +5,9 @@ class User {
   final String userPhone;
   final String? userImage;
   final String? userAddress;
-  final String? userCity;
-  final String? userCountry;
+  final String userType;
+  // final String? userCity;
+  // final String? userCountry;
   final String? createdAt;
 
   User({
@@ -16,22 +17,30 @@ class User {
     required this.userPhone,
     this.userImage,
     this.userAddress,
-    this.userCity,
-    this.userCountry,
+    // this.userCity,
+    // this.userCountry,
     this.createdAt,
+    required this.userType,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      userId: json['user_id'].toString(),
-      userName: json['user_name'] as String,
-      // userEmail: json['user_email'] as String ?? '',
-      userPhone: json['user_phone'] as String,
-      userImage: json['user_image'] as String?,
-      userAddress: json['user_address'] as String?,
-      userCity: json['user_city'] as String?,
-      userCountry: json['user_country'] as String?,
-      createdAt: json['created_at'] as String?,
+      // تحويل آمن للـ ID حتى لو جاء كـ int أو String
+      userId: json['user_id']?.toString() ?? '',
+
+      // تجنب 'as String' واستخدم ?? لتوفير قيمة افتراضية في حال كان null
+      userName: json['user_name']?.toString() ?? 'Unknown',
+
+      userPhone: json['user_phone']?.toString() ?? '',
+
+      // الحقول التي تسمح بـ null (Optional) لا تستخدم معها 'as String'
+      userImage: json['user_image']?.toString(),
+      userAddress: json['user_address']?.toString(),
+
+      createdAt: json['created_at']?.toString(),
+
+      // التأكد من جلب الرتبة بشكل صحيح
+      userType: json['user_role']?.toString() ?? 'clint',
     );
   }
 
@@ -43,8 +52,9 @@ class User {
       'user_phone': userPhone,
       'user_image': userImage,
       'user_address': userAddress,
-      'user_city': userCity,
-      'user_country': userCountry,
+      // 'user_city': userCity,
+      // 'user_country': userCountry,
+      'user_role': userType,
     };
   }
 

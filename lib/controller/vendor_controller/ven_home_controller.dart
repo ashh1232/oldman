@@ -25,9 +25,15 @@ class VenHomeController extends GetxController {
   @override
   void onInit() async {
     // zuser = await authController.userId;
-    authController.checkLoginStatus().then((value) => print(zuser));
-
+    checkAdminStatus();
     super.onInit();
+  }
+
+  void checkAdminStatus() {
+    // جلب بيانات المستخدم من AuthController
+    final authController = Get.find<AuthController>();
+    // افترضنا أن حقل 'user_type' في الـ Model يحدد التاجر
+    isAdmin.value = authController.currentUser.value?.userType == "vendor";
   }
 
   // String? get zuser => authController.userId;

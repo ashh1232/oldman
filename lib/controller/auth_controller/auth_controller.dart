@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:maneger/class/handlingdatacontroll.dart';
 import 'package:maneger/class/statusrequest.dart';
+import 'package:maneger/controller/auth_controller/storage_service.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/model/user_model.dart';
 import 'package:maneger/routes.dart';
@@ -61,6 +62,7 @@ class AuthController extends GetxController {
       },
       (data) async {
         if (data['status'] == 'success') {
+          print(data);
           final token = data['data']['token'];
           // Use data['data'] directly if that's where the user info is,
           // or data['data']['user'] if structured that way.
@@ -154,6 +156,7 @@ class AuthController extends GetxController {
   }
 
   Future<void> logout() async {
+    Get.find<StorageService>().prefs.setBool('isLoggedIn', false);
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('auth_token');
     await prefs.remove('current_user');

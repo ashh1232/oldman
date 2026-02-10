@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:maneger/binding/home_binding.dart';
+import 'package:maneger/controller/auth_controller/auth_middleware.dart';
 import 'package:maneger/screen/vendor/add_new_product_screen.dart';
+import 'package:maneger/screen/vendor/vendor_home.dart';
 import 'package:maneger/screen/vendor/vendor_order_details.dart';
 import 'package:maneger/screen/vendor/vendor_product_screen.dart';
 import 'package:maneger/screen/vendor/edit_product_detail_view.dart';
@@ -46,6 +48,7 @@ class AppRoutes {
   static const mapScreen = '/mapScreen';
 
   // --- Admin Routes ---
+  static const vendorHome = '/vendorHome';
   static const addscreen = '/addscreen';
   static const editProductScreen = '/editProductScreen';
   static const imageUploadScreen = '/imageUploadScreen';
@@ -88,6 +91,12 @@ class AppRoutes {
     GetPage(name: favorite, page: () => FavoritesScreen()),
 
     // Admin
+    GetPage(
+      name: vendorHome,
+      page: () => VendorHome(),
+      binding: HomeBinding(),
+      middlewares: [AuthMiddleware()],
+    ),
     GetPage(name: addscreen, page: () => VendorProductScreen()),
     GetPage(name: editProductScreen, page: () => EditProductDetailView()),
     GetPage(name: imageUploadScreen, page: () => AddNewProductScreen()),
