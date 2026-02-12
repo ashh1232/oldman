@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/class/crud.dart';
+import 'package:maneger/controller/vendor_controller/ven_home_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 // import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/model/order_model.dart';
@@ -22,7 +23,13 @@ class VendorOrderController extends GetxController {
     getOrders(); // انقل استدعاء البيانات إلى هنا
   }
 
+  final authController = Get.find<VenHomeController>();
+
+  String get oi => authController.currentVendor.value;
+
   Future<void> getOrders() async {
+    print(oi);
+    print('aaaaaa');
     if (isLoading.value) return;
     // statusRequest.value = StatusRequest.loading;
 
@@ -30,9 +37,9 @@ class VendorOrderController extends GetxController {
       isLoading.value = true;
       var respo = await _crud.postData(ApiConstants.adminOrder, {
         'action': 'get_pending_order_vendor',
-        'vendor_id': '48',
+        'vendor_id': oi,
       });
-      // print(respo);
+      print(respo);
       respo.fold(
         (status) {
           WidgetsBinding.instance.addPostFrameCallback((_) {

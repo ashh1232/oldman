@@ -220,23 +220,38 @@ class CheckoutController extends GetxController {
         };
       }).toList();
       // Extract unique vendor IDs
+      // 2. استخراج الموردين الفريدين بشكل صحيح
+      final vendorIdsSet = cartController.products
+          .where((p) => p.vendorId != null)
+          .map((p) => p.vendorId.toString())
+          .toSet();
 
-      final vendorIdsList = cartController.products
-          .where((product) => product.vendorId != null)
-          .map((product) => product.vendorId.toString())
-          .toSet()
-          .toList();
       // Extract unique vendor IDs
-      final uniqueVendorsCount = cartController.products
-          .map((p) => p.vendorId)
-          .toSet()
-          .length;
+      final uniqueVendorsCount = vendorIdsSet.length;
+
+      // 3. تحديد الـ vendor_id الذي سيُرسل للطلب الرئيسي
+      // إذا كان هناك أكثر من مورد، نرسل '0' أو '1' (حسب إعدادات السيرفر لديك)
+      // وإذا كان مورد واحد، نأخذ قيمته مباشرة.
+      final String finalVendorId = uniqueVendorsCount > 1
+          ? 'multi' // أو '1' حسب ما يتطلبه الـ API الخاص بك
+          : (vendorIdsSet.isNotEmpty ? vendorIdsSet.first : '0');
+
+      print(
+        'Vendors count: $uniqueVendorsCount, Selected Vendor ID: $finalVendorId',
+      );
+      // final vendorIdsList = cartController.products
+      //     .where((product) => product.vendorId != null)
+      //     .map((product) => product.vendorId.toString())
+      //     .toSet()
+      //     .toList()
+      // .first;
+      // print('vendor : $vendorIdsList');
 
       // Prepare order data
       final orderData = {
         'action': 'create_order',
         'user_id': authController.userId ?? '9',
-        'vendor_id': uniqueVendorsCount > 1 ? '1' : vendorIdsList.join(','),
+        'vendor_id': finalVendorId,
         'total': total.toStringAsFixed(2),
         'subtotal': subtotal.toStringAsFixed(2),
         'shipping': shipping.toStringAsFixed(2),

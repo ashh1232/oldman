@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/class/crud.dart';
 import 'package:maneger/class/statusrequest.dart';
+import 'package:maneger/controller/vendor_controller/ven_home_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 // import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/model/order_model.dart';
@@ -12,6 +13,9 @@ class VendorOrderProcessController extends GetxController {
   final Crud _crud = Crud();
   var isLoading = false.obs;
   final RxList<Order> orders = <Order>[].obs;
+  final authController = Get.find<VenHomeController>();
+
+  String get oi => authController.currentVendor.value;
 
   var currentIndex = 0.obs;
   @override

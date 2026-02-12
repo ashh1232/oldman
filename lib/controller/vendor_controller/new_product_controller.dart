@@ -89,6 +89,8 @@ class NewProductController extends GetxController {
   // فنكشن إضافة المنتج والسيرفر
   // تأكد أن النوع هو Future<bool> وليس void
   Future<bool> addProduct() async {
+    print('object');
+    print(currentVendor.value.toString());
     try {
       if (selectedImage.value == null ||
           nameController.text.isEmpty ||
@@ -111,7 +113,7 @@ class NewProductController extends GetxController {
       );
 
       isLoading.value = false;
-
+      print(response);
       // يجب استخدام return أمام fold ليعيد النتيجة النهائية
       // print(response['message']);
       return response.fold(
