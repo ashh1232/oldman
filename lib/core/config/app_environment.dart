@@ -31,8 +31,8 @@ class EnvironmentConfig {
   /// Development configuration
   static const EnvironmentConfig development = EnvironmentConfig(
     environment: AppEnvironment.development,
-    serverUrl: 'http://10.176.169.148/doc/docana-back',
-    imageUrl: 'http://10.176.169.148/img',
+    serverUrl: 'http://192.168.0.103/doc/docana-back',
+    imageUrl: 'http://192.168.0.103/img',
     // serverUrl: 'http://192.168.0.113/doc/docana-back',
     // imageUrl: 'http://192.168.0.113/img',
     displayName: 'Development',

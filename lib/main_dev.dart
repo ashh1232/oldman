@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:maneger/controller/auth_controller/storage_service.dart';
 import 'package:maneger/core/config/app_environment.dart';
 import 'package:maneger/core/config/environment_manager.dart';
 import 'package:maneger/service/my_theme.dart';
@@ -10,6 +11,7 @@ import 'routes.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init(); // Initialize storage
+  await Get.putAsync(() => StorageService().init());
 
   // Initialize DEVELOPMENT environment
   EnvironmentManager().initialize(AppEnvironment.development);

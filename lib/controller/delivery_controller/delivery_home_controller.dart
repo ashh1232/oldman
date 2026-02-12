@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:maneger/class/crud.dart';
 import 'package:maneger/controller/auth_controller/auth_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
@@ -14,17 +15,17 @@ class DeliveryHomeController extends GetxController {
   var isLoading = false.obs;
   var isAdminLoading = false.obs;
   final RxList<Order> orders = <Order>[].obs;
-  final RxList<UserModel> admin = <UserModel>[].obs;
+  final RxBool admin = false.obs;
   var isAdmin = false.obs;
   RxInt ho = 0.obs;
   User? get zuser => authController.currentUser.value;
   @override
   void onInit() async {
-    // zuser = await authController.userId;
-    authController.checkLoginStatus().then((value) => print(zuser));
-    print('zuser');
-    print(zuser);
-    print('zuser');
+    // // zuser = await authController.userId;
+    // authController.checkLoginStatus().then((value) => print(zuser));
+    // print('zuser');
+    // print(zuser);
+    // print('zuser');
     super.onInit();
   }
 
@@ -72,10 +73,10 @@ class DeliveryHomeController extends GetxController {
             isAdmin.value = false;
           }
           if (res['status'] == 'success') {
-            final List decod = res['data'];
+            // final List decod = res['data'];
             // print(res);
             // print(decod);
-            admin.value = decod.map((ban) => UserModel.fromJson(ban)).toList();
+            // admin.value = decod.map((ban) => UserModel.fromJson(ban)).toList();
           } else {}
         },
       );
@@ -98,12 +99,14 @@ class DeliveryHomeController extends GetxController {
         isAdminLoading.value = false;
         return;
       }
-
+      print('zuser');
+      print(zuser!.userId.toString());
+      print('zuser231');
       var respo = await _crud.postData(ApiConstants.adminOrder, {
         'action': 'is_admin',
         'usr_id': zuser!.userId,
       });
-
+      print(respo);
       respo.fold(
         (status) {
           // استخدام Get.snackbar مباشرة أسهل وأكثر توافقاً مع GetX
@@ -115,15 +118,29 @@ class DeliveryHomeController extends GetxController {
         },
         (res) {
           if (res['status'] == 'success') {
-            isAdmin.value = true;
-            final List decod = res['data'];
-            admin.value = decod.map((ban) => UserModel.fromJson(ban)).toList();
+            if (res['vendor_data'] != null) {
+              print('Vendor ID: ${res['vendor_data']}');
+              // ملاحظة: إذا كان vendor_data مجرد رقم (73)، فلا يمكنك تحويله لـ List<UserModel>
+              // ستحتاج لتعديل منطق تخزين البيانات هنا بناءً على حاجتك
+            }
+            if (res['is_admin'] != null) {
+              print(res['is_admin']);
+              bool iss = res['is_admin'];
+              admin.value = iss;
+              isAdmin.value = iss;
+            }
+            // final List decod = res['data'];
+            // print('decod');
+            // print(decod);
+            // admin.value = decod.map((ban) => UserModel.fromJson(ban)).toList();
+            // print(admin.value);
           } else {
             isAdmin.value = false; // تأكد من إعادة التعيين في حال الفشل
           }
         },
       );
     } catch (e) {
+      print(e);
       Get.snackbar('Error', 'حدث خطأ غير متوقع: $e');
     } finally {
       isAdminLoading.value = false;

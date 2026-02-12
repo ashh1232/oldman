@@ -55,7 +55,6 @@ class AuthController extends GetxController {
       'phone': phone,
       'password': password,
     });
-    print(response);
     response.fold(
       (failure) {
         errorMessage.value = 'Login failed. Please try again.';
