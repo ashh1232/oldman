@@ -66,7 +66,7 @@ class CategoryController extends GetxController
 
     try {
       isBanLoading.value = true;
-      var respo = await crud.postData(ApiConstants.categories, {
+      var respo = await crud.postData(ApiConstants.editCategory, {
         'action': 'get_ban_cat',
         'cat_id': id,
       });
@@ -117,7 +117,7 @@ class CategoryController extends GetxController
 
     try {
       isBanLoading.value = true;
-      var respo = await crud.postData(ApiConstants.categories, {
+      var respo = await crud.postData(ApiConstants.editCategory, {
         'action': 'get_cat_id',
         'cat_id': id,
       });

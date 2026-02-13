@@ -28,6 +28,25 @@ class AddNewProductScreen extends StatelessWidget {
                 decoration: const InputDecoration(labelText: "سعر المنتج"),
               ),
               const SizedBox(height: 15),
+              Obx(
+                () => Column(
+                  // children: Plan.values.map((plan) {
+                  //   return RadioListTile<Plan>(
+                  //     enabled: plan.isPaid,
+
+                  //     title: Text(plan.label.toUpperCase()), // تحويل Enum لنص
+                  //     value: plan,
+                  //     // groupValue: controller.selectedPlan.value,
+                  //     onChanged: (val) => controller.changePlan(val!),
+                  //   );
+                  // }).toList(),
+                ),
+              ),
+              FloatingActionButton(
+                onPressed: () => controller.fetchData(),
+                child: Icon(Icons.refresh),
+              ),
+              const SizedBox(height: 15),
 
               // عرض الصورة المختارة
               Obx(

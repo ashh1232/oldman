@@ -5,11 +5,19 @@ import 'package:image_picker/image_picker.dart';
 import 'package:maneger/class/image_crud.dart';
 import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/core/constants/api_constants.dart';
-import 'package:maneger/linkapi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 // import 'package:talabat_admin/class/image_crud.dart';
 // import 'package:talabat_admin/class/statusrequest.dart';
 // import 'package:talabat_admin/linkapi.dart';
+enum ApiStatus { loading, success, error }
+
+class Plan {
+  final int id;
+  final String label;
+  const Plan(this.id, this.label);
+  bool get isPaid => id > 0;
+}
 
 class NewProductController extends GetxController {
   RxString currentVendor = ''.obs;
@@ -19,6 +27,26 @@ class NewProductController extends GetxController {
 
   var selectedImage = Rxn<File>();
   var isLoading = false.obs;
+  /////////////////////////////////////
+  var status = ApiStatus.loading.obs;
+  // var selectedPlan = Plan.id.values.obs;
+  void changePlan(Plan newPlan) {
+    // selectedPlan.value = newPlan;
+  }
+
+  void fetchData() async {
+    status.value = ApiStatus.loading;
+    try {
+      await Future.delayed(Duration(seconds: 2)); // محاكاة طلب API
+
+      // print(Plan.values);
+      status.value = ApiStatus.success;
+    } catch (e) {
+      status.value = ApiStatus.error;
+    }
+  }
+
+  ///////////////////////////////////////
   // أضف هذه الدالة داخل كلاس Crud لتحويل الأرقام تلقائياً قبل الإرسال
   Map _prepareData(Map data) {
     Map cleanedData = Map.from(data);
@@ -143,4 +171,6 @@ class NewProductController extends GetxController {
     priceController.dispose();
     super.onClose();
   }
+
+  asdf(int i, String s) {}
 }

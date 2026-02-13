@@ -15,6 +15,9 @@ class AddController extends GetxController {
   late TextEditingController descriptionController;
   late TextEditingController imageController;
   late TextEditingController proCat;
+  /////////////////
+
+  /////////////
   int curent = 0;
   @override
   void onInit() {
