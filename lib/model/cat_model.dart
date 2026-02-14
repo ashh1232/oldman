@@ -2,7 +2,7 @@ class Category {
   final String id;
   final String title;
   final String image;
-  final int type;
+  final String type;
 
   // 'var quantity;' is replaced by 'int quantity;'
   // Fields that are not final must be initialized or nullable.
@@ -15,8 +15,8 @@ class Category {
       id: (json['id'] ?? json['categories_id'] ?? "1").toString(),
       title: (json['title'] ?? json['categories_name'] ?? "بدون عنوان")
           .toString(),
-      image: json['categories_image'] as String,
-      type: json['cat_main'] as int,
+      image: (json['categories_image']).toString(),
+      type: (json['cat_main']).toString(),
       // Use null-aware operators (??) for safety
       // quantity: json['quantity'] as int? ?? 1,
     );
