@@ -28,26 +28,64 @@ class AddNewProductScreen extends StatelessWidget {
                 decoration: const InputDecoration(labelText: "سعر المنتج"),
               ),
               const SizedBox(height: 15),
-              Obx(
-                () => Column(
-                  // children: Plan.values.map((plan) {
-                  //   return RadioListTile<Plan>(
-                  //     enabled: plan.isPaid,
 
-                  //     title: Text(plan.label.toUpperCase()), // تحويل Enum لنص
-                  //     value: plan,
-                  //     // groupValue: controller.selectedPlan.value,
-                  //     onChanged: (val) => controller.changePlan(val!),
-                  //   );
-                  // }).toList(),
-                ),
-              ),
-              FloatingActionButton(
-                onPressed: () => controller.fetchData(),
-                child: Icon(Icons.refresh),
-              ),
+              // Obx(
+              //   () => Column(
+              // children: Plan.values.map((plan) {
+              //   return RadioListTile<Plan>(
+              //     enabled: plan.isPaid,
+
+              //     title: Text(plan.label.toUpperCase()), // تحويل Enum لنص
+              //     value: plan,
+              //     // groupValue: controller.selectedPlan.value,
+              //     onChanged: (val) => controller.changePlan(val!),
+              //   );
+              // }).toList(),
+              //   ),
+              // ),
               const SizedBox(height: 15),
-
+              ListTile(title: Text('data')),
+              FloatingActionButton(
+                heroTag: "map",
+                mini: true,
+                backgroundColor: Colors.white,
+                onPressed: () {
+                  Get.bottomSheet(
+                    Container(
+                      color: Colors.white,
+                      padding: const EdgeInsets.all(20),
+                      // child: SingleChildScrollView(
+                      child:
+                          // Column(
+                          //   mainAxisSize: MainAxisSize.min,
+                          //   children: [
+                          //     const Text(
+                          //       "اختر نوع المنتج",
+                          //       style: TextStyle(
+                          //         fontWeight: FontWeight.bold,
+                          //         fontSize: 18,
+                          //       ),
+                          //     ),
+                          //     const SizedBox(height: 20),
+                          ListView.builder(
+                            itemCount: 20,
+                            itemBuilder: (c, s) => ListTile(
+                              leading: const Icon(Icons.map),
+                              title: const Text("الوضع العادي"),
+                              onTap: () {
+                                // controller.changeMapStyle('default');
+                                Get.back();
+                              },
+                            ),
+                          ),
+                      // ],
+                      // ),
+                      // ),
+                    ),
+                  );
+                },
+                child: const Icon(Icons.layers, color: Colors.blue),
+              ),
               // عرض الصورة المختارة
               Obx(
                 () => controller.selectedImage.value != null
