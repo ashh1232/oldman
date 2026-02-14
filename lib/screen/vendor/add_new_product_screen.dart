@@ -5,7 +5,6 @@ import 'package:maneger/class/handlingdataview.dart';
 import 'package:maneger/class/image_handling.dart';
 import 'package:maneger/controller/vendor_controller/new_product_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
-import 'package:maneger/widget/loading_card.dart';
 // import 'package:talabat_admin/controller/new_product_controller.dart';
 
 class AddNewProductScreen extends StatelessWidget {
@@ -191,7 +190,7 @@ class AddNewProductScreen extends StatelessWidget {
                           minimumSize: const Size(double.infinity, 50),
                         ),
                         onPressed: () async {
-                          bool success = await controller.addProduct();
+                          bool success = await controller.addNewProduct();
                           if (success) {
                             // العودة للصفحة السابقة وتلقائياً TestScreen ستحدث بياناتها
                             Get.back();

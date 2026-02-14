@@ -28,7 +28,6 @@ class NewProductController extends GetxController {
   RxString currentVendor = ''.obs;
 
   final ImageCrud _imageCrud = ImageCrud();
-  final Crud _crud = Crud();
   var statusRequest = StatusRequest.offline.obs;
 
   var selectedImage = Rxn<File>();
@@ -168,7 +167,7 @@ class NewProductController extends GetxController {
 
   // فنكشن إضافة المنتج والسيرفر
   // تأكد أن النوع هو Future<bool> وليس void
-  Future<bool> addProduct() async {
+  Future<bool> addNewProduct() async {
     print('object');
     print(currentVendor.value.toString());
     try {

@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maneger/controller/product_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
-import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/product_model.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -56,11 +55,9 @@ class ProductDetailView extends GetView<ProductController> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 7),
-                  Container(
-                    color: Theme.of(context).colorScheme.surface,
-                    padding: EdgeInsets.all(8),
-                    child: Column(
+                  TalContainer(
+                    title: 'معلومات المنتج',
+                    body: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
 
                       children: [
@@ -71,7 +68,26 @@ class ProductDetailView extends GetView<ProductController> {
                     ),
                   ),
 
-                  const SizedBox(height: 8),
+                  // const SizedBox(height: 8),
+                  TalContainer(
+                    title: 'معلومات الشحن',
+                    titleIcon: Icon(Icons.arrow_drop_down_rounded),
+                    desc:
+                        'شحن مجاني على الطلبات فوق \$50. التوصيل القياسي يستغرق 7-15 يوم عمل.',
+                  ),
+                  TalContainer(
+                    title: '',
+                    body: Container(
+                      child: Column(
+                        children: [
+                          Text('data'),
+                          Text('data'),
+                          Text('data'),
+                          Text('data'),
+                        ],
+                      ),
+                    ),
+                  ),
                   Container(
                     color: Theme.of(context).colorScheme.surface,
                     padding: EdgeInsets.all(8),
@@ -162,6 +178,7 @@ class ProductDetailView extends GetView<ProductController> {
               ],
             ),
           ),
+
           Container(
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
@@ -449,6 +466,56 @@ class ProductDetailView extends GetView<ProductController> {
               ),
               onPressed: () => controller.toggleFavorite(),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class TalContainer extends StatelessWidget {
+  const TalContainer({
+    super.key,
+    this.title = '',
+    this.titleIcon = const SizedBox.shrink(),
+    this.desc = '',
+    this.body = const SizedBox.shrink(),
+  });
+  final String title;
+  final Widget titleIcon;
+  final String desc;
+  final Widget body;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.symmetric(vertical: 3),
+      color: Theme.of(context).colorScheme.surface,
+      padding: EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                ),
+
+                // Text(Iconaa),
+                titleIcon,
+              ],
+            ),
+          ),
+          body,
+
+          // SizedBox(height: 8),
+          Text(
+            desc,
+            style: TextStyle(color: Colors.grey.shade700, height: 1.6),
           ),
         ],
       ),
