@@ -2,71 +2,64 @@ import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:maneger/class/api_service.dart';
+import 'package:maneger/class/crud.dart';
+import 'package:maneger/class/handlingdatacontroll.dart';
 import 'package:maneger/class/image_crud.dart';
+import 'package:maneger/class/prepare_data.dart';
 import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/core/constants/api_constants.dart';
+import 'package:maneger/model/cat_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // import 'package:talabat_admin/class/image_crud.dart';
 // import 'package:talabat_admin/class/statusrequest.dart';
 // import 'package:talabat_admin/linkapi.dart';
-enum ApiStatus { loading, success, error }
+// enum ApiStatus { loading, success, error }
 
-class Plan {
-  final int id;
-  final String label;
-  const Plan(this.id, this.label);
-  bool get isPaid => id > 0;
-}
+// class Plan {
+//   final int id;
+//   final String label;
+//   const Plan(this.id, this.label);
+//   bool get isPaid => id > 0;
+// }
 
 class NewProductController extends GetxController {
   RxString currentVendor = ''.obs;
 
-  ImageCrud crud = ImageCrud();
+  final ImageCrud _imageCrud = ImageCrud();
+  final Crud _crud = Crud();
   var statusRequest = StatusRequest.offline.obs;
 
   var selectedImage = Rxn<File>();
   var isLoading = false.obs;
+  ////////////
+  RxList<Category> catList = <Category>[].obs;
+  RxBool isCatLoading = false.obs;
+  RxInt currentCat = 0.obs;
+  final ApiService _apiService = ApiService();
+
   /////////////////////////////////////
-  var status = ApiStatus.loading.obs;
-  // var selectedPlan = Plan.id.values.obs;
-  void changePlan(Plan newPlan) {
-    // selectedPlan.value = newPlan;
-  }
+  // var status = ApiStatus.loading.obs;
+  // // var selectedPlan = Plan.id.values.obs;
+  // void changePlan(Plan newPlan) {
+  //   // selectedPlan.value = newPlan;
+  // }
 
-  void fetchData() async {
-    status.value = ApiStatus.loading;
-    try {
-      await Future.delayed(Duration(seconds: 2)); // محاكاة طلب API
+  // void fetchData() async {
+  //   status.value = ApiStatus.loading;
+  //   try {
+  //     await Future.delayed(Duration(seconds: 2)); // محاكاة طلب API
 
-      // print(Plan.values);
-      status.value = ApiStatus.success;
-    } catch (e) {
-      status.value = ApiStatus.error;
-    }
-  }
+  //     // print(Plan.values);
+  //     status.value = ApiStatus.success;
+  //   } catch (e) {
+  //     status.value = ApiStatus.error;
+  //   }
+  // }
 
   ///////////////////////////////////////
   // أضف هذه الدالة داخل كلاس Crud لتحويل الأرقام تلقائياً قبل الإرسال
-  Map _prepareData(Map data) {
-    Map cleanedData = Map.from(data);
-    cleanedData.forEach((key, value) {
-      if (value is String) {
-        cleanedData[key] = value
-            .replaceAll('٠', '0')
-            .replaceAll('١', '1')
-            .replaceAll('٢', '2')
-            .replaceAll('٣', '3')
-            .replaceAll('٤', '4')
-            .replaceAll('٥', '5')
-            .replaceAll('٦', '6')
-            .replaceAll('٧', '7')
-            .replaceAll('٨', '8')
-            .replaceAll('٩', '9');
-      }
-    });
-    return cleanedData;
-  }
 
   // حقول إدخال البيانات
   late TextEditingController nameController;
@@ -76,9 +69,70 @@ class NewProductController extends GetxController {
   void onInit() {
     nameController = TextEditingController();
     priceController = TextEditingController();
-    checkVendor();
+    checkVendor().then((e) => getCatData());
+
     super.onInit();
   }
+
+  void changeCat(int newCat) {
+    currentCat.value = newCat;
+    Get.back();
+  }
+
+  Future<void> getCatData() async {
+    // 1. تعيين حالة التحميل
+    statusRequest.value = StatusRequest.loading;
+
+    // 2. طلب البيانات (النتيجة ستكون Either: Left للفشل أو Right للنجاح)
+    final result = await _apiService.getRequestEither(ApiConstants.categories);
+
+    // 3. استخدام Fold لاستخراج البيانات أو معالجة الخطأ
+    result.fold(
+      (leftFailure) {
+        // في حال الفشل (Left)
+        statusRequest.value = leftFailure;
+      },
+      (rightData) {
+        // في حال النجاح (Right)
+        try {
+          statusRequest.value = StatusRequest.success;
+
+          // استخراج القائمة من حقل 'data'
+          List responseData = rightData['data'];
+
+          List<Category> loadedData = responseData
+              .map((e) => Category.fromJson(e))
+              .toList();
+
+          catList.assignAll(loadedData);
+
+          // التحقق إذا كانت القائمة فارغة
+          if (catList.isEmpty) statusRequest.value = StatusRequest.none;
+        } catch (e) {
+          statusRequest.value = StatusRequest.serverfailure;
+        }
+      },
+    );
+  }
+
+  // Future<void> getCat() async {
+  //   try {
+  //     isCatLoading.value = true;
+  //     final perfs = await _crud.getData(ApiConstants.categories);
+
+  //     perfs.fold((ifLeft) {}, (data) {
+  //       if (data['status'] == 'success') {
+  //         List comedata = data['data'];
+  //         catList.value = comedata.map((da) => Category.fromJson(da)).toList();
+  //         print(' list :  $catList');
+  //       }
+  //     });
+  //   } catch (e) {
+  //     print(e);
+  //   } finally {
+  //     isCatLoading.value = false;
+  //   }
+  // }
 
   Future<void> checkVendor() async {
     print('aaaaaaaaaaaaaaaaaaaa');
@@ -93,8 +147,6 @@ class NewProductController extends GetxController {
 
       try {
         currentVendor.value = userStr;
-        print('asdasdasd');
-        print(currentVendor);
         isLoading.value = false;
       } catch (e) {
         Get.snackbar('Error', 'Failed to save user data');
@@ -128,13 +180,13 @@ class NewProductController extends GetxController {
       }
 
       isLoading.value = true;
-      var cleanedData = _prepareData({
+      var cleanedData = prepareData({
         "name": nameController.text,
         "price": priceController.text,
         "vendor": currentVendor.value.toString(),
       });
 
-      var response = await crud.postRequestWithFile(
+      var response = await _imageCrud.postRequestWithFile(
         ApiConstants.addProduct,
         cleanedData,
         selectedImage.value!,
@@ -171,6 +223,4 @@ class NewProductController extends GetxController {
     priceController.dispose();
     super.onClose();
   }
-
-  asdf(int i, String s) {}
 }

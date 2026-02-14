@@ -140,7 +140,7 @@ class CategoryPage extends GetView<CategoryController> {
                         (category) => Padding(
                           padding: EdgeInsets.symmetric(horizontal: 6),
                           child: Chip(
-                            label: Handlingdataview(
+                            label: HandlingDataView(
                               statusRequest: controller.statusRequest.value,
 
                               widget: Text(
