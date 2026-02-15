@@ -19,12 +19,36 @@ class AddNewProductScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('اضافة منتج جديد')),
       body: Container(
-        padding: const EdgeInsets.all(15),
+        // padding: const EdgeInsets.all(15),
         child: SingleChildScrollView(
           child: Column(
             children: [
               TalContainer(
-                title: '',
+                title: 'اضف صورة المنتج',
+                body: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () => controller.pickImage(),
+                        child: const Text("اختر الصورة"),
+                      ),
+                      // حقل اسم المنتج
+                      Obx(
+                        () => controller.selectedImage.value != null
+                            ? Image.file(
+                                controller.selectedImage.value!,
+                                height: 200,
+                              )
+                            : Icon(Icons.image, size: 200),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              TalContainer(
+                title: 'معلومات المنتج',
                 body: Container(
                   child: Column(
                     children: [
@@ -35,20 +59,18 @@ class AddNewProductScreen extends StatelessWidget {
                           labelText: "اسم المنتج",
                         ),
                       ),
-                      const SizedBox(height: 15),
                       TextField(
                         controller: controller.priceController,
                         decoration: const InputDecoration(
                           labelText: "سعر المنتج",
                         ),
                       ),
-                      const SizedBox(height: 15),
                     ],
                   ),
                 ),
               ),
               TalContainer(
-                title: '',
+                title: 'القسم',
                 body: Container(
                   child: Column(
                     children: [
@@ -58,7 +80,19 @@ class AddNewProductScreen extends StatelessWidget {
                           statusRequest: controller.statusRequest.value,
                           widget: controller.catList.isNotEmpty
                               ? Container(
-                                  color: Theme.of(context).colorScheme.surface,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.surface,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        blurRadius: 3,
+                                        offset: const Offset(0, 2),
+                                      ),
+                                    ],
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
                                   child: ListTile(
                                     contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 16,
@@ -71,6 +105,13 @@ class AddNewProductScreen extends StatelessWidget {
                                         color: Colors
                                             .grey[200], // لون خلفية للصورة
                                         borderRadius: BorderRadius.circular(8),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black26,
+                                            blurRadius: 3,
+                                            offset: const Offset(0, 2),
+                                          ),
+                                        ],
                                       ),
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(
@@ -206,37 +247,12 @@ class AddNewProductScreen extends StatelessWidget {
                               : const Text("لا توجد أقسام متاحة"),
                         );
                       }),
-                      const SizedBox(height: 15),
+                      // const SizedBox(height: 15),
                     ],
                   ),
                 ),
               ),
 
-              TalContainer(
-                title: '',
-                body: Container(
-                  child: Column(
-                    children: [
-                      // حقل اسم المنتج
-                      Obx(
-                        () => controller.selectedImage.value != null
-                            ? Image.file(
-                                controller.selectedImage.value!,
-                                height: 200,
-                              )
-                            : Icon(Icons.image, size: 200),
-                      ),
-
-                      ElevatedButton(
-                        onPressed: () => controller.pickImage(),
-                        child: const Text("اختر الصورة"),
-                      ),
-
-                      const SizedBox(height: 30),
-                    ],
-                  ),
-                ),
-              ),
               // عرض الصورة المختارة
 
               // // زر الحفظ النهائي
@@ -262,6 +278,7 @@ class AddNewProductScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BotNavWidget(
+        isIcon: false,
         updateProductImage: "إضافة المنتج الآن",
         controller: controller,
         onPressed: () async {
