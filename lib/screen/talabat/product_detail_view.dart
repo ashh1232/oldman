@@ -8,6 +8,8 @@ import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/model/product_model.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../widget/tal_container.dart';
+
 class ProductDetailView extends GetView<ProductController> {
   final Product? manualProduct; // أضف هذا المتغير
 
@@ -75,19 +77,7 @@ class ProductDetailView extends GetView<ProductController> {
                     desc:
                         'شحن مجاني على الطلبات فوق \$50. التوصيل القياسي يستغرق 7-15 يوم عمل.',
                   ),
-                  TalContainer(
-                    title: '',
-                    body: Container(
-                      child: Column(
-                        children: [
-                          Text('data'),
-                          Text('data'),
-                          Text('data'),
-                          Text('data'),
-                        ],
-                      ),
-                    ),
-                  ),
+
                   Container(
                     color: Theme.of(context).colorScheme.surface,
                     padding: EdgeInsets.all(8),
@@ -466,56 +456,6 @@ class ProductDetailView extends GetView<ProductController> {
               ),
               onPressed: () => controller.toggleFavorite(),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class TalContainer extends StatelessWidget {
-  const TalContainer({
-    super.key,
-    this.title = '',
-    this.titleIcon = const SizedBox.shrink(),
-    this.desc = '',
-    this.body = const SizedBox.shrink(),
-  });
-  final String title;
-  final Widget titleIcon;
-  final String desc;
-  final Widget body;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      margin: EdgeInsets.symmetric(vertical: 3),
-      color: Theme.of(context).colorScheme.surface,
-      padding: EdgeInsets.symmetric(horizontal: 9, vertical: 5),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                ),
-
-                // Text(Iconaa),
-                titleIcon,
-              ],
-            ),
-          ),
-          body,
-
-          // SizedBox(height: 8),
-          Text(
-            desc,
-            style: TextStyle(color: Colors.grey.shade700, height: 1.6),
           ),
         ],
       ),
