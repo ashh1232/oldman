@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class TalContainer extends StatelessWidget {
   const TalContainer({
     super.key,
+    this.noTitle = false,
     this.title = '',
     this.titleIcon = const SizedBox.shrink(),
     this.desc = '',
@@ -12,6 +13,7 @@ class TalContainer extends StatelessWidget {
   final Widget titleIcon;
   final String desc;
   final Widget body;
+  final bool noTitle;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,21 +34,26 @@ class TalContainer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                ),
+          noTitle
+              ? Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        title,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        ),
+                      ),
 
-                // Text(Iconaa),
-                titleIcon,
-              ],
-            ),
-          ),
+                      // Text(Iconaa),
+                      titleIcon,
+                    ],
+                  ),
+                )
+              : SizedBox.shrink(),
           body,
 
           // SizedBox(height: 8),

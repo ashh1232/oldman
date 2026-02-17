@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:maneger/class/crud.dart';
+import 'package:maneger/controller/vendor_controller/ven_home_controller.dart';
 import 'package:maneger/controller/vendor_controller/vendor_order_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/model/order_model.dart' show Order;
@@ -70,15 +71,20 @@ class VendorProOrderController extends GetxController {
     }
   }
 
+  VenHomeController chekVendorId = Get.find<VenHomeController>();
+  get as => chekVendorId.currentVendor.value;
   Future<void> updateOrderStatus() async {
+    print('aaaaaa : $as');
     if (isLoading.value) return;
     try {
       isLoading.value = true;
       var respo = await _crud.postData(ApiConstants.adminOrder, {
         'action': 'process_order',
         'order_id': item.orderId,
-        'vendor_id': '1',
+        'vendor_id': as,
       });
+      print('rrrrrrrrrrrrr : ${item.orderId}');
+      print('rrrrrrrrrrrrr : $respo');
       respo.fold(
         (status) {
           WidgetsBinding.instance.addPostFrameCallback((_) {

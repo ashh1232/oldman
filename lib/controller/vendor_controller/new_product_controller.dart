@@ -39,43 +39,26 @@ class NewProductController extends GetxController {
   RxInt currentCat = 0.obs;
   final ApiService _apiService = ApiService();
 
-  /////////////////////////////////////
-  // var status = ApiStatus.loading.obs;
-  // // var selectedPlan = Plan.id.values.obs;
-  // void changePlan(Plan newPlan) {
-  //   // selectedPlan.value = newPlan;
-  // }
-
-  // void fetchData() async {
-  //   status.value = ApiStatus.loading;
-  //   try {
-  //     await Future.delayed(Duration(seconds: 2)); // محاكاة طلب API
-
-  //     // print(Plan.values);
-  //     status.value = ApiStatus.success;
-  //   } catch (e) {
-  //     status.value = ApiStatus.error;
-  //   }
-  // }
-
-  ///////////////////////////////////////
-  // أضف هذه الدالة داخل كلاس Crud لتحويل الأرقام تلقائياً قبل الإرسال
-
   // حقول إدخال البيانات
   late TextEditingController nameController;
   late TextEditingController priceController;
-
+  late TextEditingController noteController;
+  late String catId;
   @override
   void onInit() {
     nameController = TextEditingController();
     priceController = TextEditingController();
-    checkVendor().then((e) => getCatData());
+    noteController = TextEditingController();
+    checkVendor()
+        .then((e) => getCatData())
+        .then((onValue) => catId = catList.first.id);
 
     super.onInit();
   }
 
   void changeCat(int newCat) {
     currentCat.value = newCat;
+    catId = catList[newCat].id;
     Get.back();
   }
 
@@ -114,25 +97,6 @@ class NewProductController extends GetxController {
       },
     );
   }
-
-  // Future<void> getCat() async {
-  //   try {
-  //     isCatLoading.value = true;
-  //     final perfs = await _crud.getData(ApiConstants.categories);
-
-  //     perfs.fold((ifLeft) {}, (data) {
-  //       if (data['status'] == 'success') {
-  //         List comedata = data['data'];
-  //         catList.value = comedata.map((da) => Category.fromJson(da)).toList();
-  //         print(' list :  $catList');
-  //       }
-  //     });
-  //   } catch (e) {
-  //     print(e);
-  //   } finally {
-  //     isCatLoading.value = false;
-  //   }
-  // }
 
   Future<void> checkVendor() async {
     print('aaaaaaaaaaaaaaaaaaaa');
@@ -184,6 +148,8 @@ class NewProductController extends GetxController {
         "name": nameController.text,
         "price": priceController.text,
         "vendor": currentVendor.value.toString(),
+        "catId": catId.toString(),
+        "note": noteController.text,
       });
 
       var response = await _imageCrud.postRequestWithFile(
@@ -221,6 +187,7 @@ class NewProductController extends GetxController {
   void onClose() {
     nameController.dispose();
     priceController.dispose();
+    noteController.dispose();
     super.onClose();
   }
 }

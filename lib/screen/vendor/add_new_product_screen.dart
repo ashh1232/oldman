@@ -261,9 +261,7 @@ class AddNewProductScreen extends StatelessWidget {
 
               TalContainer(
                 title: 'تفاصيل المنتج (اختياري)',
-                body: BuildOrderNotes(
-                  controller: controller.productNotesController,
-                ),
+                body: BuildOrderNotes(controller: controller.noteController),
               ),
               TalContainer(),
             ],

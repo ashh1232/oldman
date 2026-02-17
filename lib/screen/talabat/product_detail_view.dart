@@ -57,11 +57,11 @@ class ProductDetailView extends GetView<ProductController> {
                       ],
                     ),
                   ),
+                  SizedBox(height: 3),
                   TalContainer(
                     title: 'معلومات المنتج',
                     body: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-
                       children: [
                         _buildRatingSection(),
                         // const SizedBox(height: 5),
@@ -72,16 +72,12 @@ class ProductDetailView extends GetView<ProductController> {
 
                   // const SizedBox(height: 8),
                   TalContainer(
-                    title: 'معلومات الشحن',
-                    titleIcon: Icon(Icons.arrow_drop_down_rounded),
-                    desc:
-                        'شحن مجاني على الطلبات فوق \$50. التوصيل القياسي يستغرق 7-15 يوم عمل.',
-                  ),
-
-                  Container(
-                    color: Theme.of(context).colorScheme.surface,
-                    padding: EdgeInsets.all(8),
-                    child: _buildDescriptionSection(),
+                    noTitle: true,
+                    title: 'تفاصيل المنتج',
+                    titleIcon: const Icon(Icons.arrow_drop_down_rounded),
+                    desc: (pro.description.isEmpty)
+                        ? 'بدون وصف'
+                        : pro.description,
                   ),
 
                   const SizedBox(height: 100),
@@ -371,44 +367,44 @@ class ProductDetailView extends GetView<ProductController> {
     );
   }
 
-  Widget _buildDescriptionSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'تفاصيل المنتج',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 16),
-        Obx(
-          () => Text(
-            controller.product.value?.description ?? '',
-            style: TextStyle(color: Colors.grey.shade700, height: 1.6),
-          ),
-        ),
-        SizedBox(height: 16),
-        Text(
-          'معلومات الشحن',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 8),
-        Text(
-          'شحن مجاني على الطلبات فوق \$50. التوصيل القياسي يستغرق 7-15 يوم عمل.',
-          style: TextStyle(color: Colors.grey.shade700, height: 1.6),
-        ),
-        SizedBox(height: 16),
-        Text(
-          'سياسة الارجاع',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 8),
-        Text(
-          'ضمان استرداد المال لمدة 30 يوما. بدون استفسارات.',
-          style: TextStyle(color: Colors.grey.shade700, height: 1.6),
-        ),
-      ],
-    );
-  }
+  // Widget _buildDescriptionSection() {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       Text(
+  //         'تفاصيل المنتج',
+  //         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+  //       ),
+  //       SizedBox(height: 16),
+  //       Obx(
+  //         () => Text(
+  //           controller.product.value?.description ?? '',
+  //           style: TextStyle(color: Colors.grey.shade700, height: 1.6),
+  //         ),
+  //       ),
+  // SizedBox(height: 16),
+  // Text(
+  //   'معلومات الشحن',
+  //   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+  // ),
+  // SizedBox(height: 8),
+  // Text(
+  //   'شحن مجاني على الطلبات فوق \$50. التوصيل القياسي يستغرق 7-15 يوم عمل.',
+  //   style: TextStyle(color: Colors.grey.shade700, height: 1.6),
+  // ),
+  // SizedBox(height: 16),
+  // Text(
+  //   'سياسة الارجاع',
+  //   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+  // ),
+  // SizedBox(height: 8),
+  // Text(
+  //   'ضمان استرداد المال لمدة 30 يوما. بدون استفسارات.',
+  //   style: TextStyle(color: Colors.grey.shade700, height: 1.6),
+  // ),
+  //     ],
+  //   );
+  // }
 
   Widget? _buildBottomAction(BuildContext context, Product pro) {
     return Container(

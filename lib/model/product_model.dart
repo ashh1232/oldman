@@ -67,7 +67,7 @@ class Product {
           (json['product_blurhash'] ?? "UBEVsa9E0M~q~T%ND%x^01-:wbITt8t6%hxa")
               .toString(),
       productDiscount: json['product_discount'],
-      stockQuantity: json['stock_quantity'],
+      stockQuantity: (json['stock_quantity']),
 
       quantity: json['quantity'] is int
           ? json['quantity']
