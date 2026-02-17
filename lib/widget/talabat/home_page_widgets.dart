@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import '../../controller/talabat_controller/talabat_controller.dart';
 import '../../linkapi.dart';
@@ -123,7 +124,8 @@ class TalabatCarouselBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      if (controller.isBanLoading.value || controller.banners.isEmpty) {
+      if (controller.statusRequest.value == StatusRequest.loading ||
+          controller.banners.isEmpty) {
         return const LoadingCard(height: 220);
       }
 

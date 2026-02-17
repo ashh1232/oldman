@@ -15,9 +15,19 @@ class TalContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        // borderRadius: BorderRadius.circular(12),
+        color: Theme.of(context).colorScheme.surface,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
       width: double.infinity,
       margin: EdgeInsets.symmetric(vertical: 3),
-      color: Theme.of(context).colorScheme.surface,
       padding: EdgeInsets.symmetric(horizontal: 9, vertical: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
