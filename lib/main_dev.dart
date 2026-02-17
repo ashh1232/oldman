@@ -33,7 +33,8 @@ class MyApp extends StatelessWidget {
       title: 'Docana Manager (Dev)',
       theme: MyThemes.light,
       darkTheme: MyThemes.dark,
-      themeMode: ThemeService().theme, // Loads saved theme  from GetStorage
+      themeMode: ThemeService()
+          .theme, // Loads saved theme  from GetStorageC:\code\2.3\maneger\lib\widget\talabat
 
       initialRoute: AppRoutes.home,
       getPages: AppRoutes.routes,
