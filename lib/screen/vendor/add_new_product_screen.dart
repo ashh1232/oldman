@@ -6,7 +6,9 @@ import 'package:maneger/class/image_handling.dart';
 import 'package:maneger/controller/vendor_controller/new_product_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/widget/bot_nav_widget.dart';
+import 'package:maneger/widget/build_edit_field.dart';
 import 'package:maneger/widget/tal_container.dart';
+import 'package:maneger/widget/vendor/build_order_notes.dart';
 // import 'package:talabat_admin/controller/new_product_controller.dart';
 
 class AddNewProductScreen extends StatelessWidget {
@@ -52,19 +54,19 @@ class AddNewProductScreen extends StatelessWidget {
                 body: Container(
                   child: Column(
                     children: [
-                      // حقل اسم المنتج
-                      TextField(
+                      BuildEditField(
                         controller: controller.nameController,
-                        decoration: const InputDecoration(
-                          labelText: "اسم المنتج",
-                        ),
+                        label: 'اسم المنتج',
+                        icon: Icons.text_fields,
                       ),
-                      TextField(
+                      SizedBox(height: 10),
+                      BuildEditField(
                         controller: controller.priceController,
-                        decoration: const InputDecoration(
-                          labelText: "سعر المنتج",
-                        ),
+                        label: 'سعر المنتج',
+                        icon: Icons.attach_money,
                       ),
+
+                      // حقل اسم المنتج
                     ],
                   ),
                 ),
@@ -80,15 +82,20 @@ class AddNewProductScreen extends StatelessWidget {
                           statusRequest: controller.statusRequest.value,
                           widget: controller.catList.isNotEmpty
                               ? Container(
+                                  padding: const EdgeInsets.all(3),
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                  ),
                                   decoration: BoxDecoration(
                                     color: Theme.of(
                                       context,
                                     ).colorScheme.surface,
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.black26,
-                                        blurRadius: 3,
-                                        offset: const Offset(0, 2),
+                                        // ignore: deprecated_member_use
+                                        color: Colors.black.withOpacity(0.15),
+                                        blurRadius: 10,
+                                        offset: const Offset(03, 5),
                                       ),
                                     ],
                                     borderRadius: BorderRadius.circular(8),
@@ -247,32 +254,18 @@ class AddNewProductScreen extends StatelessWidget {
                               : const Text("لا توجد أقسام متاحة"),
                         );
                       }),
-                      // const SizedBox(height: 15),
                     ],
                   ),
                 ),
               ),
 
-              // عرض الصورة المختارة
-
-              // // زر الحفظ النهائي
-              // Obx(
-              //   () => controller.isLoading.value
-              //       ? const CircularProgressIndicator()
-              //       : ElevatedButton(
-              //           style: ElevatedButton.styleFrom(
-              //             minimumSize: const Size(double.infinity, 50),
-              //           ),
-              //           onPressed: () async {
-              //             bool success = await controller.addNewProduct();
-              //             if (success) {
-              //               // العودة للصفحة السابقة وتلقائياً TestScreen ستحدث بياناتها
-              //               Get.back();
-              //             }
-              //           },
-              //           child: const Text("إضافة المنتج الآن"),
-              //         ),
-              // ),
+              TalContainer(
+                title: 'تفاصيل المنتج (اختياري)',
+                body: BuildOrderNotes(
+                  controller: controller.productNotesController,
+                ),
+              ),
+              TalContainer(),
             ],
           ),
         ),

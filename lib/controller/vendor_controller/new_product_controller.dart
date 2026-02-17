@@ -29,6 +29,7 @@ class NewProductController extends GetxController {
 
   final ImageCrud _imageCrud = ImageCrud();
   var statusRequest = StatusRequest.offline.obs;
+  TextEditingController productNotesController = TextEditingController();
 
   var selectedImage = Rxn<File>();
   var isLoading = false.obs;
