@@ -50,11 +50,15 @@ class CheckoutController extends GetxController {
 
   User? get currentUser => profileController.user.value;
 
-  @override
-  void onInit() {
-    super.onInit();
+  // @override
+  // void onInit() {
+  //   super.onInit();
 
-    // Listen to user changes
+  //   // Listen to user changes
+  // }
+
+  @override
+  void onReady() {
     ever(profileController.user, (_) => _fillFormControllers());
 
     // Initialize data after controller setup
@@ -63,10 +67,6 @@ class CheckoutController extends GetxController {
       _loadFromStorage();
       statusRequest.value = StatusRequest.success; // Set to success after init
     });
-  }
-
-  @override
-  void onReady() {
     super.onReady();
     // Additional setup if needed
   }
@@ -84,7 +84,7 @@ class CheckoutController extends GetxController {
   void _fillFormControllers() {
     if (currentUser != null) {
       nameController.text = currentUser!.userName;
-      phoneController.text = currentUser!.userPhone ?? '';
+      phoneController.text = currentUser!.userPhone;
       addressController.text = currentUser!.userAddress ?? '';
     }
   }
@@ -121,13 +121,13 @@ class CheckoutController extends GetxController {
           selectedLat.value = locationData['lat'].toDouble();
           selectedLong.value = locationData['lng'].toDouble();
 
-          print(
-            "📍 Location loaded: ${selectedLat.value}, ${selectedLong.value}",
-          );
+          // print(
+          //   "📍 Location loaded: ${selectedLat.value}, ${selectedLong.value}",
+          // );
         }
       }
     } catch (e) {
-      print("⚠️ Error decoding location from storage: $e");
+      // print("⚠️ Error decoding location from storage: $e");
       // Keep default 0.0 values if error occurs
     }
     ismap.value = false;
@@ -236,9 +236,9 @@ class CheckoutController extends GetxController {
           ? 'multi' // أو '1' حسب ما يتطلبه الـ API الخاص بك
           : (vendorIdsSet.isNotEmpty ? vendorIdsSet.first : '0');
 
-      print(
-        'Vendors count: $uniqueVendorsCount, Selected Vendor ID: $finalVendorId',
-      );
+      // print(
+      //   'Vendors count: $uniqueVendorsCount, Selected Vendor ID: $finalVendorId',
+      // );
       // final vendorIdsList = cartController.products
       //     .where((product) => product.vendorId != null)
       //     .map((product) => product.vendorId.toString())
@@ -263,8 +263,8 @@ class CheckoutController extends GetxController {
         'order_notes': notesController.text.trim(),
         'order_items': jsonEncode(orderItems),
       };
-      print('orderData');
-      print(orderData);
+      // print('orderData');
+      // print(orderData);
 
       final response = await _crud.postData(ApiConstants.orders, orderData);
 
@@ -280,7 +280,7 @@ class CheckoutController extends GetxController {
           );
         },
         (responseBody) {
-          print(responseBody);
+          // print(responseBody);
           isProcessing.value = false;
           statusRequest.value = StatusRequest.success;
 
@@ -308,7 +308,7 @@ class CheckoutController extends GetxController {
         },
       );
     } catch (e) {
-      print('Place Order Error: $e');
+      // print('Place Order Error: $e');
       isProcessing.value = false;
       statusRequest.value = StatusRequest.serverfailure;
       Get.snackbar(
@@ -324,8 +324,8 @@ class CheckoutController extends GetxController {
   }
 
   // Fallback for user address coordinates if needed
-  void _syncCoordinatesFromUserAddress() {
-    // Implement reverse geocoding based on user address if available
-    // This would require an API call to convert address to coordinates
-  }
+  // void _syncCoordinatesFromUserAddress() {
+  //   // Implement reverse geocoding based on user address if available
+  //   // This would require an API call to convert address to coordinates
+  // }
 }

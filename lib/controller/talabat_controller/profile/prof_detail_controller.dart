@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:maneger/class/crud.dart';
 import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/core/constants/api_constants.dart';
-import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/order_del_model.dart';
 
 class ProfileOrderDetailController extends GetxController {
@@ -24,7 +23,7 @@ class ProfileOrderDetailController extends GetxController {
   }
 
   Future<void> getOrders() async {
-    print('object');
+    // print('object');
     if (isLoading.value) return;
     statusRequest.value = StatusRequest.loading;
 
@@ -34,7 +33,7 @@ class ProfileOrderDetailController extends GetxController {
         'action': 'get_order_details',
         'order_id': '18',
       });
-      print(respo);
+      // print(respo);
       respo.fold(
         (status) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -49,12 +48,12 @@ class ProfileOrderDetailController extends GetxController {
         (res) {
           if (res['status'] == 'success') {
             statusRequest.value = StatusRequest.success;
-            print(res['data']);
+            // print(res['data']);
             //////////////
-            final Map<String, dynamic> orderData = res['data'];
-            final List<dynamic> items = orderData['items'];
+            // final Map<String, dynamic> orderData = res['data'];
+            // final List<dynamic> items = orderData['items'];
             // final List<dynamic> decod = res['data'];
-            print(orderData);
+            // print(orderData);
             // orders.value = orderData
             //     .map((ban) => OrderModel.fromJson(ban))
             //     .toList();

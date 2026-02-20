@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
-import 'package:maneger/class/handlingdatacontroll.dart';
 import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/controller/auth_controller/storage_service.dart';
 import 'package:maneger/core/constants/api_constants.dart';
@@ -9,7 +8,6 @@ import 'package:maneger/model/user_model.dart';
 import 'package:maneger/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:maneger/class/crud.dart';
-import 'package:maneger/linkapi.dart';
 
 class AuthController extends GetxController {
   final Rx<User?> currentUser = Rx<User?>(null);
@@ -49,8 +47,7 @@ class AuthController extends GetxController {
   Future<void> login(String phone, String password) async {
     isLoading.value = true;
     errorMessage.value = '';
-    print(phone);
-    print(password);
+
     final response = await crud.postData(ApiConstants.login, {
       'phone': phone,
       'password': password,
@@ -61,7 +58,6 @@ class AuthController extends GetxController {
       },
       (data) async {
         if (data['status'] == 'success') {
-          print(data);
           final token = data['data']['token'];
           // Use data['data'] directly if that's where the user info is,
           // or data['data']['user'] if structured that way.
@@ -88,9 +84,6 @@ class AuthController extends GetxController {
   }
 
   Future<void> signup(String username, String phone, String password) async {
-    print(username);
-    print(phone);
-    print(password);
     try {
       statusRequest = StatusRequest.loading;
       isLoading.value = true;
@@ -101,7 +94,6 @@ class AuthController extends GetxController {
         'password': password,
         'phone': phone,
       });
-      print(response);
       // var yy = response.fold((l) => l, (r) => r);
       // statusRequest = handlingData(yy);
       response.fold(
@@ -114,7 +106,6 @@ class AuthController extends GetxController {
           // Get.snackbar('خطأ', 'فشل الاتصال بالشبكة ${failure['message']}');
         },
         (data) async {
-          print(data['message']);
           if (data['status'] == 'success') {
             final token = data['data']['token'];
             final userData = data['data'];

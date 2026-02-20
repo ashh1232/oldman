@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:maneger/class/image_handling.dart';
 import 'package:maneger/controller/product_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/model/product_model.dart';
@@ -59,7 +60,7 @@ class ProductDetailView extends GetView<ProductController> {
                   ),
                   SizedBox(height: 3),
                   TalContainer(
-                    title: 'معلومات المنتج',
+                    noTitle: false,
                     body: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -129,9 +130,14 @@ class ProductDetailView extends GetView<ProductController> {
                   itemCount: totalImages,
                   itemBuilder: (context, index) {
                     String imageUrl = index == 0
-                        ? (ApiConstants.productsImages + pro.image)
-                        : (ApiConstants.productsImages +
-                              controller.image[index - 1].image);
+                        ? getImageUrl(pro.image, ApiConstants.productsImages)
+                        // (ApiConstants.productsImages + pro.image)
+                        : getImageUrl(
+                            controller.image[index - 1].image,
+                            ApiConstants.productsImages,
+                          );
+                    //  (ApiConstants.productsImages +
+                    // controller.image[index - 1].image);
 
                     return CachedNetworkImage(
                       imageUrl: imageUrl,
@@ -153,6 +159,7 @@ class ProductDetailView extends GetView<ProductController> {
                         controller: controller.pageController, // الربط المباشر
                         count: totalImages, // سيتحدث تلقائياً بفضل Obx
                         effect: ScrollingDotsEffect(
+                          activeDotScale: 1.5,
                           activeDotColor: Colors.white,
                           dotColor: Colors.grey.shade500,
                           dotHeight: 11,
@@ -196,9 +203,18 @@ class ProductDetailView extends GetView<ProductController> {
                           borderRadius: BorderRadius.circular(6),
                           child: CachedNetworkImage(
                             imageUrl: index == 0
-                                ? (ApiConstants.productsImages + pro.image)
-                                : (ApiConstants.productsImages +
-                                      controller.image[index - 1].image),
+                                ? getImageUrl(
+                                    pro.image,
+                                    ApiConstants.productsImages,
+                                  )
+                                // (ApiConstants.productsImages + pro.image)
+                                : getImageUrl(
+                                    controller.image[index - 1].image,
+                                    ApiConstants.productsImages,
+                                  ),
+                            // ? (ApiConstants.productsImages + pro.image)
+                            // : (ApiConstants.productsImages +
+                            //       controller.image[index - 1].image),
                             fit: BoxFit.cover,
                             placeholder: (context, url) =>
                                 Center(child: CircularProgressIndicator()),

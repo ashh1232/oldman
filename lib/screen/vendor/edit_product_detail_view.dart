@@ -194,43 +194,43 @@ class EditProductDetailView extends GetView<ImageUploadController> {
   //   );
   // }
 
-  Widget _buildPriceSection() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Obx(
-          () => Text(
-            '\$${controller.product.value?.price}',
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: Colors.red,
-            ),
-          ),
-        ),
-        SizedBox(width: 12),
-        Obx(
-          () => Text(
-            '\$${controller.product.value?.originalPrice}',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.grey,
-              decoration: TextDecoration.lineThrough,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  // Widget _buildPriceSection() {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //     children: [
+  //       Obx(
+  //         () => Text(
+  //           '\$${controller.product.value?.price}',
+  //           style: TextStyle(
+  //             fontSize: 28,
+  //             fontWeight: FontWeight.bold,
+  //             color: Colors.red,
+  //           ),
+  //         ),
+  //       ),
+  //       SizedBox(width: 12),
+  //       Obx(
+  //         () => Text(
+  //           '\$${controller.product.value?.originalPrice}',
+  //           style: TextStyle(
+  //             fontSize: 18,
+  //             color: Colors.grey,
+  //             decoration: TextDecoration.lineThrough,
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
-  Widget _buildTitleSection() {
-    return Obx(
-      () => Text(
-        controller.product.value?.title ?? '',
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      ),
-    );
-  }
+  // Widget _buildTitleSection() {
+  //   return Obx(
+  //     () => Text(
+  //       controller.product.value?.title ?? '',
+  //       style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+  //     ),
+  //   );
+  // }
 
   Widget _buildDeliveryForm(
     ImageUploadController controller,
@@ -426,75 +426,75 @@ class EditProductDetailView extends GetView<ImageUploadController> {
     );
   }
 
-  Widget _buildActionButtons(ImageUploadController controller) {
-    return Column(
-      children: [
-        SizedBox(
-          width: double.infinity,
-          height: 48,
-          child: ElevatedButton(
-            onPressed: () =>
-                controller.updateProductImage(controller.product.value!.id),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.black,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(7),
-              ),
-            ),
-            child: Text(
-              'تعديل الصورة',
-              style: TextStyle(fontSize: 16, color: Colors.white),
-            ),
-          ),
-        ),
-        SizedBox(height: 12),
-      ],
-    );
-  }
+  // Widget _buildActionButtons(ImageUploadController controller) {
+  //   return Column(
+  //     children: [
+  //       SizedBox(
+  //         width: double.infinity,
+  //         height: 48,
+  //         child: ElevatedButton(
+  //           onPressed: () =>
+  //               controller.updateProductImage(controller.product.value!.id),
+  //           style: ElevatedButton.styleFrom(
+  //             backgroundColor: Colors.black,
+  //             shape: RoundedRectangleBorder(
+  //               borderRadius: BorderRadius.circular(7),
+  //             ),
+  //           ),
+  //           child: Text(
+  //             'تعديل الصورة',
+  //             style: TextStyle(fontSize: 16, color: Colors.white),
+  //           ),
+  //         ),
+  //       ),
+  //       SizedBox(height: 12),
+  //     ],
+  //   );
+  // }
 
-  Widget _buildDescriptionSection(ImageUploadController controllerr) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text(
-              'تفاصيل المنتج',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 16),
-            Obx(
-              () => Text(
-                controller.product.value?.description ?? 'a',
-                style: TextStyle(color: Colors.grey.shade700, height: 1.6),
-              ),
-            ),
-          ],
-        ),
+  // Widget _buildDescriptionSection(ImageUploadController controllerr) {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //         children: [
+  //           Text(
+  //             'تفاصيل المنتج',
+  //             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+  //           ),
+  //           SizedBox(height: 16),
+  //           Obx(
+  //             () => Text(
+  //               controller.product.value?.description ?? 'a',
+  //               style: TextStyle(color: Colors.grey.shade700, height: 1.6),
+  //             ),
+  //           ),
+  //         ],
+  //       ),
 
-        SizedBox(height: 16),
-        _buildOrderNotes(controllerr),
-        Text(
-          'معلومات التوصيل',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 8),
-        Text(
-          'شحن مجاني على الطلبات فوق \$50. التوصيل القياسي يستغرق 7-15 يوم عمل.',
-          style: TextStyle(color: Colors.grey.shade700, height: 1.6),
-        ),
-        SizedBox(height: 16),
-        Text(
-          'سياسة الارجاع',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 8),
-        Text(
-          'ضمان استرداد المال لمدة 30 يوما. بدون استفسارات.',
-          style: TextStyle(color: Colors.grey.shade700, height: 1.6),
-        ),
-      ],
-    );
-  }
+  //       SizedBox(height: 16),
+  //       _buildOrderNotes(controllerr),
+  //       Text(
+  //         'معلومات التوصيل',
+  //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+  //       ),
+  //       SizedBox(height: 8),
+  //       Text(
+  //         'شحن مجاني على الطلبات فوق \$50. التوصيل القياسي يستغرق 7-15 يوم عمل.',
+  //         style: TextStyle(color: Colors.grey.shade700, height: 1.6),
+  //       ),
+  //       SizedBox(height: 16),
+  //       Text(
+  //         'سياسة الارجاع',
+  //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+  //       ),
+  //       SizedBox(height: 8),
+  //       Text(
+  //         'ضمان استرداد المال لمدة 30 يوما. بدون استفسارات.',
+  //         style: TextStyle(color: Colors.grey.shade700, height: 1.6),
+  //       ),
+  //     ],
+  //   );
+  // }
 }

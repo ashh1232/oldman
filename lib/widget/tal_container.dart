@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class TalContainer extends StatelessWidget {
   const TalContainer({
     super.key,
-    this.noTitle = false,
+    this.noTitle = true,
     this.title = '',
     this.titleIcon = const SizedBox.shrink(),
     this.desc = '',
@@ -57,9 +57,12 @@ class TalContainer extends StatelessWidget {
           body,
 
           // SizedBox(height: 8),
-          Text(
-            desc,
-            style: TextStyle(color: Colors.grey.shade700, height: 1.6),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Text(
+              desc,
+              style: TextStyle(color: Colors.grey.shade700, height: 1.6),
+            ),
           ),
         ],
       ),

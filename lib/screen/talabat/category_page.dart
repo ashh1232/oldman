@@ -2,10 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:maneger/class/handlingdataview.dart';
 import 'package:maneger/controller/shein_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
-import 'package:maneger/linkapi.dart';
 import 'package:maneger/routes.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -15,11 +13,21 @@ class CategoryPage extends GetView<CategoryController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Color(0xFFFFF0F0),
+      backgroundColor: Color.fromARGB(255, 77, 77, 77),
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.amber),
+          onPressed: () => Get.back(),
+        ),
+        backgroundColor: Colors.black,
         elevation: 0,
-        title: Text('طلبات', style: GoogleFonts.lalezar(fontSize: 28)),
+
+        title: Obx(
+          () => Text(
+            controller.name.value,
+            style: GoogleFonts.lalezar(fontSize: 28, color: Colors.amber),
+          ),
+        ),
         centerTitle: true,
       ),
       body: CustomScrollView(
@@ -129,39 +137,39 @@ class CategoryPage extends GetView<CategoryController> {
             ),
           ),
           // Category Chips
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: ['All', 'Women', 'Men', 'Kids', 'Curve', 'Home']
-                      .map(
-                        (category) => Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 6),
-                          child: Chip(
-                            label: HandlingDataView(
-                              statusRequest: controller.statusRequest.value,
+          // SliverToBoxAdapter(
+          //   child: Padding(
+          //     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          //     child: SingleChildScrollView(
+          //       scrollDirection: Axis.horizontal,
+          //       child: Row(
+          //         children: ['All', 'Women', 'Men', 'Kids', 'Curve', 'Home']
+          //             .map(
+          //               (category) => Padding(
+          //                 padding: EdgeInsets.symmetric(horizontal: 6),
+          //                 child: Chip(
+          //                   label: HandlingDataView(
+          //                     statusRequest: controller.statusRequest.value,
 
-                              widget: Text(
-                                category,
-                                style: TextStyle(
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                            // ignore: deprecated_member_use
-                            backgroundColor: Colors.white.withOpacity(0.8),
-                            side: BorderSide(color: Colors.grey[300]!),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                ),
-              ),
-            ),
-          ),
+          //                     widget: Text(
+          //                       category,
+          //                       style: TextStyle(
+          //                         color: Colors.black87,
+          //                         fontWeight: FontWeight.w500,
+          //                       ),
+          //                     ),
+          //                   ),
+          //                   // ignore: deprecated_member_use
+          //                   backgroundColor: Colors.white.withOpacity(0.8),
+          //                   side: BorderSide(color: Colors.grey[300]!),
+          //                 ),
+          //               ),
+          //             )
+          //             .toList(),
+          //       ),
+          //     ),
+          //   ),
+          // ),
 
           // Featured Products Grid
           Obx(

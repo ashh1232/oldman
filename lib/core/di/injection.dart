@@ -213,7 +213,7 @@ class DependencyInjection {
     //   permanent: true, // Keep CartController alive throughout the session
     // );
 
-    print('✅ Dependency Injection initialized successfully');
+    // print('✅ Dependency Injection initialized successfully');
   }
 
   /// Clean up all dependencies (call on app shutdown)
@@ -221,6 +221,6 @@ class DependencyInjection {
     Get.delete<ApiClient>();
     Get.delete<EncryptionService>();
     Get.delete<SecureStorage>();
-    print('🗑️ Dependencies disposed');
+    // print('🗑️ Dependencies disposed');
   }
 }

@@ -72,9 +72,9 @@ class VendorProOrderController extends GetxController {
   }
 
   VenHomeController chekVendorId = Get.find<VenHomeController>();
-  get as => chekVendorId.currentVendor.value;
+  String get as => chekVendorId.currentVendor.value;
   Future<void> updateOrderStatus() async {
-    print('aaaaaa : $as');
+    // print('aaaaaa : $as');
     if (isLoading.value) return;
     try {
       isLoading.value = true;
@@ -83,8 +83,8 @@ class VendorProOrderController extends GetxController {
         'order_id': item.orderId,
         'vendor_id': as,
       });
-      print('rrrrrrrrrrrrr : ${item.orderId}');
-      print('rrrrrrrrrrrrr : $respo');
+      // print('rrrrrrrrrrrrr : ${item.orderId}');
+      // print('rrrrrrrrrrrrr : $respo');
       respo.fold(
         (status) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -116,13 +116,13 @@ class VendorProOrderController extends GetxController {
       }
 
       Get.back(); // العودة للصفحة السابقة
-      print('finally: Process Finished and Back');
+      // print('finally: Process Finished and Back');
     }
   }
 
   @override
   void onClose() {
-    // TODO: implement onClose
+    // TOsDO: implement onClose
     super.onClose();
   }
 }

@@ -26,6 +26,13 @@ class TalabatController extends GetxController {
   final RxBool hasError = false.obs;
   final RxBool isCatError = false.obs;
 
+  final Crud _crud = Crud();
+  int page = 1;
+  Timer? _bannerTimer;
+
+  late final PageController pageController;
+  late final ScrollController scrollController;
+
   Future<void> refreshHome() async {
     page = 1;
     hasMore.value = true;
@@ -53,13 +60,6 @@ class TalabatController extends GetxController {
       isCatError.value = true;
     }
   }
-
-  final Crud _crud = Crud();
-  int page = 1;
-  Timer? _bannerTimer;
-
-  late final PageController pageController;
-  late final ScrollController scrollController;
 
   @override
   void onInit() {
@@ -132,7 +132,7 @@ class TalabatController extends GetxController {
       });
     } catch (e) {
       _handleError(StatusRequest.serverfailure, "خطأ في الاتصال");
-      print(e);
+      // print(e);
     } finally {
       isCatLoading.value = false;
     }

@@ -21,8 +21,8 @@ class EnvironmentManager {
   /// Must be called at app startup before using any API
   void initialize(AppEnvironment environment) {
     _config = EnvironmentConfig.forEnvironment(environment);
-    print('🌍 Environment initialized: ${_config.displayName}');
-    print('📡 Server URL: ${_config.serverUrl}');
+    // print('🌍 Environment initialized: ${_config.displayName}');
+    // print('📡 Server URL: ${_config.serverUrl}');
   }
 
   /// Get current environment configuration

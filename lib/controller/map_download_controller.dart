@@ -30,14 +30,14 @@ class MapDownloadController extends GetxController {
             },
           )
           .timeout(const Duration(seconds: 10));
-      print(response.body);
+      // print(response.body);
       if (response.statusCode == 200) {
-        print('aaaaaaaaaaaaaaaaaaaa');
+        // print('aaaaaaaaaaaaaaaaaaaa');
         var jsonResponse = json.decode(response.body);
         List newDataList =
             jsonResponse['data']; // Matches the "metadata" PHP structure
-        print('bbbbbbbbbbbbbbbbbbbb');
-        print(newDataList);
+        // print('bbbbbbbbbbbbbbbbbbbb');
+        // print(newDataList);
         if (newDataList.isEmpty) {
         } else {
           List<Product> newProducts = newDataList
@@ -48,14 +48,14 @@ class MapDownloadController extends GetxController {
             int currentPage = jsonResponse['metadata']['current_page'];
             int totalPages = jsonResponse['metadata']['total_pages'];
             if (currentPage >= totalPages) {
-              print(newDataList);
+              // print(newDataList);
             }
           }
         }
       }
     } catch (e) {
-      var page;
-      if (page == 1) _showErrorSnackbar("تحقق من الاتصال بالإنترنت");
+      // var page;
+      // if (page == 1) _showErrorSnackbar("تحقق من الاتصال بالإنترنت");
     } finally {
       isLoading(false);
     }
@@ -152,5 +152,5 @@ class MapDownloadController extends GetxController {
     super.onClose();
   }
 
-  void _showErrorSnackbar(String s) {}
+  // void _showErrorSnackbar(String s) {}
 }

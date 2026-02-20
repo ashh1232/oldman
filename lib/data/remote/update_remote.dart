@@ -1,6 +1,5 @@
 import 'package:maneger/class/crud.dart';
 import 'package:maneger/core/constants/api_constants.dart';
-import 'package:maneger/linkapi.dart';
 
 class ProductRemote {
   Crud crud;

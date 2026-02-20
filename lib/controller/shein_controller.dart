@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:maneger/class/crud.dart';
 import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/core/constants/api_constants.dart';
-import 'package:maneger/linkapi.dart';
 import 'dart:async';
 import '../model/bunner_model.dart';
 import '../model/product_model.dart';

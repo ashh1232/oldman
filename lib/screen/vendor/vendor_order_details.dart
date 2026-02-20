@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/controller/vendor_controller/vendor_pro_order_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
-import 'package:maneger/widget/talabat/cart_item.dart';
 
 class VendorOrderDetails extends StatelessWidget {
   const VendorOrderDetails({super.key});
@@ -318,7 +317,7 @@ Widget _buildPriceSummary(
                     )
                   : const Text(
                       'ارسل ديليفري',
-                      style: const TextStyle(
+                      style: TextStyle(
                         // color: Theme.,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,

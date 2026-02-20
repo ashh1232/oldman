@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/controller/admin/edit_controller/edit_cat.dart';
 import 'package:maneger/core/constants/api_constants.dart';
-import 'package:maneger/linkapi.dart';
 import 'package:maneger/routes.dart';
 
 class EditCategoryScreen extends StatelessWidget {

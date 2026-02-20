@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_map_animations/flutter_map_animations.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
@@ -24,7 +23,7 @@ class TestMapControllerX extends GetxController
   bool isMapReady = false;
 
   void setProfile(String newProfile) {
-    print(currentLatLng);
+    // print(currentLatLng);
     transportProfile.value = newProfile;
     fetchRoute(); // إعادة حساب المسار فوراً عند تغيير الوسيلة
   }
@@ -140,7 +139,7 @@ class TestMapControllerX extends GetxController
         {'overview': 'full', 'geometries': 'geojson'},
       );
 
-      print("🔗 جاري الاتصال بالرابط: $url");
+      // print("🔗 جاري الاتصال بالرابط: $url");
 
       final response = await GetConnect().get(url.toString());
 
@@ -151,21 +150,20 @@ class TestMapControllerX extends GetxController
         var routeData = response.body['routes'][0];
         var geometry = routeData['geometry']['coordinates'];
 
-        List<LatLng> points =
-            geometry.map<LatLng>((c) {
-              // تحويل من [Longitude, Latitude] إلى LatLng(Latitude, Longitude)
-              return LatLng(c[1].toDouble(), c[0].toDouble());
-            }).toList();
+        List<LatLng> points = geometry.map<LatLng>((c) {
+          // تحويل من [Longitude, Latitude] إلى LatLng(Latitude, Longitude)
+          return LatLng(c[1].toDouble(), c[0].toDouble());
+        }).toList();
 
         routePoints.assignAll(points);
         distanceRemaining.value = (routeData['distance'] as num).toDouble();
 
-        print("✅ تم رسم المسار بنجاح: ${routePoints.length} نقطة");
+        // print("✅ تم رسم المسار بنجاح: ${routePoints.length} نقطة");
       } else {
-        print("❌ فشل السيرفر: ${response.body}");
+        // print("❌ فشل السيرفر: ${response.body}");
       }
     } catch (e) {
-      print("⚠️ خطأ تقني: $e");
+      // print("⚠️ خطأ تقني: $e");
     }
   }
 
@@ -181,7 +179,7 @@ class TestMapControllerX extends GetxController
         'limit': '1',
       });
 
-      print("🔍 جاري البحث في: $url");
+      // print("🔍 جاري البحث في: $url");
 
       // إضافة User-Agent ضروري جداً لـ Nominatim لتجنب الحظر
       final response = await GetConnect().get(
@@ -206,13 +204,13 @@ class TestMapControllerX extends GetxController
           "تم العثور على الوجهة",
           data['display_name'],
           snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.white.withOpacity(0.9),
+          backgroundColor: Colors.white.withValues(alpha: 0.9),
         );
       } else {
         Get.snackbar("تنبيه", "لم يتم العثور على نتائج للبحث");
       }
     } catch (e) {
-      print("❌ خطأ في البحث: $e");
+      // print("❌ خطأ في البحث: $e");
     }
   }
 
@@ -234,8 +232,9 @@ class TestMapControllerX extends GetxController
   }
 
   Future<List<dynamic>> getSuggestions(String query) async {
-    if (query.length < 3)
+    if (query.length < 3) {
       return []; // ابدأ البحث بعد كتابة 3 أحرف لتوفير البيانات
+    }
     try {
       final Uri url = Uri.https('nominatim.openstreetmap.org', '/search', {
         'q': query,
@@ -252,7 +251,7 @@ class TestMapControllerX extends GetxController
         return response.body as List<dynamic>;
       }
     } catch (e) {
-      print("خطأ في جلب الاقتراحات: $e");
+      // print("خطأ في جلب الاقتراحات: $e");
     }
     return [];
   }

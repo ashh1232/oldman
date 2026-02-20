@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:maneger/class/crud.dart';
 import 'package:maneger/controller/auth_controller/auth_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/model/order_model.dart';
 import 'package:maneger/model/user_model.dart';
-import 'package:maneger/model/usr_model.dart';
 
 class DeliveryHomeController extends GetxController {
   final AuthController authController = Get.find<AuthController>();
@@ -99,14 +97,11 @@ class DeliveryHomeController extends GetxController {
         isAdminLoading.value = false;
         return;
       }
-      print('zuser');
-      print(zuser!.userId.toString());
-      print('zuser231');
+
       var respo = await _crud.postData(ApiConstants.adminOrder, {
         'action': 'is_admin',
         'usr_id': zuser!.userId,
       });
-      print(respo);
       respo.fold(
         (status) {
           // استخدام Get.snackbar مباشرة أسهل وأكثر توافقاً مع GetX
@@ -119,12 +114,10 @@ class DeliveryHomeController extends GetxController {
         (res) {
           if (res['status'] == 'success') {
             if (res['vendor_data'] != null) {
-              print('Vendor ID: ${res['vendor_data']}');
               // ملاحظة: إذا كان vendor_data مجرد رقم (73)، فلا يمكنك تحويله لـ List<UserModel>
               // ستحتاج لتعديل منطق تخزين البيانات هنا بناءً على حاجتك
             }
             if (res['is_admin'] != null) {
-              print(res['is_admin']);
               bool iss = res['is_admin'];
               admin.value = iss;
               isAdmin.value = iss;
@@ -140,7 +133,6 @@ class DeliveryHomeController extends GetxController {
         },
       );
     } catch (e) {
-      print(e);
       Get.snackbar('Error', 'حدث خطأ غير متوقع: $e');
     } finally {
       isAdminLoading.value = false;

@@ -91,7 +91,7 @@ class FlutMap2 extends StatelessWidget {
                 PolylineLayer(
                   polylines: [
                     Polyline(
-                      points: controller.routePoints.value,
+                      points: controller.routePoints,
                       color: Colors.blueAccent,
                       strokeWidth: 6,
                     ),

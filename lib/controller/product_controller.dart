@@ -1,16 +1,10 @@
-// lib/controllers/product_controller.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:maneger/class/crud.dart';
 import 'package:maneger/controller/talabat_controller/cart_controllerw.dart';
 import 'package:maneger/core/constants/api_constants.dart';
-import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/image_model.dart';
 import 'package:maneger/model/product_model.dart';
-// import 'package:talabat/controller/cart_controllerw.dart';
-
-// import 'package:talabat/model/product_model.dart';
 
 class ProductController extends GetxController {
   final RxBool isLoading = false.obs;
@@ -37,7 +31,7 @@ class ProductController extends GetxController {
     if (Get.arguments is Product) {
       product.value = Get.arguments;
       getImages(product.value!.id); // جلب الصور الإضافية فوراً
-      print(product.value);
+      // print(product.value);
     }
   }
 
@@ -170,7 +164,7 @@ class ProductController extends GetxController {
       categoryId: '1',
       blurHash: '',
     );
-    print(cartItem);
+    // print(cartItem);
     // 2. البحث عن المنتج في السلة
     final int existingIndex = cartController.products.indexWhere(
       (p) => p.id == id,

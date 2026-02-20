@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/controller/admin/bannercontroller/edit_detail_ban_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
-import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/bunner_model.dart';
 
 class EditBanDetailView extends GetView<EditDetailBanController> {

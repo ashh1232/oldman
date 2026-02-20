@@ -31,14 +31,14 @@ class EnvironmentConfig {
   /// Development configuration
   static const EnvironmentConfig development = EnvironmentConfig(
     environment: AppEnvironment.development,
-    serverUrl: 'http://192.168.0.105/doc/docana-back',
-    imageUrl: 'http://192.168.0.105/img',
+    serverUrl: 'http://192.168.0.107/doc/docana-back',
+    imageUrl: 'http://192.168.0.107/img',
 
     displayName: 'Development',
   );
 
   /// Staging configuration
-  /// TODO: Update with actual staging server URL
+  /// TOoDO: Update with actual staging server URL
   static const EnvironmentConfig staging = EnvironmentConfig(
     environment: AppEnvironment.staging,
     serverUrl: 'http://192.168.1.66/docana-back', // PLACEHOLDER - Update this
@@ -47,7 +47,7 @@ class EnvironmentConfig {
   );
 
   /// Production configuration
-  /// TODO: Update with actual production server URL
+  /// TOoDO: Update with actual production server URL
   static const EnvironmentConfig production = EnvironmentConfig(
     environment: AppEnvironment.production,
     serverUrl: 'https://api.yourdomain.com', // PLACEHOLDER - Update this

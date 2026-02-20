@@ -3,7 +3,6 @@ import 'package:maneger/class/crud.dart';
 import 'package:maneger/class/handlingdatacontroll.dart';
 import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/core/constants/api_constants.dart';
-import 'package:maneger/linkapi.dart';
 
 import '../../../model/cat_model.dart';
 
@@ -22,28 +21,38 @@ class EditCatController extends GetxController {
     super.onInit();
   }
 
-  gOtdata() async {
+  // gOtdata() async {
+  //   var resporight = await crud.postData(ApiConstants.categories, {
+  //     'action': 'get_cat',
+  //     'cat_id': '5',
+  //   });
+  //   return respo.fold((l) => l, (r) => r);
+  // }
+
+  Future<void> getData() async {
+    // print('aaaaaaaaaaaaaaaaaaaaaaaaaaa cat');
+    statusRequest.value = StatusRequest.loading;
     var respo = await crud.postData(ApiConstants.categories, {
       'action': 'get_cat',
       'cat_id': '5',
     });
-    return respo.fold((l) => l, (r) => r);
-  }
-
-  Future<void> getData() async {
-    statusRequest.value = StatusRequest.loading;
-    var respo = await gOtdata();
-
     statusRequest.value = handlingData(respo);
 
-    if (statusRequest.value == StatusRequest.success) {
-      if (respo['status'] == "success") {
-        List<dynamic> decod = respo['data'];
+    // print(respo);
+    respo.fold((_) => (), (resporight) {
+      // print('ssss');
+      // print(statusRequest.value);
+      // if (statusRequest.value == StatusRequest.success) {
+      // print('s');
+      if (resporight['status'] == "success") {
+        // print('object');
+        List<dynamic> decod = resporight['data'];
         data.assignAll(decod.map((e) => Category.fromJson(e)).toList());
       } else {
         statusRequest.value = StatusRequest.failure;
+        // }
       }
-    }
-    // مع Obx، لا نحتاج لاستدعاء update()
+      // مع Obx، لا نحتاج لاستدعاء update()
+    });
   }
 }

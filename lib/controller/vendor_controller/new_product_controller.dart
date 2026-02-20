@@ -3,26 +3,13 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:maneger/class/api_service.dart';
-import 'package:maneger/class/crud.dart';
-import 'package:maneger/class/handlingdatacontroll.dart';
+
 import 'package:maneger/class/image_crud.dart';
 import 'package:maneger/class/prepare_data.dart';
 import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/model/cat_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-// import 'package:talabat_admin/class/image_crud.dart';
-// import 'package:talabat_admin/class/statusrequest.dart';
-// import 'package:talabat_admin/linkapi.dart';
-// enum ApiStatus { loading, success, error }
-
-// class Plan {
-//   final int id;
-//   final String label;
-//   const Plan(this.id, this.label);
-//   bool get isPaid => id > 0;
-// }
 
 class NewProductController extends GetxController {
   RxString currentVendor = ''.obs;
@@ -99,12 +86,8 @@ class NewProductController extends GetxController {
   }
 
   Future<void> checkVendor() async {
-    print('aaaaaaaaaaaaaaaaaaaa');
-
     final prefs = await SharedPreferences.getInstance();
-    print(prefs);
     final userStr = prefs.getString('current_vendor');
-    print(userStr);
 
     if (userStr != null && userStr.isNotEmpty) {
       isLoading.value = true;
@@ -133,8 +116,6 @@ class NewProductController extends GetxController {
   // فنكشن إضافة المنتج والسيرفر
   // تأكد أن النوع هو Future<bool> وليس void
   Future<bool> addNewProduct() async {
-    print('object');
-    print(currentVendor.value.toString());
     try {
       if (selectedImage.value == null ||
           nameController.text.isEmpty ||
@@ -159,7 +140,6 @@ class NewProductController extends GetxController {
       );
 
       isLoading.value = false;
-      print(response);
       // يجب استخدام return أمام fold ليعيد النتيجة النهائية
       // print(response['message']);
       return response.fold(

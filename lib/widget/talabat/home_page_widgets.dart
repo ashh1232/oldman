@@ -2,10 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:maneger/class/image_handling.dart';
 import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import '../../controller/talabat_controller/talabat_controller.dart';
-import '../../linkapi.dart';
 import '../../routes.dart';
 import '../loading_card.dart';
 
@@ -142,9 +142,7 @@ class TalabatCarouselBanner extends StatelessWidget {
               final banner = controller.banners[index];
               return CachedNetworkImage(
                 key: ValueKey(banner.id),
-                imageUrl: banner.image.startsWith('http')
-                    ? banner.image
-                    : ApiConstants.bannersImages + banner.image,
+                imageUrl: getImageUrl(banner.image, ApiConstants.bannersImages),
                 fit: BoxFit.cover,
               );
             },

@@ -1,6 +1,4 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 Future<bool> checkInternet() async {
   try {

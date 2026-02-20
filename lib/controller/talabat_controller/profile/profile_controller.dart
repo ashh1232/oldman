@@ -9,13 +9,6 @@ import 'package:maneger/model/user_model.dart';
 import 'package:flutter/material.dart';
 
 class ProfileController extends GetxController {
-  // Add this as a static member
-  static final RegExp _phoneRegex = RegExp(r'''
-    ^(970|00970|\+970)[23489]\d{7}$|
-    ^(972|00972|\+972)5[0234589]\d{7}$|
-    ^0?[23489]\d{7}$|
-    ^0?5[0234589]\d{7}$
-  ''', caseSensitive: false);
   final Crud _crud = Crud();
   final AuthController authController = Get.find<AuthController>();
 
@@ -176,7 +169,7 @@ class ProfileController extends GetxController {
   void _fillFormControllers() {
     if (user.value != null) {
       nameController.text = user.value!.userName;
-      phoneController.text = user.value!.userPhone ?? '';
+      phoneController.text = user.value!.userPhone;
       addressController.text = user.value!.userAddress ?? '';
       // cityController.text = user.value!.userCity ?? '';
       // countryController.text = user.value!.userCountry ?? '';

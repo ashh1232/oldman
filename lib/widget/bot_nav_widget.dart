@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:maneger/model/product_model.dart';
 
 class BotNavWidget extends StatelessWidget {
   const BotNavWidget({

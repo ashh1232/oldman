@@ -77,7 +77,7 @@ class CartController extends GetxController {
       for (var item in decodedData) {
         try {
           Map<String, dynamic> map = item is String ? jsonDecode(item) : item;
-          print(map);
+          // print(map);
 
           loadedProducts.add(Product.fromJson(map));
         } catch (e) {
@@ -89,8 +89,8 @@ class CartController extends GetxController {
           .map((product) => product.vendorId.toString())
           .toSet() // لحذف التكرار
           .join(','); // تحويلها لـ "1,2,5"
-      print(loadedProducts);
-      print(vendorId);
+      // print(loadedProducts);
+      // print(vendorId);
     } catch (e) {
       // تخطي العنصر التالف بدلاً من إيقاف التطبيق بالكامل
     }

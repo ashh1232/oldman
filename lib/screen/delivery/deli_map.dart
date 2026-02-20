@@ -61,7 +61,7 @@ class DeliMap extends StatelessWidget {
                     ? TileLayer(
                         urlTemplate:
                             'https://mt1.google.com/vt/lyrs=h&x={x}&y={y}&z={z}',
-                        backgroundColor: Colors.transparent,
+                        // backgroundColor: Colors.red,
                       )
                     : const SizedBox.shrink(),
               ),
@@ -72,7 +72,7 @@ class DeliMap extends StatelessWidget {
                   polylines: [
                     Polyline(
                       points: controller.routePoints.toList(),
-                      color: Colors.blue.withOpacity(0.8),
+                      color: Colors.blue.withValues(blue: 999),
                       strokeWidth: 6,
                       strokeCap: StrokeCap.round,
                     ),
@@ -270,15 +270,15 @@ class DeliMap extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileButton(
-    IconData icon,
-    String profile,
-    DeliMapController controller,
-  ) {
-    bool isSelected = controller.transportProfile.value == profile;
-    return IconButton(
-      icon: Icon(icon, color: isSelected ? Colors.blue : Colors.grey, size: 30),
-      onPressed: () => controller.setProfile(profile),
-    );
-  }
+  // Widget _buildProfileButton(
+  //   IconData icon,
+  //   String profile,
+  //   DeliMapController controller,
+  // ) {
+  //   bool isSelected = controller.transportProfile.value == profile;
+  //   return IconButton(
+  //     icon: Icon(icon, color: isSelected ? Colors.blue : Colors.grey, size: 30),
+  //     onPressed: () => controller.setProfile(profile),
+  //   );
+  // }
 }

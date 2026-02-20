@@ -28,8 +28,8 @@ class VendorOrderController extends GetxController {
   String get oi => authController.currentVendor.value;
 
   Future<void> getOrders() async {
-    print(oi);
-    print('aaaaaa');
+    // print(oi);
+    // print('aaaaaa');
     if (isLoading.value) return;
     // statusRequest.value = StatusRequest.loading;
 
@@ -39,7 +39,7 @@ class VendorOrderController extends GetxController {
         'action': 'get_pending_order_vendor',
         'vendor_id': oi,
       });
-      print(respo);
+      // print(respo);
       respo.fold(
         (status) {
           WidgetsBinding.instance.addPostFrameCallback((_) {

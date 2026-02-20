@@ -1,5 +1,3 @@
-import 'package:maneger/screen/delivery/order_details.dart';
-
 import '../config/environment_manager.dart';
 
 /// API endpoints and configuration constants

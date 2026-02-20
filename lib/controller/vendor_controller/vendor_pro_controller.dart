@@ -16,26 +16,26 @@ class VendorProController extends GetxController {
   @override
   void onInit() {
     checkVendor().then((a) => getData());
-    print('currentVendor');
+    // print('currentVendor');
 
     super.onInit();
   }
 
   Future<void> checkVendor() async {
-    print('aaaaaaaaaaaaaaaaaaaa');
+    // print('aaaaaaaaaaaaaaaaaaaa');
 
     final prefs = await SharedPreferences.getInstance();
-    print(prefs);
+    // print(prefs);
     final userStr = prefs.getString('current_vendor');
-    print(userStr);
+    // print(userStr);
 
     if (userStr != null && userStr.isNotEmpty) {
       isLoading.value = true;
 
       try {
         currentVendor.value = userStr;
-        print('asdasdasd');
-        print(currentVendor);
+        // print('asdasdasd');
+        // print(currentVendor);
       } catch (e) {
         Get.snackbar('Error', 'Failed to save user data');
       }
@@ -46,21 +46,21 @@ class VendorProController extends GetxController {
 
   // دالة جلب البيانات الخام
   Future<dynamic> _fetchRawData() async {
-    print('aaaaaaaaa');
-    print(currentVendor);
-    print('rrrrr');
+    // print('aaaaaaaaa');
+    // print(currentVendor);
+    // print('rrrrr');
     var respo = await crud.postData(ApiConstants.products, {
       'vendor': currentVendor.toString(),
     });
-    print(respo);
-    print('respo');
+    // print(respo);
+    // print('respo');
 
     return respo.fold((l) => l, (r) => r);
   }
 
   Future<void> getData() async {
-    print('currentVendor');
-    print(currentVendor);
+    // print('currentVendor');
+    // print(currentVendor);
     // إظهار التحميل فقط إذا كانت القائمة فارغة (تحسين تجربة المستخدم)
     if (data.isEmpty) {
       statusRequest.value = StatusRequest.loading;

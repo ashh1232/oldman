@@ -3,7 +3,6 @@ import 'package:maneger/class/crud.dart';
 import 'package:maneger/class/handlingdatacontroll.dart';
 import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/core/constants/api_constants.dart';
-import 'package:maneger/linkapi.dart';
 import '../../../model/bunner_model.dart';
 
 class EditBanController extends GetxController {

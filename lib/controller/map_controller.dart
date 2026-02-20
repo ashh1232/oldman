@@ -7,8 +7,10 @@ class MapControllerX extends GetxController {
   final MapController mapController = MapController();
 
   var currentLatLng = const LatLng(31.417271, 34.970505).obs;
-  var destinationLatLng =
-      const LatLng(31.405271, 34.970505).obs; // النقطة الهدف
+  var destinationLatLng = const LatLng(
+    31.405271,
+    34.970505,
+  ).obs; // النقطة الهدف
   var routePoints = <LatLng>[].obs; // نقاط رسم المسار
   var distanceRemaining = 0.0.obs; // المسافة المتبقية بالامتار
 
@@ -73,11 +75,12 @@ class MapControllerX extends GetxController {
       final response = await GetConnect().get(url);
       if (response.isOk) {
         var coords = response.body['routes'][0]['geometry']['coordinates'];
-        routePoints.value =
-            coords.map<LatLng>((c) => LatLng(c[1], c[0])).toList();
+        routePoints.value = coords
+            .map<LatLng>((c) => LatLng(c[1], c[0]))
+            .toList();
       }
     } catch (e) {
-      print("Error fetching route: $e");
+      // print("Error fetching route: $e");
     }
   }
 

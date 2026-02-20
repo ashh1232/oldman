@@ -5,13 +5,8 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:maneger/controller/admin/bannercontroller/edit_ban_controller.dart';
-import 'package:maneger/controller/vendor_controller/vendor_pro_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
-import 'package:maneger/linkapi.dart';
 import 'package:maneger/model/bunner_model.dart';
-
-// import 'package:talabat_admin/controller/test_controller.dart';
-// import 'package:talabat_admin/linkapi.dart';
 
 class EditDetailBanController extends GetxController {
   final cat = Get.arguments as Bunner;
