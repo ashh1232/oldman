@@ -221,20 +221,26 @@ class CheckoutController extends GetxController {
       }).toList();
       // Extract unique vendor IDs
       // 2. استخراج الموردين الفريدين بشكل صحيح
+      // final vendorIdsSet = cartController.products
+      //     .where((p) => p.vendorId != null)
+      //     .map((p) => p.vendorId.toString())
+      //     .toSet();
       final vendorIdsSet = cartController.products
-          .where((p) => p.vendorId != null)
           .map((p) => p.vendorId.toString())
           .toSet();
-
+      // final vendorIdsSet = cartController.products
+      //     .map((p) => p.vendorId)
+      //     .whereType<int>() // تجلب فقط الـ ints وتستبعد الـ null تلقائياً
+      //     .toSet();
       // Extract unique vendor IDs
       final uniqueVendorsCount = vendorIdsSet.length;
 
       // 3. تحديد الـ vendor_id الذي سيُرسل للطلب الرئيسي
       // إذا كان هناك أكثر من مورد، نرسل '0' أو '1' (حسب إعدادات السيرفر لديك)
       // وإذا كان مورد واحد، نأخذ قيمته مباشرة.
-      final String finalVendorId = uniqueVendorsCount > 1
-          ? 'multi' // أو '1' حسب ما يتطلبه الـ API الخاص بك
-          : (vendorIdsSet.isNotEmpty ? vendorIdsSet.first : '0');
+      // final String finalVendorId = uniqueVendorsCount > 1
+      //     ? 'multi' // أو '1' حسب ما يتطلبه الـ API الخاص بك
+      //     : (vendorIdsSet.isNotEmpty ? vendorIdsSet.first : '0');
 
       // print(
       //   'Vendors count: $uniqueVendorsCount, Selected Vendor ID: $finalVendorId',
@@ -251,7 +257,8 @@ class CheckoutController extends GetxController {
       final orderData = {
         'action': 'create_order',
         'user_id': authController.userId ?? '9',
-        'vendor_id': finalVendorId,
+        // 'vendor_id': finalVendorId,
+        'vendor_id': (vendorIdsSet.isNotEmpty ? vendorIdsSet.first : '0'),
         'total': total.toStringAsFixed(2),
         'subtotal': subtotal.toStringAsFixed(2),
         'shipping': shipping.toStringAsFixed(2),
@@ -262,6 +269,7 @@ class CheckoutController extends GetxController {
         'long': selectedLong.value.toString(),
         'order_notes': notesController.text.trim(),
         'order_items': jsonEncode(orderItems),
+        'vendors': uniqueVendorsCount.toString(),
       };
       // print('orderData');
       // print(orderData);
