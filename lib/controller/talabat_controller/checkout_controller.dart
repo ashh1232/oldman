@@ -15,10 +15,13 @@ import '../../core/constants/api_constants.dart';
 
 class CheckoutController extends GetxController {
   // Controllers
+
   final TalMapController mapController = Get.find<TalMapController>();
   final ProfileController profileController = Get.find<ProfileController>();
   final AuthController authController = Get.find<AuthController>();
   final CartController cartController = Get.find<CartController>();
+
+  Rx<User?> get user => authController.currentUser;
 
   // State flags
   final ismap = false.obs;
@@ -151,7 +154,7 @@ class CheckoutController extends GetxController {
   }
 
   // Validate form
-  bool validateForm() {
+  bool _validateForm() {
     if (nameController.text.trim().isEmpty) {
       Get.snackbar('خطأ', 'الاسم مطلوب', backgroundColor: Colors.red.shade100);
       return false;
@@ -191,9 +194,70 @@ class CheckoutController extends GetxController {
     return true;
   }
 
+  Future<void> updateProfile() async {
+    if (!_validateForm()) return;
+    statusRequest.value = StatusRequest.loading;
+    try {
+      final userId = authController.userId;
+      if (userId == null) {
+        Get.snackbar(
+          'خطأ',
+          'لم يتم العثور على معلومات المستخدم',
+          backgroundColor: Colors.red.shade100,
+        );
+        statusRequest.value = StatusRequest.failure;
+        return;
+      }
+
+      final response = await _crud.postData(ApiConstants.profile, {
+        'action': 'update_profile',
+        'user_id': user.value!.userId.toString(),
+        'user_name': nameController.text.trim(),
+        'user_phone': phoneController.text.trim(),
+        'user_address': addressController.text.trim(),
+        // 'user_city': cityController.text.trim(),
+        // 'user_country': countryController.text.trim(),
+      });
+
+      response.fold(
+        (statusReq) {
+          statusRequest.value = statusReq;
+          Get.snackbar(
+            'خطأ',
+            'فشل تحديث الملف الشخصي',
+            backgroundColor: Colors.red.shade100,
+          );
+        },
+        (responseBody) {
+          if (responseBody['status'] == 'success') {
+            Get.snackbar(
+              'نجاح',
+              'تم تحديث الملف الشخصي بنجاح',
+              backgroundColor: Colors.green.shade100,
+            );
+            profileController
+                .loadProfile(); // Reload profile to reflect changes
+            isEditing.value = false; // Exit edit mode
+            statusRequest.value = StatusRequest.success;
+          } else {
+            Get.snackbar(
+              'خطأ',
+              responseBody['message'] ?? 'فشل التحديث',
+              backgroundColor: Colors.red.shade100,
+            );
+            statusRequest.value = StatusRequest.failure;
+          }
+        },
+      );
+    } catch (e) {
+      statusRequest.value = StatusRequest.serverfailure;
+      Get.snackbar('خطأ', 'حدث خطأ: $e', backgroundColor: Colors.red.shade100);
+    }
+  }
+
   // Place order
   Future<void> placeOrder() async {
-    if (!validateForm()) return;
+    if (!_validateForm()) return;
     if (cartController.products.isEmpty) {
       Get.snackbar(
         'خطأ',
@@ -256,7 +320,7 @@ class CheckoutController extends GetxController {
       // Prepare order data
       final orderData = {
         'action': 'create_order',
-        'user_id': authController.userId ?? '9',
+        'user_id': authController.userId,
         // 'vendor_id': finalVendorId,
         'vendor_id': (vendorIdsSet.isNotEmpty ? vendorIdsSet.first : '0'),
         'total': total.toStringAsFixed(2),

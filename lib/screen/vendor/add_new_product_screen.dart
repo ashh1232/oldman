@@ -9,7 +9,6 @@ import 'package:maneger/widget/bot_nav_widget.dart';
 import 'package:maneger/widget/build_edit_field.dart';
 import 'package:maneger/widget/tal_container.dart';
 import 'package:maneger/widget/vendor/build_order_notes.dart';
-// import 'package:talabat_admin/controller/new_product_controller.dart';
 
 class AddNewProductScreen extends StatelessWidget {
   const AddNewProductScreen({super.key});

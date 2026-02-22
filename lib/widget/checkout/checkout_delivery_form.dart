@@ -78,8 +78,7 @@ class CheckoutDeliveryForm extends StatelessWidget {
                     width: double.infinity,
                     height: 48,
                     child: ElevatedButton(
-                      onPressed: () =>
-                          controller.profileController.updateProfile(),
+                      onPressed: () => controller.updateProfile(),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue[700],
                         foregroundColor: Colors.white,
@@ -110,19 +109,19 @@ class CheckoutDeliveryForm extends StatelessWidget {
                   _buildInfoRow(
                     Icons.person_outline,
                     'الاسم',
-                    controller.currentUser?.userName ?? 'N/A',
+                    controller.currentUser?.userName ?? 'فارغ',
                   ),
                   const Divider(height: 24),
                   _buildInfoRow(
                     Icons.phone_outlined,
                     'رقم الهاتف',
-                    controller.currentUser?.userPhone ?? 'N/A',
+                    controller.currentUser?.userPhone ?? 'فارغ',
                   ),
                   const Divider(height: 24),
                   _buildInfoRow(
                     Icons.location_on_outlined,
                     'العنوان',
-                    controller.currentUser?.userAddress ?? 'N/A',
+                    controller.currentUser?.userAddress ?? 'فارغ',
                   ),
                 ],
               );
