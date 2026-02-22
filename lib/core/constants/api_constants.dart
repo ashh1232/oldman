@@ -38,6 +38,8 @@ class ApiConstants {
 
   // Orders
   static String get orders => '$baseUrl/order/order.php';
+  static String get vendorOrder => '$baseUrl/order/vendor_order.php';
+  static String get deliveryOrder => '$baseUrl/order/delivery_order.php';
 
   // Favorites
   static String get favorites => '$baseUrl/favorites.php';
@@ -46,16 +48,15 @@ class ApiConstants {
   static String get newVendor => '$baseUrl/admin/new_vendor.php';
   static String get addProduct => '$baseUrl/admin/add_product.php';
   static String get uploadImage => '$baseUrl/admin/upload_image.php';
-  static String get adminOrder => '$baseUrl/order/admin_order.php';
 
   // Misc
   static String get update => '$baseUrl/update_test.php';
   static String get addTest => '$baseUrl/add_test.php';
 
   // Image Paths
-  static String get productsImages => '$imageBaseUrl/productsImages/';
-  static String get categoriesImages => '$imageBaseUrl/catsImages/';
-  static String get bannersImages => '$imageBaseUrl/bannersImages/';
+  static String get productsImages => '$imageBaseUrl/productsImages';
+  static String get categoriesImages => '$imageBaseUrl/catsImages';
+  static String get bannersImages => '$imageBaseUrl/bannersImages';
 
   // API Timeouts
   static const Duration connectionTimeout = Duration(seconds: 30);

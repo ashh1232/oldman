@@ -43,7 +43,10 @@ class HomeCatItems extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(19),
                 child: CachedNetworkImage(
-                  key: ValueKey(img),
+                  key: ValueKey(
+                    '${img}_${DateTime.now().millisecondsSinceEpoch}',
+                  ),
+
                   imageUrl: img,
                   fit: BoxFit.cover,
                   errorWidget: (context, url, error) =>

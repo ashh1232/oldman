@@ -86,6 +86,7 @@ class DeliveryHomeController extends GetxController {
   }
 
   Future<void> getAdmin() async {
+    print('object');
     isAdminLoading.value = true;
 
     try {
@@ -98,7 +99,7 @@ class DeliveryHomeController extends GetxController {
         return;
       }
 
-      var respo = await _crud.postData(ApiConstants.adminOrder, {
+      var respo = await _crud.postData(ApiConstants.deliveryOrder, {
         'action': 'is_admin',
         'usr_id': zuser!.userId,
       });
@@ -145,7 +146,7 @@ class DeliveryHomeController extends GetxController {
 
     try {
       isLoading.value = true;
-      var respo = await _crud.postData(ApiConstants.adminOrder, {
+      var respo = await _crud.postData(ApiConstants.deliveryOrder, {
         'action': 'get_processing_order',
       });
       respo.fold(

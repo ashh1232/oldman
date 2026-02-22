@@ -140,6 +140,9 @@ class ProductDetailView extends GetView<ProductController> {
                     // controller.image[index - 1].image);
 
                     return CachedNetworkImage(
+                      key: ValueKey(
+                        '${imageUrl}_${DateTime.now().millisecondsSinceEpoch}',
+                      ),
                       imageUrl: imageUrl,
                       fit: BoxFit.cover,
                       placeholder: (context, url) =>
@@ -202,6 +205,9 @@ class ProductDetailView extends GetView<ProductController> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(6),
                           child: CachedNetworkImage(
+                            key: ValueKey(
+                              '${pro.image}_${DateTime.now().millisecondsSinceEpoch}',
+                            ),
                             imageUrl: index == 0
                                 ? getImageUrl(
                                     pro.image,

@@ -13,6 +13,8 @@ class VendorProOrderController extends GetxController {
 
   RxList<OrderProductsModel> ordersProduct = <OrderProductsModel>[].obs;
   RxBool isLoading = false.obs;
+  final authController = Get.find<VenHomeController>();
+  String get vendorId => authController.currentVendor.value;
 
   @override
   void onInit() {
@@ -29,14 +31,16 @@ class VendorProOrderController extends GetxController {
     super.onReady();
   }
 
+  //sa
   final Crud _crud = Crud();
   Future<void> getOrdersProduct() async {
     if (isLoading.value) return;
+
     try {
       isLoading.value = true;
-      var respo = await _crud.postData(ApiConstants.adminOrder, {
+      var respo = await _crud.postData(ApiConstants.vendorOrder, {
         'action': 'get_order_items',
-
+        'vendor_id': vendorId,
         'order_id': item.orderId,
       });
       respo.fold(
@@ -78,7 +82,7 @@ class VendorProOrderController extends GetxController {
     if (isLoading.value) return;
     try {
       isLoading.value = true;
-      var respo = await _crud.postData(ApiConstants.adminOrder, {
+      var respo = await _crud.postData(ApiConstants.vendorOrder, {
         'action': 'process_order',
         'order_id': item.orderId,
         'vendor_id': as,

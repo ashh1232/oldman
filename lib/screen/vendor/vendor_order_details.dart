@@ -51,7 +51,9 @@ class VendorOrderDetails extends StatelessWidget {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(5),
                           child: CachedNetworkImage(
-                            key: ValueKey(product.productImage),
+                            key: ValueKey(
+                              '${product.productImage}_${DateTime.now().millisecondsSinceEpoch}',
+                            ),
                             imageUrl:
                                 '${product.productImage}'.startsWith('http')
                                 ? '${product.productImage}'

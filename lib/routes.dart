@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
+import 'package:maneger/binding/delivery_binding.dart';
 import 'package:maneger/binding/home_binding.dart';
+import 'package:maneger/binding/vendor_binding.dart';
 import 'package:maneger/controller/auth_controller/auth_middleware.dart';
 import 'package:maneger/screen/vendor/add_new_product_screen.dart';
 import 'package:maneger/screen/vendor/vendor_home.dart';
@@ -90,11 +92,11 @@ class AppRoutes {
     GetPage(name: mapScreen, page: () => MapTal()),
     GetPage(name: favorite, page: () => FavoritesScreen()),
 
-    // Admin
+    // vendor
     GetPage(
       name: vendorHome,
       page: () => VendorHome(),
-      binding: HomeBinding(),
+      binding: VendorBinding(),
       middlewares: [AuthMiddleware()],
     ),
     GetPage(name: addscreen, page: () => VendorProductScreen()),
@@ -109,7 +111,7 @@ class AppRoutes {
     GetPage(name: editBanScreen, page: () => EditBanScreen()),
 
     // Delivery
-    GetPage(name: deliHome, page: () => DeliHome()),
+    GetPage(name: deliHome, page: () => DeliHome(), binding: DeliveryBinding()),
     GetPage(name: orderDetails, page: () => OrderDetails()),
     GetPage(name: flutMap, page: () => FlutMap()),
     GetPage(name: deliMap, page: () => DeliMap()),

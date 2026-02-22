@@ -1,11 +1,16 @@
-String getImageUrl(String category, String type) {
-  if (category.startsWith('http')) return category;
+String getImageUrl(String imageName, String baseUrl) {
+  if (imageName.isEmpty) return "";
+  if (imageName.startsWith('http')) return imageName;
 
-  // تنظيف المسارات لضمان عدم تكرار الـ '/' أو نسيانه
-  final cleanType = type.endsWith('/') ? type : '$type/';
-  final cleanCategory = category.startsWith('/')
-      ? category.substring(1)
-      : category;
+  // تنظيف الـ Base URL من أي شرطة في النهاية
+  final cleanBase = baseUrl.endsWith('/')
+      ? baseUrl.substring(0, baseUrl.length - 1)
+      : baseUrl;
 
-  return '$cleanType$cleanCategory';
+  // تنظيف اسم الصورة من أي شرطة في البداية
+  final cleanPath = imageName.startsWith('/')
+      ? imageName.substring(1)
+      : imageName;
+
+  return '$cleanBase/$cleanPath';
 }

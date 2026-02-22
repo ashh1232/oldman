@@ -184,23 +184,26 @@ class ProductController extends GetxController {
       // إخطار واجهة المستخدم بالتغيير
       cartController.products.refresh();
 
-      Get.snackbar(
-        'تم التحديث',
-        'تمت زيادة الكمية في السلة',
+      Get.rawSnackbar(
+        // 'تم التحديث',
+        message: 'تمت زيادة الكمية في السلة',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.green.withValues(alpha: 0.7),
-        colorText: Colors.white,
+
+        // colorText: Colors.white,
+        duration: Duration(milliseconds: 1000),
       );
     } else {
       // 4. إضافة منتج جديد
       cartController.products.add(cartItem);
 
-      Get.snackbar(
-        'تم الإضافة',
-        'تم إضافة المنتج إلى السلة',
+      Get.rawSnackbar(
+        // 'تم الإضافة',
+        message: 'تم إضافة المنتج إلى السلة',
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.blue.withValues(alpha: 0.7),
-        colorText: Colors.white,
+        // colorText: Colors.white,
+        duration: Duration(milliseconds: 1000),
       );
     }
   }

@@ -128,7 +128,7 @@ class TalabatCarouselBanner extends StatelessWidget {
           controller.banners.isEmpty) {
         return const LoadingCard(height: 220);
       }
-
+      //
       return Stack(
         children: [
           PageView.builder(
@@ -144,6 +144,7 @@ class TalabatCarouselBanner extends StatelessWidget {
                 key: ValueKey(banner.id),
                 imageUrl: getImageUrl(banner.image, ApiConstants.bannersImages),
                 fit: BoxFit.cover,
+                errorWidget: (context, url, error) => Icon(Icons.error),
               );
             },
           ),

@@ -114,6 +114,9 @@ class AddNewProductScreen extends StatelessWidget {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(8), //
                                     child: CachedNetworkImage(
+                                      key: ValueKey(
+                                        '${controller.catList[controller.currentCat.value].image}_${DateTime.now().millisecondsSinceEpoch}',
+                                      ),
                                       imageUrl: getImageUrl(
                                         controller
                                             .catList[controller
@@ -181,6 +184,9 @@ class AddNewProductScreen extends StatelessWidget {
                                                     8,
                                                   ), // تدوير حواف الصورة
                                               child: CachedNetworkImage(
+                                                key: ValueKey(
+                                                  '${cat.image}_${DateTime.now().millisecondsSinceEpoch}',
+                                                ),
                                                 imageUrl: getImageUrl(
                                                   cat.image,
                                                   ApiConstants.categoriesImages,

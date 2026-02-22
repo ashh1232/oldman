@@ -25,7 +25,7 @@ class VendorOrderController extends GetxController {
 
   final authController = Get.find<VenHomeController>();
 
-  String get oi => authController.currentVendor.value;
+  String get vendorId => authController.currentVendor.value;
 
   Future<void> getOrders() async {
     // print(oi);
@@ -35,9 +35,9 @@ class VendorOrderController extends GetxController {
 
     try {
       isLoading.value = true;
-      var respo = await _crud.postData(ApiConstants.adminOrder, {
+      var respo = await _crud.postData(ApiConstants.vendorOrder, {
         'action': 'get_pending_order_vendor',
-        'vendor_id': oi,
+        'vendor_id': vendorId,
       });
       // print(respo);
       respo.fold(

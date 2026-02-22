@@ -1,13 +1,16 @@
 import 'package:get/get.dart';
+import 'package:maneger/controller/auth_controller/auth_controller.dart';
 import 'package:maneger/controller/auth_controller/storage_service.dart';
 import 'package:maneger/controller/vendor_controller/ven_home_controller.dart';
 import '../controller/vendor_controller/image_upload_controller.dart';
 import '../controller/vendor_controller/vendor_pro_controller.dart';
 
-class AdminBinding extends Bindings {
+class VendorBinding extends Bindings {
   @override
   void dependencies() {
     Get.put(StorageService(), permanent: true);
+    Get.lazyPut<AuthController>(() => AuthController(), fenix: true);
+
     Get.lazyPut<ImageUploadController>(
       () => ImageUploadController(),
       fenix: true,
@@ -16,3 +19,4 @@ class AdminBinding extends Bindings {
     Get.lazyPut<VenHomeController>(() => VenHomeController(), fenix: true);
   }
 }
+//

@@ -116,6 +116,9 @@ class FavoritesScreen extends StatelessWidget {
                     top: Radius.circular(12),
                   ),
                   child: CachedNetworkImage(
+                    key: ValueKey(
+                      '${product.image}_${DateTime.now().millisecondsSinceEpoch}',
+                    ),
                     imageUrl: product.image,
                     height: 150,
                     width: double.infinity,

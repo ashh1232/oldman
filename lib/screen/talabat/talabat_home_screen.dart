@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
+import 'package:maneger/class/image_handling.dart';
 import 'package:maneger/controller/talabat_controller/talabat_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/screen/talabat/product_detail_view.dart';
@@ -128,9 +129,13 @@ class TalabatHomeScreen extends StatelessWidget {
                       }
                       final cat = controller.catList[index];
                       return HomeCatItems(
-                        img: cat.image.startsWith('http')
-                            ? cat.image
-                            : ApiConstants.categoriesImages + cat.image,
+                        img: getImageUrl(
+                          cat.image,
+                          ApiConstants.categoriesImages,
+                        ),
+                        //  cat.image.startsWith('http')
+                        //     ? cat.image
+                        //     : ApiConstants.categoriesImages + cat.image,
                         title: cat.title,
                         id: cat.id,
                       );
@@ -246,9 +251,10 @@ class TalabatHomeScreen extends StatelessWidget {
           onTap: () => openContainer(),
           child: ProductCard(
             index: index,
-            img: product.image.startsWith('http')
-                ? product.image
-                : "${ApiConstants.productsImages}/${product.image}",
+            img: getImageUrl(product.image, ApiConstants.productsImages),
+            // product.image.startsWith('http')
+            // ? product.image
+            // : "${ApiConstants.productsImages}/${product.image}",
             title: product.title,
             price: double.tryParse(product.price.toString()) ?? 0.0,
             oldPrice: double.tryParse(product.originalPrice.toString()) ?? 0.0,

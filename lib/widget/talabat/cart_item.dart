@@ -45,6 +45,7 @@ class CartItemWidget extends StatelessWidget {
                   },
                 ),
               ),
+
               ClipRRect(
                 borderRadius: BorderRadius.circular(5),
                 child: CachedNetworkImage(

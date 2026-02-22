@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maneger/class/image_handling.dart';
 import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/controller/vendor_controller/vendor_pro_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
@@ -90,9 +91,16 @@ class VendorProductScreen extends StatelessWidget {
                           children: [
                             Expanded(
                               child: CachedNetworkImage(
-                                imageUrl: product.image.startsWith('http')
-                                    ? product.image
-                                    : '${ApiConstants.productsImages}/${product.image}',
+                                key: ValueKey(
+                                  '${product.image}_${DateTime.now().millisecondsSinceEpoch}',
+                                ),
+                                imageUrl: getImageUrl(
+                                  product.image,
+                                  ApiConstants.productsImages,
+                                ),
+                                //  product.image.startsWith('http')
+                                //     ? product.image
+                                //     : '${ApiConstants.productsImages}/${product.image}',
                                 fit: BoxFit.cover,
                                 width: double.infinity,
                                 // تعامل مع الخطأ في حال لم تحمل الصورة

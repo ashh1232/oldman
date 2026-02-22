@@ -105,7 +105,7 @@ class VenHomeController extends GetxController {
         return;
       }
 
-      var respo = await _crud.postData(ApiConstants.adminOrder, {
+      var respo = await _crud.postData(ApiConstants.vendorOrder, {
         'action': 'is_admin',
         'usr_id': zuser!.userId,
       });
@@ -158,7 +158,7 @@ class VenHomeController extends GetxController {
 
     try {
       isLoading.value = true;
-      var respo = await _crud.postData(ApiConstants.adminOrder, {
+      var respo = await _crud.postData(ApiConstants.vendorOrder, {
         'action': 'get_processing_order',
       });
       respo.fold(

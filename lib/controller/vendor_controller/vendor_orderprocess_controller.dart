@@ -28,7 +28,7 @@ class VendorOrderProcessController extends GetxController {
     if (isLoading.value) return;
     isLoading.value = true;
     try {
-      var response = await _crud.postData(ApiConstants.adminOrder, {
+      var response = await _crud.postData(ApiConstants.vendorOrder, {
         'action': 'get_processing_order',
       });
       response.fold((status) => _handleError(status, "فشل تحميل الإعلانات"), (
