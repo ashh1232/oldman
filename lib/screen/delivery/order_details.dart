@@ -51,7 +51,7 @@ class OrderDetails extends StatelessWidget {
               child: ListTile(
                 leading: const Icon(Icons.receipt_long),
                 title: Text("رقم الطلب: ${item.orderId}"),
-                subtitle: Text("حالة الطلب: ${item.orderStatus}"),
+                subtitle: Text("سعر التوصيل: ${item.orderShipping}"),
               ),
             ),
             const SizedBox(height: 20),

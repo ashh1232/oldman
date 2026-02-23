@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maneger/controller/vendor_controller/ven_home_controller.dart';
-import 'package:maneger/screen/vendor/vendor_product_screen.dart';
+import 'package:maneger/screen/vendor/vendor_edit_screen.dart';
 import 'package:maneger/screen/vendor/vendor_order_screen.dart';
 import 'package:maneger/screen/vendor/vendor_delivery.dart';
 

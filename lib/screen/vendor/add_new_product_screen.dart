@@ -28,10 +28,10 @@ class AddNewProductScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  ElevatedButton(
-                    onPressed: () => controller.pickImage(),
-                    child: const Text("اختر الصورة"),
-                  ),
+                  // ElevatedButton(
+                  //   onPressed: () => controller.pickImage(),
+                  //   child: const Text("اختر الصورة"),
+                  // ),
                   // حقل اسم المنتج
                   Obx(
                     () => controller.selectedImage.value != null
@@ -39,7 +39,10 @@ class AddNewProductScreen extends StatelessWidget {
                             controller.selectedImage.value!,
                             height: 200,
                           )
-                        : Icon(Icons.image, size: 200),
+                        : IconButton(
+                            icon: Icon(Icons.add_a_photo, size: 200),
+                            onPressed: () => controller.pickImage(),
+                          ),
                   ),
                 ],
               ),

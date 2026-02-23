@@ -4,6 +4,7 @@ import 'package:maneger/class/handlingdatacontroll.dart';
 import 'package:maneger/class/statusrequest.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/model/product_model.dart';
+import 'package:maneger/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class VendorProController extends GetxController {
@@ -12,6 +13,11 @@ class VendorProController extends GetxController {
   Rx<StatusRequest> statusRequest = StatusRequest.offline.obs;
   RxList<Product> data = <Product>[].obs;
   RxBool isLoading = false.obs;
+  final ismap = false.obs;
+  // Location coordinates
+  late RxDouble selectedLat = 0.0.obs;
+  late RxDouble selectedLong = 0.0.obs;
+
   RxString currentVendor = ''.obs;
   @override
   void onInit() {
@@ -81,5 +87,9 @@ class VendorProController extends GetxController {
         if (data.isEmpty) statusRequest.value = StatusRequest.failure;
       }
     }
+  }
+
+  void openMap() {
+    Get.toNamed(AppRoutes.vendorMap);
   }
 }

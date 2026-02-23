@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maneger/class/image_handling.dart';
 import 'package:maneger/controller/vendor_controller/image_upload_controller.dart';
 import 'package:maneger/core/constants/api_constants.dart';
 import 'package:maneger/widget/bot_nav_widget.dart';
@@ -136,8 +137,11 @@ class EditProductDetailView extends GetView<ImageUploadController> {
                         '${controller.product.value?.image}_${DateTime.now().millisecondsSinceEpoch}',
                       ),
 
-                      imageUrl:
-                          '${ApiConstants.productsImages}${controller.product.value?.image}',
+                      imageUrl: getImageUrl(
+                        '${controller.product.value?.image}',
+                        ApiConstants.productsImages,
+                      ),
+                      // '${ApiConstants.productsImages}${controller.product.value?.image}',
                       fit: BoxFit.cover,
                       placeholder: (context, url) =>
                           Center(child: CircularProgressIndicator()),

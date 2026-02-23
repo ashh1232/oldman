@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:maneger/controller/auth_controller/auth_controller.dart';
 import 'package:maneger/controller/auth_controller/storage_service.dart';
 import 'package:maneger/controller/vendor_controller/ven_home_controller.dart';
+import 'package:maneger/controller/vendor_controller/vendor_map_controller.dart';
 import '../controller/vendor_controller/image_upload_controller.dart';
 import '../controller/vendor_controller/vendor_pro_controller.dart';
 
@@ -17,6 +18,7 @@ class VendorBinding extends Bindings {
     );
     Get.lazyPut<VendorProController>(() => VendorProController(), fenix: true);
     Get.lazyPut<VenHomeController>(() => VenHomeController(), fenix: true);
+    Get.lazyPut<VendorMapController>(() => VendorMapController(), fenix: true);
   }
 }
 //

@@ -4,9 +4,10 @@ import 'package:maneger/binding/home_binding.dart';
 import 'package:maneger/binding/vendor_binding.dart';
 import 'package:maneger/controller/auth_controller/auth_middleware.dart';
 import 'package:maneger/screen/vendor/add_new_product_screen.dart';
+import 'package:maneger/screen/vendor/map_vendor.dart';
 import 'package:maneger/screen/vendor/vendor_home.dart';
 import 'package:maneger/screen/vendor/vendor_order_details.dart';
-import 'package:maneger/screen/vendor/vendor_product_screen.dart';
+import 'package:maneger/screen/vendor/vendor_edit_screen.dart';
 import 'package:maneger/screen/vendor/edit_product_detail_view.dart';
 import 'package:maneger/screen/delivery/deli_map.dart';
 import 'package:maneger/screen/delivery/order_details.dart';
@@ -49,7 +50,7 @@ class AppRoutes {
   static const orderConfirmation = '/order-confirmation';
   static const mapScreen = '/mapScreen';
 
-  // --- Admin Routes ---
+  // --- Vendor Routes ---
   static const vendorHome = '/vendorHome';
   static const addscreen = '/addscreen';
   static const editProductScreen = '/editProductScreen';
@@ -61,6 +62,7 @@ class AppRoutes {
   static const editBanScreen = '/editBanScreen';
   static const editBanDetailScreen = '/editBanDetailScreen';
   static const addbanner = '/addbanner';
+  static const vendorMap = '/vendormap';
 
   // --- Delivery Routes ---
   static const deliHome = '/delihome';
@@ -77,7 +79,7 @@ class AppRoutes {
     GetPage(name: signup, page: () => SignupScreen()),
 
     // App Core / User
-    GetPage(name: home, page: () => HomeScreen(), binding: HomeBinding()),
+    // GetPage(name: home, page: () => HomeScreen(), binding: HomeBinding()),
     GetPage(
       name: talabatScreen,
       page: () => TalabatHomeScreen(),
@@ -94,7 +96,8 @@ class AppRoutes {
 
     // vendor
     GetPage(
-      name: vendorHome,
+      // name: vendorHome,
+      name: home,
       page: () => VendorHome(),
       binding: VendorBinding(),
       middlewares: [AuthMiddleware()],
@@ -109,6 +112,7 @@ class AppRoutes {
     GetPage(name: addbanner, page: () => AddBanner()),
     GetPage(name: editBanDetailScreen, page: () => EditBanDetailView()),
     GetPage(name: editBanScreen, page: () => EditBanScreen()),
+    GetPage(name: vendorMap, page: () => VendorMap()),
 
     // Delivery
     GetPage(name: deliHome, page: () => DeliHome(), binding: DeliveryBinding()),

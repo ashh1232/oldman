@@ -41,6 +41,7 @@ class ImageUploadController extends GetxController {
     if (arg != null && arg is Product) {
       product.value = arg;
       isLoading.value = false;
+      print('object');
     }
   }
 
